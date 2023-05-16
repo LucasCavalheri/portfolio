@@ -1,7 +1,6 @@
 import { Link } from '@/app/components/link'
 import { SectionsTitle } from '@/app/components/sections-title'
 import { HiArrowNarrowLeft } from 'react-icons/hi'
-import { ProjectList } from '../projects-list'
 
 export const PageIntroduction = () => {
   return (
@@ -22,7 +21,6 @@ export const PageIntroduction = () => {
           Voltar para a Home
         </Link>
       </div>
-      <ProjectList />
     </section>
   )
 }
