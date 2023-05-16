@@ -37,18 +37,21 @@ export const ContactForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <input
+            autoComplete='off'
             type='text'
             placeholder='Nome'
             className='w-full h-14 bg-gray-800 rounded-lg placeholder:text-gray-400 text-gray-50 p-4 focus:outline-none focus:ring-2 ring-emerald-600 transition-all'
             {...register('name')}
           />
           <input
+            autoComplete='off'
             type='email'
             placeholder='E-mail'
             className='w-full h-14 bg-gray-800 rounded-lg placeholder:text-gray-400 text-gray-50 p-4 focus:outline-none focus:ring-2 ring-emerald-600 transition-all'
             {...register('email')}
           />
           <textarea
+            autoComplete='off'
             placeholder='Mensagem...'
             className='resize-none w-full h-[138px] bg-gray-800 rounded-lg placeholder:text-gray-400 text-gray-50 p-4 focus:outline-none focus:ring-2 ring-emerald-600 transition-all'
             maxLength={500}
