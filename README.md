@@ -1,8 +1,8 @@
 <div align='center'>
   <img width="180px" alt="portfolio" src="https://cdn-icons-png.flaticon.com/512/3476/3476457.png" />
-  <h1>Portifólio</h1>
+  <h1>Portfolio</h1>
   <p>
-    Criação do meu Portifólio para que seja possível ter um site próprio e mais profissional.
+    Criação do meu Portfolio para que seja possível ter um site próprio e mais profissional.
   </p>
 </div>
 
@@ -32,9 +32,9 @@ Para testar este projeto, precisará das seguintes ferramentas instaladas:
 
 ```bash
 # Clone ou baixe o repositório
-git clone https://github.com/LucasCavalheri/meu-portfolio.git
+git clone https://github.com/LucasCavalheri/portfolio.git
 # Entre no diretório
-cd meu-portfolio
+cd portfolio
 # Instale as dependências
 npm install
 # Inicie o servidor local
