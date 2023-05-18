@@ -12,7 +12,7 @@ type ProjectCardProps = {
 export const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <div className='flex gap-6 lg:gap-12 flex-col lg:flex-row'>
-      <div className='w-full h-full'>
+      <div className='w-full sm:min-w-[500px] h-full'>
         <Link href={`/projects/${project.slug}`}>
           <Image
             src={project.thumbnail.url}
