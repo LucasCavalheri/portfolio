@@ -9,6 +9,20 @@ export const metadata = {
   title: {
     default: 'LC Dev',
     template: '%s | LC Dev'
+  },
+  icons: [
+    {
+      url: '/favicon.ico'
+    }
+  ],
+  openGraph: {
+    images: [
+      {
+        url: '/images/HomeLC.png',
+        width: 1200,
+        height: 630,
+      }
+    ]
   }
 }
 
