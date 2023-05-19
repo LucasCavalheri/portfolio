@@ -1,10 +1,11 @@
 import './globals.css'
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/react'
 import { Inter, IBM_Plex_Mono } from 'next/font/google'
 import { ReactNode } from 'react'
 import { Header } from './components/header'
 import { ContactForm } from './components/contact-form'
 import { BackToTop } from './components/back-to-top'
+import { Toaster } from './components/toaster'
 
 export const metadata = {
   title: {
@@ -21,7 +22,7 @@ export const metadata = {
       {
         url: '/images/HomeLC.png',
         width: 1200,
-        height: 630,
+        height: 630
       }
     ]
   }
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='pt-BR' className={`${inter.variable} ${plexMono.variable}`}>
       <body>
+        <Toaster />
         <BackToTop />
         <Header />
         {children}
