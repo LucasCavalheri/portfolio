@@ -1,22 +1,18 @@
-import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
-import { Inter, IBM_Plex_Mono } from 'next/font/google'
+import { IBM_Plex_Mono, Inter } from 'next/font/google'
 import { ReactNode } from 'react'
-import { Header } from './components/header'
-import { ContactForm } from './components/contact-form'
 import { BackToTop } from './components/back-to-top'
+import { ContactForm } from './components/contact-form'
+import { Header } from './components/header'
 import { Toaster } from './components/toaster'
+import './globals.css'
 
 export const metadata = {
   title: {
     default: 'LC Dev',
     template: '%s | LC Dev'
   },
-  icons: [
-    {
-      url: '/favicon.ico'
-    }
-  ],
+  icons: '/favicon.ico',
   openGraph: {
     images: [
       {
@@ -24,7 +20,12 @@ export const metadata = {
         width: 1200,
         height: 630
       }
-    ]
+    ],
+    title: 'LC Dev',
+    description: 'Lucas Cavalheri DEV, desenvolvimento de sites e aplicativos web.',
+    type: 'website',
+    locale: 'pt_BR',
+    url: 'https://lucascavalheri.com.br'
   }
 }
 
