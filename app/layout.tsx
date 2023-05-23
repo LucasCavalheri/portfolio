@@ -25,8 +25,16 @@ export const metadata = {
     description: 'Lucas Cavalheri DEV, desenvolvimento de sites e aplicativos web.',
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://lucascavalheri.com.br'
-  }
+    url: 'https://lucascavalheri.com.br',
+  },
+  applicationName: 'LC Dev',
+  description: 'Lucas Cavalheri DEV, desenvolvimento de sites e aplicativos web.',
+  category: 'Desenvolvimento Web',
+  keywords: 'Desenvolvimento Web, Desenvolvimento de Sites, Desenvolvimento de Aplicativos, Desenvolvimento de Aplicativos Web, Desenvolvimento de Sites Web, Desenvolvimento de Sites em São Paulo, Desenvolvimento de Aplicativos em São Paulo, Desenvolvimento de Aplicativos Web em São Paulo, Desenvolvimento de Sites Web em São Paulo, Desenvolvimento de Sites em SP, Desenvolvimento de Aplicativos em SP, Desenvolvimento de Aplicativos Web em SP, Desenvolvimento de Sites Web em SP, Desenvolvimento de Sites em São Paulo SP, Desenvolvimento de Aplicativos em São Paulo SP, Desenvolvimento de Aplicativos Web em São Paulo SP, Desenvolvimento de Sites Web em São Paulo SP, Desenvolvimento de Sites em SP, Desenvolvimento de Aplicativos em SP, Desenvolvimento de Aplicativos Web em SP, Desenvolvimento de Sites Web em SP, Desenvolvimento de Sites em São Paulo SP, Desenvolvimento de Aplicativos em São Paulo SP, Desenvolvimento de Aplicativos Web em São Paulo SP, Desenvolvimento de Sites Web em São Paulo SP',
+  classification: 'Desenvolvimento Web',
+  robots: 'index, follow',
+  publisher: 'LC Dev',
+  referrer: 'no-referrer-when-downgrade',
 }
 
 const inter = Inter({
