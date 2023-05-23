@@ -35,6 +35,12 @@ export const metadata = {
   robots: 'index, follow',
   publisher: 'LC Dev',
   referrer: 'no-referrer-when-downgrade',
+  alternates: {
+    canonical: 'https://lucascavalheri.com.br',
+    languages: {
+      "pt-BR": 'https://lucascavalheri.com.br',
+    }
+  },
 }
 
 const inter = Inter({
