@@ -16,7 +16,7 @@ export const metadata = {
     { name: 'Lucas Cavalheri', url: 'https://linkedin.com/in/lucas-cavalheri' },
   ],
   creator: 'Lucas Cavalheri',
-  icons: '/favicon.ico',
+  // icons: { icon: '' },
   openGraph: {
     images: [
       {
