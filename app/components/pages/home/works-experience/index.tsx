@@ -15,8 +15,7 @@ export const WorksExperience = ({ experiences }: WorksExperienceProps) => {
           title='Experiências Profissionais'
         />
         <p className='text-gray-400 mt-6'>
-          Infelizmente ainda não possuo nenhuma experiência profissional. Mas...
-          que tal você mudar isso e me ajudar nessa parte? :D
+          Atualmente trabalho na MK-Edge como Desenvolvedor Full-Stack
         </p>
       </div>
       <div className='flex flex-col gap-4'>
