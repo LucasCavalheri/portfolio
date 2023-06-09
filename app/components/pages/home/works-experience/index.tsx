@@ -14,9 +14,6 @@ export const WorksExperience = ({ experiences }: WorksExperienceProps) => {
           subtitle='experiências'
           title='Experiências Profissionais'
         />
-        <p className='text-gray-400 mt-6'>
-          Atualmente trabalho na MK-Edge como Desenvolvedor Full-Stack
-        </p>
       </div>
       <div className='flex flex-col gap-4'>
         {experiences?.map((experience) => (
