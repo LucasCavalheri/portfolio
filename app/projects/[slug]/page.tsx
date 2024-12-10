@@ -12,7 +12,7 @@ type ProjectProps = {
 
 const getProjectDetails = async (slug: string): Promise<ProjectPageData> => {
   const query = `
-    query ProjectQuery() {
+    query ProjectQuery {
       project(where: {slug: "${slug}"}) {
         pageThumbnail {
           url
@@ -48,7 +48,7 @@ export default async function Project({ params: { slug } }: ProjectProps) {
   const { project } = await getProjectDetails(slug)
 
   if (!project) {
-    return null;
+    return null
   }
 
   return (
@@ -61,7 +61,7 @@ export default async function Project({ params: { slug } }: ProjectProps) {
 
 export async function generateStaticParams() {
   const query = `
-    query ProjectsSlugsQuery() {
+    query ProjectsSlugsQuery {
       projects(first: 100) {
         slug
       }
@@ -73,10 +73,10 @@ export async function generateStaticParams() {
   return projects
 }
 
-export async function generateMetadata({
-  params: { slug }
-}: ProjectProps): Promise<Metadata> {
+export async function generateMetadata({ params: { slug } }: ProjectProps): Promise<Metadata> {
   const data = await getProjectDetails(slug)
+  console.log("#### DATA ####", data)
+
   const project = data.project
 
   return {
