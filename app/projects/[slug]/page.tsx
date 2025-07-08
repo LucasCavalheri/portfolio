@@ -5,9 +5,9 @@ import { fetchHygraphQuery } from '@/app/utils/fetch-hygraph-query'
 import { Metadata } from 'next'
 
 type ProjectProps = {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 const getProjectDetails = async (slug: string): Promise<ProjectPageData> => {
@@ -44,7 +44,8 @@ const getProjectDetails = async (slug: string): Promise<ProjectPageData> => {
   return fetchHygraphQuery(query, 150)
 }
 
-export default async function Project({ params: { slug } }: ProjectProps) {
+export default async function Project({ params }: ProjectProps) {
+  const { slug } = await params
   const { project } = await getProjectDetails(slug)
 
   if (!project) {
@@ -73,9 +74,9 @@ export async function generateStaticParams() {
   return projects
 }
 
-export async function generateMetadata({ params: { slug } }: ProjectProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProjectProps): Promise<Metadata> {
+  const { slug } = await params
   const data = await getProjectDetails(slug)
-  console.log("#### DATA ####", data)
 
   const project = data.project
 
