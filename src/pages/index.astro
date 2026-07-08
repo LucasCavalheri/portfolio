@@ -26,14 +26,17 @@ const projetos = [
 	{
 		nome: 'Portfólio em Rails 8',
 		descricao: 'Portfólio completo com painel administrativo e atualizações em tempo real via Hotwire.',
+		tecnologias: ['Ruby', 'Ruby on Rails', 'Hotwire'],
 	},
 	{
 		nome: 'Paróquia Senhor Bom Jesus do Mirante',
 		descricao: 'Site institucional pensado para a comunidade, do design à publicação.',
+		tecnologias: ['Ruby', 'Ruby on Rails'],
 	},
 	{
 		nome: 'Ruby Chat',
 		descricao: 'API REST em Ruby com suporte a múltiplos modelos de inteligência artificial.',
+		tecnologias: ['Ruby', 'Sinatra'],
 	},
 ];
 
@@ -117,6 +120,7 @@ const stack = [
 							<div>
 								<h3>{proj.nome}</h3>
 								<p>{proj.descricao}</p>
+								<p class="tech">{proj.tecnologias.join(' · ')}</p>
 							</div>
 						</li>
 					))
@@ -304,6 +308,14 @@ const stack = [
 		font-size: 0.9375rem;
 		color: var(--muted);
 		text-wrap: pretty;
+	}
+
+	.lista li div > p.tech {
+		font-family: var(--mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		color: var(--accent);
+		margin-top: 0.6rem;
 	}
 
 	@media (max-width: 540px) {
