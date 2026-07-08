@@ -1,400 +1,435 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 
 const experiencias = [
-	{
-		periodo: '2024 — hoje',
-		cargo: 'Desenvolvedor Web Full Stack',
-		empresa: 'Tropical Hub',
-		descricao: 'Desenvolvimento full stack com foco em integrações HubSpot, APIs e painéis administrativos.',
-	},
-	{
-		periodo: '2023 — 2024',
-		cargo: 'Desenvolvedor Full Stack',
-		empresa: 'Grupo Polgo',
-		descricao: 'Atuação full stack em aplicações web e mobile, do requisito ao deploy em produção.',
-	},
-	{
-		periodo: '2022 — hoje',
-		cargo: 'Desenvolvedor Freelancer',
-		empresa: 'Projetos independentes',
-		descricao: 'Projetos de front-end e back-end com JavaScript, TypeScript, Ruby on Rails, React e Next.js.',
-	},
+  {
+    periodo: "2024 — hoje",
+    cargo: "Desenvolvedor Web Full Stack",
+    empresa: "Tropical Hub",
+    descricao:
+      "Desenvolvimento full stack com foco em integrações HubSpot, APIs e painéis administrativos.",
+  },
+  {
+    periodo: "2023 — 2024",
+    cargo: "Desenvolvedor Full Stack",
+    empresa: "Grupo Polgo",
+    descricao:
+      "Atuação full stack em aplicações web e mobile, do requisito ao deploy em produção.",
+  },
+  {
+    periodo: "2022 — hoje",
+    cargo: "Desenvolvedor Freelancer",
+    empresa: "Projetos independentes",
+    descricao:
+      "Projetos de front-end e back-end com JavaScript, TypeScript, Ruby on Rails, React e Next.js.",
+  },
 ];
 
 const projetos = [
-	{
-		nome: 'Meigana',
-		descricao: 'Ecommerce completo com catálogo, carrinho, checkout, cupons e gerenciamento de pedidos.',
-		tecnologias: ['Ruby', 'Ruby on Rails', 'Hotwire', 'Tailwind CSS'],
-	},
-	{
-		nome: 'Paróquia Senhor Bom Jesus do Mirante',
-		descricao: 'Site institucional pensado para a comunidade, do design à publicação.',
-		tecnologias: ['Ruby', 'Ruby on Rails', 'Tailwind CSS'],
-	},
-	{
-		nome: 'Ruby Chat',
-		descricao: 'API REST em Ruby com suporte a múltiplos modelos de inteligência artificial.',
-		tecnologias: ['Ruby', 'Sinatra'],
-	},
+  {
+    nome: "Meigana",
+    descricao:
+      "Ecommerce completo com catálogo, carrinho, checkout, cupons e gerenciamento de pedidos.",
+    tecnologias: ["Ruby", "Ruby on Rails", "Hotwire", "Tailwind CSS"],
+  },
+  {
+    nome: "Paróquia Senhor Bom Jesus do Mirante",
+    descricao:
+      "Site institucional pensado para a comunidade, do design à publicação.",
+    tecnologias: ["Ruby", "Ruby on Rails", "Hotwire", "Tailwind CSS"],
+  },
+  {
+    nome: "Ruby Chat",
+    descricao:
+      "API REST em Ruby com suporte a múltiplos modelos de inteligência artificial.",
+    tecnologias: ["Ruby", "Sinatra"],
+  },
 ];
 
 const stack = [
-	{
-		area: 'Back-end',
-		itens: 'Ruby, Ruby on Rails, Active Record, Node.js, Prisma, PostgreSQL, MySQL, APIs REST',
-	},
-	{
-		area: 'Front-end',
-		itens: 'TypeScript, React, Next.js, Hotwire, Tailwind CSS',
-	},
-	{
-		area: 'DevOps',
-		itens: 'Docker, AWS, Vercel, Cloudflare, Git & GitHub',
-	},
+  {
+    area: "Back-end",
+    itens:
+      "Ruby, Ruby on Rails, Active Record, Node.js, Prisma, PostgreSQL, MySQL, APIs REST",
+  },
+  {
+    area: "Front-end",
+    itens: "TypeScript, React, Next.js, Hotwire, Tailwind CSS",
+  },
+  {
+    area: "DevOps",
+    itens: "Docker, AWS, Vercel, Cloudflare, Git & GitHub",
+  },
 ];
 ---
 
 <Layout
-	title="Lucas Cavalheri — Desenvolvedor Web Full Stack Pleno"
-	description="Desenvolvedor web full stack pleno com mais de 4 anos de experiência construindo aplicações robustas e de fácil manutenção com Ruby on Rails, TypeScript, React e Next.js."
+  title="Lucas Cavalheri — Desenvolvedor Web Full Stack Pleno"
+  description="Desenvolvedor web full stack pleno com mais de 4 anos de experiência construindo aplicações robustas e de fácil manutenção com Ruby on Rails, TypeScript, React e Next.js."
 >
-	<main>
-		<!-- Hero -->
-		<header class="hero">
-			<p class="eyebrow">
-				<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
-				Desenvolvedor Web Full Stack Pleno · Remoto
-			</p>
-			<h1>Lucas <em>Cavalheri</em><span class="dot">.</span></h1>
-			<p class="bio">
-				Há mais de quatro anos construo aplicações web robustas e de fácil manutenção —
-				de APIs e integrações a painéis administrativos e deploy em produção. Escrevo
-				código pensando em quem vai mantê-lo amanhã.
-			</p>
-			<nav class="links" aria-label="Contato">
-				<a href="https://github.com/LucasCavalheri" target="_blank" rel="noopener">
-					<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
-					GitHub
-				</a>
-				<a href="mailto:lucas.dev.carvalho@gmail.com">
-					<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
-					Email
-				</a>
-				<a href="https://curriculo.lucascavalheri.com.br" target="_blank" rel="noopener">
-					<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg>
-					Currículo
-				</a>
-			</nav>
-		</header>
+  <main>
+    <!-- Hero -->
+    <header class="hero">
+      <p class="eyebrow">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"
+          ><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"
+          ></path><circle cx="12" cy="10" r="3"></circle></svg
+        >
+        Desenvolvedor Web Full Stack Pleno · Remoto
+      </p>
+      <h1>Lucas <em>Cavalheri</em><span class="dot">.</span></h1>
+      <p class="bio">
+        Há mais de quatro anos construo aplicações web robustas e de fácil
+        manutenção — de APIs e integrações a painéis administrativos e deploy em
+        produção. Escrevo código pensando em quem vai mantê-lo amanhã.
+      </p>
+      <nav class="links" aria-label="Contato">
+        <a
+          href="https://github.com/LucasCavalheri"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"
+            ><path
+              d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+            ></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg
+          >
+          GitHub
+        </a>
+        <a href="mailto:lucas.dev.carvalho@gmail.com">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"
+            ><rect width="20" height="16" x="2" y="4" rx="2"></rect><path
+              d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg
+          >
+          Email
+        </a>
+        <a
+          href="https://curriculo.lucascavalheri.com.br"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"
+            ><path
+              d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+            ></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"
+            ></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg
+          >
+          Currículo
+        </a>
+      </nav>
+    </header>
 
-		<!-- Experiência -->
-		<section aria-labelledby="experiencia">
-			<h2 id="experiencia"><span>01</span>Experiência</h2>
-			<ol class="lista">
-				{
-					experiencias.map((exp) => (
-						<li>
-							<p class="meta">{exp.periodo}</p>
-							<div>
-								<h3>
-									{exp.cargo} <em>· {exp.empresa}</em>
-								</h3>
-								<p>{exp.descricao}</p>
-							</div>
-						</li>
-					))
-				}
-			</ol>
-		</section>
+    <!-- Experiência -->
+    <section aria-labelledby="experiencia">
+      <h2 id="experiencia"><span>01</span>Experiência</h2>
+      <ol class="lista">
+        {
+          experiencias.map((exp) => (
+            <li>
+              <p class="meta">{exp.periodo}</p>
+              <div>
+                <h3>
+                  {exp.cargo} <em>· {exp.empresa}</em>
+                </h3>
+                <p>{exp.descricao}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
 
-		<!-- Projetos -->
-		<section aria-labelledby="projetos">
-			<h2 id="projetos"><span>02</span>Projetos</h2>
-			<ol class="lista">
-				{
-					projetos.map((proj, i) => (
-						<li>
-							<p class="meta">{String(i + 1).padStart(2, '0')}</p>
-							<div>
-								<h3>{proj.nome}</h3>
-								<p>{proj.descricao}</p>
-								<p class="tech">{proj.tecnologias.join(' · ')}</p>
-							</div>
-						</li>
-					))
-				}
-			</ol>
-		</section>
+    <!-- Projetos -->
+    <section aria-labelledby="projetos">
+      <h2 id="projetos"><span>02</span>Projetos</h2>
+      <ol class="lista">
+        {
+          projetos.map((proj, i) => (
+            <li>
+              <p class="meta">{String(i + 1).padStart(2, "0")}</p>
+              <div>
+                <h3>{proj.nome}</h3>
+                <p>{proj.descricao}</p>
+                <p class="tech">{proj.tecnologias.join(" · ")}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
 
-		<!-- Stack -->
-		<section aria-labelledby="stack">
-			<h2 id="stack"><span>03</span>Stack</h2>
-			<ol class="lista">
-				{
-					stack.map((grupo) => (
-						<li>
-							<p class="meta">{grupo.area}</p>
-							<div>
-								<p>{grupo.itens}</p>
-							</div>
-						</li>
-					))
-				}
-			</ol>
-		</section>
+    <!-- Stack -->
+    <section aria-labelledby="stack">
+      <h2 id="stack"><span>03</span>Stack</h2>
+      <ol class="lista">
+        {
+          stack.map((grupo) => (
+            <li>
+              <p class="meta">{grupo.area}</p>
+              <div>
+                <p>{grupo.itens}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
 
-		<!-- Contato -->
-		<section class="contato" aria-labelledby="contato">
-			<h2 id="contato"><span>04</span>Contato</h2>
-			<p class="convite">
-				Vamos construir algo <em>juntos?</em>
-			</p>
-			<a class="email" href="mailto:lucas.dev.carvalho@gmail.com">
-				<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
-				lucas.dev.carvalho@gmail.com
-			</a>
-		</section>
+    <!-- Contato -->
+    <section class="contato" aria-labelledby="contato">
+      <h2 id="contato"><span>04</span>Contato</h2>
+      <p class="convite">
+        Vamos construir algo <em>juntos?</em>
+      </p>
+      <a class="email" href="mailto:lucas.dev.carvalho@gmail.com">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"
+          ><rect width="20" height="16" x="2" y="4" rx="2"></rect><path
+            d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg
+        >
+        lucas.dev.carvalho@gmail.com
+      </a>
+    </section>
 
-		<footer>
-			<p>© {new Date().getFullYear()} Lucas Cavalheri</p>
-			<p>Feito com Astro</p>
-		</footer>
-	</main>
+    <footer>
+      <p>© {new Date().getFullYear()} Lucas Cavalheri</p>
+      <p>Feito com Astro</p>
+    </footer>
+  </main>
 </Layout>
 
 <style>
-	main {
-		max-width: 42rem;
-		margin: 0 auto;
-		padding: clamp(4rem, 12vh, 8rem) 1.5rem 0;
-	}
+  main {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: clamp(4rem, 12vh, 8rem) 1.5rem 0;
+  }
 
-	em {
-		font-style: italic;
-	}
+  em {
+    font-style: italic;
+  }
 
-	.icon {
-		width: 1em;
-		height: 1em;
-		flex-shrink: 0;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 1.75;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-	}
+  .icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
-	/* ---------- Hero ---------- */
+  /* ---------- Hero ---------- */
 
-	.eyebrow {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-family: var(--mono);
-		font-size: 0.75rem;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--muted);
-		margin-bottom: 1.25rem;
-	}
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
 
-	h1 {
-		font-family: var(--serif);
-		font-weight: 400;
-		font-size: clamp(3rem, 9vw, 4.75rem);
-		line-height: 1.05;
-		letter-spacing: -0.015em;
-	}
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(3rem, 9vw, 4.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
 
-	h1 em {
-		color: var(--muted);
-	}
+  h1 em {
+    color: var(--muted);
+  }
 
-	.dot {
-		color: var(--accent);
-	}
+  .dot {
+    color: var(--accent);
+  }
 
-	.bio {
-		max-width: 34rem;
-		margin-top: 1.75rem;
-		color: var(--muted);
-		text-wrap: pretty;
-	}
+  .bio {
+    max-width: 34rem;
+    margin-top: 1.75rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
 
-	.links {
-		display: flex;
-		gap: 1.75rem;
-		margin-top: 2.5rem;
-	}
+  .links {
+    display: flex;
+    gap: 1.75rem;
+    margin-top: 2.5rem;
+  }
 
-	.links a {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.45rem;
-		font-size: 0.9rem;
-		font-weight: 500;
-		padding-bottom: 2px;
-		background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
-		transition: background-size 0.35s ease;
-	}
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding-bottom: 2px;
+    background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0
+      1px;
+    transition: background-size 0.35s ease;
+  }
 
-	.links a:hover {
-		background-size: 100% 1px;
-	}
+  .links a:hover {
+    background-size: 100% 1px;
+  }
 
-	/* ---------- Seções ---------- */
+  /* ---------- Seções ---------- */
 
-	section {
-		margin-top: clamp(5rem, 14vh, 8rem);
-	}
+  section {
+    margin-top: clamp(5rem, 14vh, 8rem);
+  }
 
-	h2 {
-		display: flex;
-		align-items: baseline;
-		gap: 1rem;
-		font-family: var(--mono);
-		font-size: 0.75rem;
-		font-weight: 400;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--muted);
-		padding-bottom: 1rem;
-		border-bottom: 1px solid var(--line);
-	}
+  h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
 
-	h2 span {
-		color: var(--accent);
-	}
+  h2 span {
+    color: var(--accent);
+  }
 
-	.lista {
-		list-style: none;
-	}
+  .lista {
+    list-style: none;
+  }
 
-	.lista li {
-		display: grid;
-		grid-template-columns: 8rem 1fr;
-		gap: 1rem;
-		padding: 1.75rem 0;
-		border-bottom: 1px solid var(--line);
-	}
+  .lista li {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 1rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--line);
+  }
 
-	.lista li:last-child {
-		border-bottom: none;
-	}
+  .lista li:last-child {
+    border-bottom: none;
+  }
 
-	.meta {
-		font-family: var(--mono);
-		font-size: 0.75rem;
-		letter-spacing: 0.04em;
-		color: var(--muted);
-		padding-top: 0.3rem;
-	}
+  .meta {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    padding-top: 0.3rem;
+  }
 
-	h3 {
-		font-size: 1rem;
-		font-weight: 500;
-	}
+  h3 {
+    font-size: 1rem;
+    font-weight: 500;
+  }
 
-	h3 em {
-		font-style: normal;
-		font-weight: 400;
-		color: var(--muted);
-	}
+  h3 em {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--muted);
+  }
 
-	.lista li div > p {
-		margin-top: 0.35rem;
-		font-size: 0.9375rem;
-		color: var(--muted);
-		text-wrap: pretty;
-	}
+  .lista li div > p {
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
 
-	.lista li div > p.tech {
-		font-family: var(--mono);
-		font-size: 0.75rem;
-		letter-spacing: 0.04em;
-		color: var(--accent);
-		margin-top: 0.6rem;
-	}
+  .lista li div > p.tech {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin-top: 0.6rem;
+  }
 
-	@media (max-width: 540px) {
-		.lista li {
-			grid-template-columns: 1fr;
-			gap: 0.35rem;
-		}
-	}
+  @media (max-width: 540px) {
+    .lista li {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+  }
 
-	/* ---------- Contato ---------- */
+  /* ---------- Contato ---------- */
 
-	.convite {
-		font-family: var(--serif);
-		font-size: clamp(2rem, 6vw, 3rem);
-		line-height: 1.15;
-		margin-top: 2.5rem;
-	}
+  .convite {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.15;
+    margin-top: 2.5rem;
+  }
 
-	.convite em {
-		color: var(--accent);
-	}
+  .convite em {
+    color: var(--accent);
+  }
 
-	.email {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		margin-top: 1.5rem;
-		font-size: 1rem;
-		font-weight: 500;
-		padding-bottom: 2px;
-		background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px;
-		transition: color 0.25s ease;
-	}
+  .email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    padding-bottom: 2px;
+    background: linear-gradient(currentColor, currentColor) no-repeat 0 100% /
+      100% 1px;
+    transition: color 0.25s ease;
+  }
 
-	.email:hover {
-		color: var(--accent);
-	}
+  .email:hover {
+    color: var(--accent);
+  }
 
-	/* ---------- Footer ---------- */
+  /* ---------- Footer ---------- */
 
-	footer {
-		display: flex;
-		justify-content: space-between;
-		margin-top: clamp(5rem, 14vh, 8rem);
-		padding: 1.5rem 0 2.5rem;
-		border-top: 1px solid var(--line);
-		font-family: var(--mono);
-		font-size: 0.75rem;
-		color: var(--muted);
-	}
+  footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: clamp(5rem, 14vh, 8rem);
+    padding: 1.5rem 0 2.5rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
 
-	/* ---------- Entrada ---------- */
+  /* ---------- Entrada ---------- */
 
-	@media (prefers-reduced-motion: no-preference) {
-		.hero > * {
-			animation: rise 0.7s cubic-bezier(0.2, 0.6, 0.2, 1) both;
-		}
+  @media (prefers-reduced-motion: no-preference) {
+    .hero > * {
+      animation: rise 0.7s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+    }
 
-		.hero > *:nth-child(2) {
-			animation-delay: 0.08s;
-		}
+    .hero > *:nth-child(2) {
+      animation-delay: 0.08s;
+    }
 
-		.hero > *:nth-child(3) {
-			animation-delay: 0.16s;
-		}
+    .hero > *:nth-child(3) {
+      animation-delay: 0.16s;
+    }
 
-		.hero > *:nth-child(4) {
-			animation-delay: 0.24s;
-		}
+    .hero > *:nth-child(4) {
+      animation-delay: 0.24s;
+    }
 
-		@keyframes rise {
-			from {
-				opacity: 0;
-				transform: translateY(14px);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-	}
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
 </style>
