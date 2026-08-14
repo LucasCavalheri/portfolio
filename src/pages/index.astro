@@ -1,15 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import {
+  siAlpinedotjs,
   siAstro,
   siClaudecode,
   siCursor,
   siDrizzle,
   siExpress,
   siFastapi,
-  siFlask,
+  siFilament,
+  siInertia,
   siJavascript,
   siLaravel,
+  siLivewire,
   siMongodb,
   siMysql,
   siNextdotjs,
@@ -20,13 +23,12 @@ import {
   siPython,
   siReact,
   siRedis,
-  siRuby,
-  siRubyonrails,
   siShadcnui,
   siTailwindcss,
   siTanstack,
   siTypescript,
   siTypeorm,
+  siVuedotjs,
   siZod,
 } from "simple-icons";
 
@@ -36,7 +38,7 @@ const experiencias = [
     cargo: "Desenvolvedor Web Full Stack Pleno",
     empresa: "Tropical Hub",
     descricao:
-      "Integrações HubSpot e ERP, APIs e painéis administrativos. Também cuido dos code reviews e do fluxo completo de Git da squad.",
+      "Integrações HubSpot e ERP, APIs e painéis administrativos em Laravel. Também cuido dos code reviews e do fluxo completo de Git da squad.",
   },
   {
     periodo: "2023 — 2024",
@@ -50,36 +52,36 @@ const experiencias = [
     cargo: "Desenvolvedor Freelancer",
     empresa: "Projetos independentes",
     descricao:
-      "Produtos digitais com JavaScript, TypeScript, Ruby on Rails, React e Next.js para pessoas e negócios que querem sair do lugar.",
+      "Produtos digitais com PHP, Laravel, JavaScript, TypeScript, React e Next.js para pessoas e negócios que querem sair do lugar.",
   },
 ];
 
 const projetos = [
   {
     numero: "01",
+    tipo: "educação · 2026",
+    nome: "EduConnect",
+    descricao:
+      "API de uma plataforma escolar: turmas, avaliações, presença e atividades com IA. Pensada para o dia a dia de professores, alunos e da operação da escola.",
+    tecnologias: ["Laravel", "Sanctum", "Pest", "Reverb"],
+    classe: "project-primary",
+  },
+  {
+    numero: "02",
     tipo: "loja online · 2024",
     nome: "Meigana",
     descricao:
       "Uma loja completa, do catálogo ao checkout. A experiência foi pensada para deixar a compra leve e a operação fácil de administrar.",
     tecnologias: ["Ruby on Rails", "Hotwire", "Tailwind"],
-    classe: "project-primary",
-  },
-  {
-    numero: "02",
-    tipo: "comunidade · 2023",
-    nome: "Senhor Bom Jesus",
-    descricao:
-      "Site institucional para aproximar uma paróquia da sua comunidade.",
-    tecnologias: ["Rails", "Hotwire"],
     classe: "project-warm",
   },
   {
     numero: "03",
-    tipo: "api · laboratório",
-    nome: "Ruby Chat",
+    tipo: "desktop · 2026",
+    nome: "My VPNs",
     descricao:
-      "API REST em Ruby conectando múltiplos modelos de inteligência artificial.",
-    tecnologias: ["Ruby", "Sinatra"],
+      "App Linux para gerenciar conexões OpenFortiVPN. Vários túneis ao mesmo tempo, bandeja do sistema e reconexão automática — sem ficar de babá no terminal.",
+    tecnologias: ["TypeScript", "React", "Electron"],
     classe: "project-dark",
   },
 ];
@@ -92,10 +94,9 @@ const stack = [
     area: "01",
     nome: "Linguagens",
     itens: [
-      { nome: "Ruby", icon: siRuby },
+      { nome: "PHP", icon: siPhp },
       { nome: "JavaScript", icon: siJavascript },
       { nome: "TypeScript", icon: siTypescript },
-      { nome: "PHP", icon: siPhp },
       { nome: "Python", icon: siPython },
     ],
   },
@@ -103,12 +104,14 @@ const stack = [
     area: "02",
     nome: "Servidor",
     itens: [
-      { nome: "Rails", icon: siRubyonrails },
+      { nome: "Laravel", icon: siLaravel },
+      { nome: "Livewire", icon: siLivewire },
+      { nome: "Inertia", icon: siInertia },
+      { nome: "Filament", icon: siFilament },
+      { nome: "Pest", icon: { path: "" }, custom: true, mark: "P" },
       { nome: "Node.js", icon: siNodedotjs },
       { nome: "Express.js", icon: siExpress },
       { nome: "FastAPI", icon: siFastapi },
-      { nome: "Flask", icon: siFlask },
-      { nome: "Laravel", icon: siLaravel },
     ],
   },
   {
@@ -120,14 +123,16 @@ const stack = [
       { nome: "TypeORM", icon: siTypeorm },
       { nome: "PostgreSQL", icon: siPostgresql },
       { nome: "MySQL", icon: siMysql },
-      { nome: "MongoDB", icon: siMongodb },
       { nome: "Redis", icon: siRedis },
+      { nome: "MongoDB", icon: siMongodb },
     ],
   },
   {
     area: "04",
     nome: "Interface",
     itens: [
+      { nome: "Vue.js", icon: siVuedotjs },
+      { nome: "Alpine.js", icon: siAlpinedotjs },
       { nome: "React.js", icon: siReact },
       { nome: "Next.js", icon: siNextdotjs },
       { nome: "Astro.js", icon: siAstro },
@@ -163,7 +168,7 @@ const contributionCells = Array.from({ length: 364 }, (_, index) => {
 
 <Layout
   title="Lucas Cavalheri — Desenvolvedor Web Full Stack"
-  description="Lucas Cavalheri é desenvolvedor web full stack. Cria produtos digitais com clareza, cuidado e código que dá gosto de manter."
+  description="Lucas Cavalheri é desenvolvedor web full stack. Cria produtos digitais com PHP, Laravel e código que dá gosto de manter."
 >
   <div class="site-shell">
     <header class="topbar">
@@ -214,7 +219,7 @@ const contributionCells = Array.from({ length: 364 }, (_, index) => {
             simples<span class="hero-dot">.</span>
           </h1>
           <p class="hero-description">
-            Há mais de quatro anos construo aplicações web robustas e de fácil manutenção, de APIs e integrações a painéis administrativos e deploy em produção. Escrevo código pensando em quem vai mantê-lo amanhã e reviso o código dos outros com o mesmo cuidado.
+            Há mais de quatro anos construo aplicações web robustas e de fácil manutenção, de APIs e integrações a painéis administrativos e deploy em produção. Hoje meu dia a dia é PHP, Laravel e o ecossistema em volta — sempre pensando em quem vai manter o código amanhã.
           </p>
           <div class="hero-actions">
             <a class="button button-dark" href="#contact">
@@ -263,7 +268,7 @@ const contributionCells = Array.from({ length: 364 }, (_, index) => {
             <div><span>modo</span><strong><i></i> remoto somente</strong></div>
           </div>
           <div class="profile-tools" aria-label="Principais ferramentas">
-            <span>Ruby</span><span>TypeScript</span><span>React</span>
+            <span>PHP</span><span>Laravel</span><span>TypeScript</span>
           </div>
           <div class="profile-footer">
             <span>aberto a bons desafios</span>
@@ -329,9 +334,9 @@ const contributionCells = Array.from({ length: 364 }, (_, index) => {
               <article class={`project-card ${projeto.classe}`}>
                 <div class="project-card-top"><span>{projeto.numero}</span><span>{projeto.tipo}</span></div>
                 <div class="project-art" aria-hidden="true">
-                  {projeto.numero === "01" && <><span class="art-window"><i></i><i></i><i></i></span><span class="art-line line-one"></span><span class="art-line line-two"></span><span class="art-orb"></span></>}
-                  {projeto.numero === "02" && <><span class="art-sun"></span><span class="art-arch"></span><span class="art-copy">comunidade<br /><em>em movimento</em></span></>}
-                  {projeto.numero === "03" && <><span class="art-terminal"><b>ruby_chat</b><br /><i>&gt; hello, human_</i><br /><small>response: 200</small></span><span class="art-pixel"></span></>}
+                  {projeto.nome === "EduConnect" && <><span class="art-copy">escola<br /><em>conectada</em></span><span class="art-line line-one"></span><span class="art-line line-two"></span><span class="art-orb"></span></>}
+                  {projeto.nome === "Meigana" && <><span class="art-window"><i></i><i></i><i></i></span><span class="art-line line-one"></span><span class="art-line line-two"></span><span class="art-orb"></span></>}
+                  {projeto.nome === "My VPNs" && <><span class="art-terminal"><b>my_vpns</b><br /><i>&gt; tunnel up_</i><br /><small>status: connected</small></span><span class="art-pixel"></span></>}
                 </div>
                 <div class="project-content">
                   <h3>{projeto.nome}</h3>
@@ -809,6 +814,7 @@ const contributionCells = Array.from({ length: 364 }, (_, index) => {
   .project-card-top span:last-child { opacity: 0.58; }
   .project-art { position: relative; flex: 1; min-height: 13rem; margin: 2rem -0.4rem 2.2rem; overflow: hidden; border: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
   .project-primary .project-art { min-height: 34rem; background: #e5d4c2; }
+  .project-primary .art-copy { bottom: 12%; left: 12%; font-size: clamp(2.8rem, 6vw, 5.5rem); }
   .project-warm .project-art { background: #cdd9ca; }
   .project-dark .project-art { background: #171719; }
   :root[data-theme="dark"] .project-primary .project-art { background: #524135; }
@@ -826,6 +832,8 @@ const contributionCells = Array.from({ length: 364 }, (_, index) => {
   .art-arch { position: absolute; bottom: -15%; left: 14%; width: 72%; height: 72%; border: 1px solid rgba(30, 36, 31, 0.48); border-bottom: 0; border-radius: 14rem 14rem 0 0; }
   .art-copy { position: absolute; bottom: 15%; left: 17%; font-family: var(--serif); font-size: clamp(1.7rem, 3.5vw, 3.2rem); line-height: 0.82; }
   .art-copy em { color: #b36845; font-size: 0.8em; }
+  .project-dark .art-orb { border-color: #ff7254; background: #c77e5d; box-shadow: 0 0 0 13px rgba(255, 114, 84, 0.18); }
+  .project-dark .art-line { background: rgba(244, 241, 235, 0.35); }
   .art-terminal { position: absolute; top: 20%; left: 13%; padding: 1.2rem; color: #d4d1c8; font-family: var(--mono); font-size: clamp(0.72rem, 1.4vw, 1rem); line-height: 1.8; }
   .art-terminal b { color: #ff7254; font-weight: 400; }
   .art-terminal i { color: #dca25e; font-style: normal; }
