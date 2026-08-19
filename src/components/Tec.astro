@@ -32,7 +32,9 @@ const { item, label = false } = Astro.props;
     color: var(--muted-foreground);
     font-size: 0.8125rem;
     white-space: nowrap;
-    transition: color 0.15s;
+    /* transform: o magnetismo do ponteiro escreve direto no style */
+    transition: color 0.15s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
   }
 
   .tec:hover {

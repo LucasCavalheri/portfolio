@@ -1,0 +1,36 @@
+---
+const anoAtual = new Date().getFullYear();
+const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
+---
+
+<footer class="container site-footer" data-anim>
+  <div>
+    <p>Atualizado · {atualizadoEm}</p>
+    <p>© {anoAtual} <span>Lucas Cavalheri</span></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+  }
+
+  .site-footer > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+    border-top: 1px solid var(--border);
+  }
+
+  .site-footer p {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+</style>

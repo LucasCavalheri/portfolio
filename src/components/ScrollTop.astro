@@ -1,0 +1,60 @@
+---
+---
+
+<button id="scroll-top" type="button" aria-label="Voltar ao topo" data-visible="false" data-direction="down">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
+</button>
+
+<style>
+  #scroll-top {
+    position: fixed;
+    z-index: 50;
+    right: 1rem;
+    bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: var(--muted);
+    color: var(--foreground);
+    transition: background-color 0.3s, opacity 0.3s;
+  }
+
+  #scroll-top svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+  }
+
+  #scroll-top[data-visible="false"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #scroll-top[data-direction="down"] {
+    opacity: 0.3;
+  }
+
+  #scroll-top[data-direction="down"]:hover,
+  #scroll-top[data-direction="up"] {
+    opacity: 1;
+  }
+
+  @media (min-width: 40rem) {
+    #scroll-top {
+      bottom: 1rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    #scroll-top {
+      right: 2rem;
+      bottom: 2rem;
+    }
+  }
+</style>
