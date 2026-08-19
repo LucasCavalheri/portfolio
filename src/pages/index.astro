@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import Tec from "../components/Tec.astro";
 import { siGithub } from "simple-icons";
 import { tec } from "../data/tec";
+import { contatos } from "../data/contato";
+import { legivel, FUNDO_CLARO, FUNDO_ESCURO } from "../data/cor";
 
 const projetos = [
   {
@@ -75,14 +77,8 @@ const stack = [
   { nome: "IA", itens: [tec.cursor, tec.codex, tec.claude] },
 ];
 
-const contatos = [
-  { rotulo: "GitHub", valor: "@LucasCavalheri", url: "https://github.com/LucasCavalheri" },
-  { rotulo: "E-mail", valor: "lucas.dev.carvalho@gmail.com", url: "mailto:lucas.dev.carvalho@gmail.com" },
-  { rotulo: "Currículo", valor: "PDF", url: "/Curriculo-LucasCavalheri.pdf" },
-  { rotulo: "Local", valor: "Mogi Mirim, SP · remoto", url: "" },
-];
-
-const emailContato = "lucas.dev.carvalho@gmail.com";
+// o botão de copiar usa o mesmo endereço da lista de contatos
+const emailContato = contatos.find((c) => c.id === "email")!.valor;
 const usuarioGithub = "LucasCavalheri";
 
 const anoAtual = new Date().getFullYear();
@@ -308,23 +304,38 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
       </div>
       <div class="contact-grid">
         {
-          contatos.map((contato, i) =>
-            contato.url ? (
+          contatos.map((contato, i) => {
+            const cores = `--marca-escura: ${legivel(contato.hex, FUNDO_ESCURO)}; --marca-clara: ${legivel(contato.hex, FUNDO_CLARO)}`;
+            const conteudo = (
+              <>
+                <svg
+                  class:list={["contato-icone", contato.traco && "contato-icone-traco"]}
+                  aria-hidden="true"
+                >
+                  <use href={`#c-${contato.id}`} />
+                </svg>
+                <span>{contato.valor}</span>
+              </>
+            );
+
+            return contato.url ? (
               <a
-                class="link link-sm"
-                data-anim
-                style={`--stagger: ${i * 0.06}s`}
+                class="link link-sm contato"
                 href={contato.url}
                 target={contato.url.startsWith("http") ? "_blank" : undefined}
                 rel="noopener"
+                aria-label={`${contato.rotulo}: ${contato.valor}`}
+                data-anim
+                style={`--stagger: ${i * 0.05}s; ${cores}`}
               >
-                <span>{contato.valor}</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+                {conteudo}
               </a>
             ) : (
-              <span class="contact-plain" data-anim style={`--stagger: ${i * 0.06}s`}>{contato.valor}</span>
-            )
-          )
+              <span class="contato contato-plain" data-anim style={`--stagger: ${i * 0.05}s`}>
+                {conteudo}
+              </span>
+            );
+          })
         }
       </div>
     </section>
@@ -704,6 +715,38 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
       opacity: 0;
       transform: translateY(0.6em);
     }
+  }
+
+  /* Contato: ícone da rede antes do texto, colorido no hover */
+  .contato {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+  }
+
+  .contato-icone {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    fill: currentColor;
+    transition: color 0.25s ease;
+  }
+
+  /* Envelope, documento e alfinete são traçados, não preenchidos */
+  .contato-icone-traco {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  :root[data-theme="dark"] .contato:hover .contato-icone {
+    color: var(--marca-escura);
+  }
+
+  :root[data-theme="light"] .contato:hover .contato-icone {
+    color: var(--marca-clara);
   }
 </style>
 

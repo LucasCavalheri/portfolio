@@ -2,6 +2,7 @@
 // Cada ícone de tecnologia entra uma única vez no documento; os usos viram
 // <use href="#i-…">. Antes o mesmo path aparecia repetido a cada ocorrência.
 import { tec } from "../data/tec";
+import { contatos } from "../data/contato";
 
 const itens = Object.values(tec);
 ---
@@ -17,6 +18,13 @@ const itens = Object.values(tec);
         <symbol id={`i-${item.id}`} viewBox={item.logo.viewBox} set:html={item.logo.body} />
       )
     )
+  }
+  {
+    contatos.map((contato) => (
+      <symbol id={`c-${contato.id}`} viewBox="0 0 24 24">
+        <path d={contato.icon.path} />
+      </symbol>
+    ))
   }
 </svg>
 
