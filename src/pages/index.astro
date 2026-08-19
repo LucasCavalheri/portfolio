@@ -27,18 +27,17 @@ import {
   siTailwindcss,
   siTypescript,
   siVercel,
-  siVitest,
   siVuedotjs,
 } from "simple-icons";
 import { awsIcon, openaiIcon, playwrightIcon } from "../data/icons";
+import { rspecLogo, vitestLogo } from "../data/logos";
 
 const tec = {
   ruby: { nome: "Ruby", icon: siRuby },
   rails: { nome: "Rails", icon: siRubyonrails },
   hotwire: { nome: "Hotwire", icon: siHotwire },
-  rspec: { nome: "RSpec", img: "/rspec.svg" },
-  minitest: { nome: "Minitest", mark: "M" },
-  vitest: { nome: "Vitest", icon: siVitest },
+  rspec: { nome: "RSpec", logo: rspecLogo },
+  vitest: { nome: "Vitest", logo: vitestLogo },
   playwright: { nome: "Playwright", icon: playwrightIcon },
   scss: { nome: "SCSS", icon: siSass },
   tailwind: { nome: "Tailwind", icon: siTailwindcss },
@@ -121,7 +120,7 @@ const stack = [
   { nome: "Linguagens", itens: [tec.ruby, tec.javascript, tec.typescript] },
   { nome: "Back-End", itens: [tec.rails, tec.node] },
   { nome: "Front-End", itens: [tec.react, tec.next, tec.vue, tec.scss, tec.tailwind] },
-  { nome: "Testes", itens: [tec.rspec, tec.minitest, tec.vitest, tec.playwright] },
+  { nome: "Testes", itens: [tec.rspec, tec.vitest, tec.playwright] },
   { nome: "Dados", itens: [tec.postgres, tec.mysql, tec.sqlite, tec.redis, tec.mongo] },
   { nome: "Cloud", itens: [tec.aws, tec.vercel, tec.cloudflare, tec.hostinger] },
   { nome: "Ferramentas", itens: [tec.git, tec.github, tec.docker] },
