@@ -86,7 +86,9 @@ const dadosEstruturados = {
     <div class="tec-tip" id="tec-tip" role="tooltip" aria-hidden="true" data-visible="false">
       <strong data-titulo></strong>
       <span data-texto></span>
-      <span class="tec-tip-acao">abrir site ↗</span>
+      <a class="tec-tip-acao" data-acao href="#" target="_blank" rel="noopener" tabindex="-1">
+        abrir site ↗
+      </a>
     </div>
     <script>
       import "../scripts/tema";
@@ -634,6 +636,24 @@ const dadosEstruturados = {
 
   .tec-tip[data-visible="true"] {
     opacity: 1;
+    /* alcançável com o ponteiro: o "abrir site" é um link de verdade */
+    pointer-events: auto;
+  }
+
+  /* Estende a área sensível sobre o vão até o ícone, senão o hover se
+     perde no caminho e o tooltip fecha antes de ser alcançado */
+  .tec-tip::after {
+    position: absolute;
+    right: 0;
+    bottom: -0.75rem;
+    left: 0;
+    height: 0.75rem;
+    content: "";
+  }
+
+  .tec-tip[data-lado="abaixo"]::after {
+    top: -0.75rem;
+    bottom: auto;
   }
 
   .tec-tip[data-visible="true"][data-lado="acima"] {
@@ -658,10 +678,19 @@ const dadosEstruturados = {
   }
 
   .tec-tip-acao {
+    width: fit-content;
     margin-top: 0.125rem;
     color: var(--muted-foreground);
     font-size: 0.6875rem;
     opacity: 0.7;
+    transition: color 0.15s, opacity 0.15s;
+  }
+
+  .tec-tip-acao:hover {
+    color: var(--primary);
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   ::view-transition-old(root),
