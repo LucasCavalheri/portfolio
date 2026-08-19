@@ -1,10 +1,6 @@
 ---
 interface Props {
-  item: {
-    nome: string;
-    icon?: { path: string };
-    logo?: { viewBox: string; body: string };
-  };
+  item: { id: string; nome: string };
   label?: boolean;
 }
 
@@ -12,15 +8,7 @@ const { item, label = false } = Astro.props;
 ---
 
 <span class="tec" title={item.nome}>
-  {
-    item.icon ? (
-      <svg class="tec-icon" viewBox="0 0 24 24" aria-hidden="true">
-        <path d={item.icon.path} />
-      </svg>
-    ) : (
-      <svg class="tec-icon" viewBox={item.logo?.viewBox} aria-hidden="true" set:html={item.logo?.body} />
-    )
-  }
+  <svg class="tec-icon" aria-hidden="true"><use href={`#i-${item.id}`} /></svg>
   {label ? <span>{item.nome}</span> : <span class="sr-only">{item.nome}</span>}
 </span>
 

@@ -7,8 +7,37 @@ interface Props {
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ScrollTop from "../components/ScrollTop.astro";
+import SpriteTec from "../components/SpriteTec.astro";
+// Fontes servidas pelo próprio domínio: uma origem a menos no caminho crítico
+import "@fontsource-variable/geist";
+import "@fontsource/geist-mono/400.css";
+import "@fontsource/instrument-serif/400.css";
+import "@fontsource/instrument-serif/400-italic.css";
 
 const { title, description } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imagemSocial = new URL("/og.png", Astro.site);
+
+// Ajuda quem procura pelo nome depois de uma conversa
+const dadosEstruturados = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Lucas Cavalheri",
+  jobTitle: "Desenvolvedor Web Full Stack Pleno",
+  url: Astro.site?.href,
+  image: imagemSocial.href,
+  email: "mailto:lucas.dev.carvalho@gmail.com",
+  knowsAbout: ["Ruby", "Ruby on Rails", "Hotwire", "PostgreSQL", "TypeScript", "React"],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Mogi Mirim",
+    addressRegion: "SP",
+    addressCountry: "BR",
+  },
+  worksFor: { "@type": "Organization", name: "Tropical Hub", url: "https://tropicalhub.co" },
+  sameAs: ["https://github.com/LucasCavalheri"],
+};
 ---
 
 <!doctype html>
@@ -21,16 +50,18 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://github.com/LucasCavalheri.png?size=512" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
-      rel="stylesheet"
-    />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagemSocial} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagemSocial} />
+    <script type="application/ld+json" set:html={JSON.stringify(dadosEstruturados)} is:inline />
     <script is:inline>
       document.documentElement.dataset.js = "on";
       try {
@@ -42,6 +73,7 @@ const { title, description } = Astro.props;
     </script>
   </head>
   <body>
+    <SpriteTec />
     <div class="top-fade" aria-hidden="true"></div>
     <Header />
     <slot />
@@ -93,7 +125,7 @@ const { title, description } = Astro.props;
   }
 
   :root {
-    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
     --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     --heading: "Instrument Serif", Georgia, serif;
     --radius: 0.625rem;

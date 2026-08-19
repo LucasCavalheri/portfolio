@@ -1,0 +1,31 @@
+---
+// Cada ícone de tecnologia entra uma única vez no documento; os usos viram
+// <use href="#i-…">. Antes o mesmo path aparecia repetido a cada ocorrência.
+import { tec } from "../data/tec";
+
+const itens = Object.values(tec);
+---
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  {
+    itens.map((item) =>
+      "icon" in item && item.icon ? (
+        <symbol id={`i-${item.id}`} viewBox="0 0 24 24">
+          <path d={item.icon.path} />
+        </symbol>
+      ) : (
+        <symbol id={`i-${item.id}`} viewBox={item.logo.viewBox} set:html={item.logo.body} />
+      )
+    )
+  }
+</svg>
+
+<style>
+  /* display:none quebraria o <use> em alguns navegadores */
+  .sprite {
+    position: absolute;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+  }
+</style>

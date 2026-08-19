@@ -67,12 +67,12 @@ const experiencias = [
   },
 ];
 
-// Home fica com o essencial; o resto da stack vai para /usos.
+// Home fica com o essencial; /usos tem a lista completa.
 const stack = [
-  { nome: "Ruby & Rails", itens: [tec.ruby, tec.rails, tec.hotwire, tec.rspec] },
-  { nome: "Dados", itens: [tec.postgres, tec.redis, tec.sqlite] },
-  { nome: "Front-end", itens: [tec.typescript, tec.react, tec.tailwind] },
-  { nome: "Infra & fluxo", itens: [tec.docker, tec.aws, tec.git, tec.github] },
+  { nome: "Linguagens", itens: [tec.ruby, tec.javascript, tec.typescript] },
+  { nome: "Back-end", itens: [tec.rails, tec.hotwire, tec.node] },
+  { nome: "Front-end", itens: [tec.react, tec.next, tec.scss, tec.tailwind] },
+  { nome: "IA", itens: [tec.cursor, tec.codex, tec.claude] },
 ];
 
 const contatos = [
@@ -82,10 +82,8 @@ const contatos = [
   { rotulo: "Local", valor: "Mogi Mirim, SP · remoto", url: "" },
 ];
 
-const disponivel = true;
 const emailContato = "lucas.dev.carvalho@gmail.com";
 const usuarioGithub = "LucasCavalheri";
-const celulasEsqueleto = Array.from({ length: 371 }, (_, i) => i);
 
 const anoAtual = new Date().getFullYear();
 const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
@@ -115,14 +113,6 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
         <div>
           <h1><span>Lucas</span> <span>Cavalheri</span></h1>
           <p class="intro-role">Desenvolvedor Web Full Stack Pleno</p>
-          {
-            disponivel && (
-              <p class="disponivel">
-                <span class="dot dot-live" aria-hidden="true">●</span>
-                Aberto a vagas Rails remotas
-              </p>
-            )
-          }
         </div>
       </div>
 
@@ -265,7 +255,6 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
             role="img"
             aria-label="Contribuições no GitHub no último ano"
           >
-            {celulasEsqueleto.map(() => <span class="cell" data-level="0" />)}
           </div>
         </div>
         <div class="activity-legend">
@@ -422,31 +411,12 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     line-height: 1.375;
   }
 
-  /* Disponibilidade: reusa o ponto pulsante dos títulos de seção */
-  .disponivel {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    margin-top: 0.5rem;
-    animation: enter 0.6s ease both;
-    animation-delay: 0.4s;
-    color: var(--muted-foreground);
-    font-size: 0.8125rem;
-  }
-
-  .dot-live {
-    animation: dot-beat 2.4s ease-in-out infinite;
-    color: var(--primary);
-    font-size: 0.625rem;
-    line-height: 1;
-  }
-
   .intro-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     animation: enter 0.6s ease both;
-    animation-delay: 0.6s;
+    animation-delay: 0.55s;
   }
 
   /* Gráfico de contribuições */
@@ -481,6 +451,8 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
   }
 
   .activity-grid {
+    /* 7 linhas de 9px + 6 vãos de 2px: reserva a altura antes das células */
+    min-height: 75px;
     --cell: 9px;
     display: grid;
     width: max-content;

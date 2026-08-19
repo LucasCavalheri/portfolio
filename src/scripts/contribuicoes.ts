@@ -5,7 +5,30 @@ const DIAS_VISIVEIS = 371;
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
+// A API é de terceiros: guardar a última resposta evita um gráfico vazio
+// quando ela cai, e desenha na hora em visitas seguintes.
+const CACHE = "lucas-contribuicoes";
+const VALIDADE = 12 * 60 * 60 * 1000;
+
 type Dia = { date: string; count: number; level: number };
+type Guardado = { em: number; dias: Dia[] };
+
+const lerCache = (): Guardado | null => {
+  try {
+    const bruto = localStorage.getItem(CACHE);
+    if (!bruto) return null;
+    const dados = JSON.parse(bruto) as Guardado;
+    return Array.isArray(dados.dias) && dados.dias.length ? dados : null;
+  } catch {
+    return null;
+  }
+};
+
+const gravarCache = (dias: Dia[]) => {
+  try {
+    localStorage.setItem(CACHE, JSON.stringify({ em: Date.now(), dias }));
+  } catch {}
+};
 
 const grid = document.querySelector<HTMLDivElement>("#contrib-grid");
 const total = document.querySelector<HTMLElement>("#contrib-total");
@@ -110,22 +133,35 @@ if (grid) {
     if (dica) dica.dataset.visible = "false";
   });
 
-  fetch(API)
-    .then((resposta) => {
-      if (!resposta.ok) throw new Error("contribuições indisponíveis");
-      return resposta.json();
-    })
-    .then((dados) => {
-      const dias: Dia[] = Array.isArray(dados.contributions)
-        ? dados.contributions.slice(-DIAS_VISIVEIS)
-        : [];
-      if (!dias.length) throw new Error("sem dados");
-      const soma = dias.reduce((acc, dia) => acc + (Number(dia.count) || 0), 0);
-      if (total) total.textContent = soma.toLocaleString("pt-BR");
-      desenhar(dias);
-    })
-    .catch(() => {
-      if (total) total.textContent = "—";
-      if (situacao) situacao.textContent = "ver no GitHub";
-    });
+  const mostrar = (dias: Dia[]) => {
+    const soma = dias.reduce((acc, dia) => acc + (Number(dia.count) || 0), 0);
+    if (total) total.textContent = soma.toLocaleString("pt-BR");
+    desenhar(dias);
+  };
+
+  const guardado = lerCache();
+  if (guardado) mostrar(guardado.dias);
+
+  // Cache fresco: nem chega a pedir de novo
+  if (!guardado || Date.now() - guardado.em > VALIDADE) {
+    fetch(API)
+      .then((resposta) => {
+        if (!resposta.ok) throw new Error("contribuições indisponíveis");
+        return resposta.json();
+      })
+      .then((dados) => {
+        const dias: Dia[] = Array.isArray(dados.contributions)
+          ? dados.contributions.slice(-DIAS_VISIVEIS)
+          : [];
+        if (!dias.length) throw new Error("sem dados");
+        gravarCache(dias);
+        mostrar(dias);
+      })
+      .catch(() => {
+        // Com cache velho na mão, ele fica; sem nada, avisa discretamente
+        if (guardado) return;
+        if (total) total.textContent = "—";
+        if (situacao) situacao.textContent = "ver no GitHub";
+      });
+  }
 }
