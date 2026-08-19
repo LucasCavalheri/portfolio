@@ -1,0 +1,77 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Tec from "../components/Tec.astro";
+import { tec } from "../data/tec";
+
+const grupos = [
+  { nome: "Linguagens", itens: [tec.ruby, tec.javascript, tec.typescript] },
+  { nome: "Back-end", itens: [tec.rails, tec.hotwire, tec.node] },
+  {
+    nome: "Front-end",
+    itens: [tec.react, tec.next, tec.vue, tec.astro, tec.scss, tec.tailwind],
+  },
+  { nome: "Testes", itens: [tec.rspec, tec.vitest, tec.playwright] },
+  { nome: "Dados", itens: [tec.postgres, tec.mysql, tec.sqlite, tec.redis, tec.mongo] },
+  { nome: "Cloud", itens: [tec.aws, tec.vercel, tec.cloudflare, tec.hostinger] },
+  { nome: "Desktop", itens: [tec.electron] },
+  { nome: "Ferramentas", itens: [tec.git, tec.github, tec.docker] },
+  { nome: "IA", itens: [tec.cursor, tec.codex, tec.claude] },
+];
+---
+
+<Layout
+  title="Usos — Lucas Cavalheri"
+  description="Linguagens, frameworks e ferramentas que Lucas Cavalheri usa no dia a dia."
+>
+  <main class="container">
+    <section class="section">
+      <div class="section-head" data-anim>
+        <h1 class="section-title">usos<span class="dot">.</span></h1>
+      </div>
+      <p class="pagina-resumo" data-anim>
+        Tudo que passa pelo meu dia a dia, e não só o que está em destaque na home.
+      </p>
+      <div class="rows">
+        {
+          grupos.map((grupo, i) => (
+            <div class="row row-inline" data-anim style={`--stagger: ${i * 0.05}s`}>
+              <h2>{grupo.nome}</h2>
+              <div class="tec-row tec-row-end">
+                {grupo.itens.map((item) => (
+                  <Tec item={item} label />
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <a class="link link-sm" href="/#stack" data-anim>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 7 7 17M7 17h8M7 17V9" /></svg>
+        <span>voltar para a home</span>
+      </a>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    padding-block: 3.5rem;
+  }
+
+  .pagina-resumo {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+  }
+
+  /* Nas linhas, o nome da categoria tem o mesmo peso do h3 da home */
+  .row-inline h2 {
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .link-sm {
+    align-self: flex-start;
+  }
+</style>

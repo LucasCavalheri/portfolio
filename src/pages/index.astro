@@ -1,70 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Tec from "../components/Tec.astro";
-import {
-  siAstro,
-  siClaudecode,
-  siCursor,
-  siCloudflare,
-  siDocker,
-  siElectron,
-  siGit,
-  siGithub,
-  siHotwire,
-  siJavascript,
-  siMongodb,
-  siMysql,
-  siNextdotjs,
-  siNodedotjs,
-  siHostinger,
-  siPostgresql,
-  siReact,
-  siRedis,
-  siRuby,
-  siRubyonrails,
-  siSass,
-  siSqlite,
-  siTailwindcss,
-  siTypescript,
-  siVercel,
-  siVuedotjs,
-} from "simple-icons";
-import { awsIcon, openaiIcon, playwrightIcon } from "../data/icons";
-import { rspecLogo, vitestLogo } from "../data/logos";
-
-const tec = {
-  ruby: { nome: "Ruby", icon: siRuby },
-  rails: { nome: "Rails", icon: siRubyonrails },
-  hotwire: { nome: "Hotwire", icon: siHotwire },
-  rspec: { nome: "RSpec", logo: rspecLogo },
-  vitest: { nome: "Vitest", logo: vitestLogo },
-  playwright: { nome: "Playwright", icon: playwrightIcon },
-  scss: { nome: "SCSS", icon: siSass },
-  tailwind: { nome: "Tailwind", icon: siTailwindcss },
-  javascript: { nome: "JavaScript", icon: siJavascript },
-  typescript: { nome: "TypeScript", icon: siTypescript },
-  node: { nome: "Node.js", icon: siNodedotjs },
-  postgres: { nome: "PostgreSQL", icon: siPostgresql },
-  mysql: { nome: "MySQL", icon: siMysql },
-  sqlite: { nome: "SQLite", icon: siSqlite },
-  redis: { nome: "Redis", icon: siRedis },
-  mongo: { nome: "MongoDB", icon: siMongodb },
-  react: { nome: "React", icon: siReact },
-  next: { nome: "Next.js", icon: siNextdotjs },
-  vue: { nome: "Vue", icon: siVuedotjs },
-  astro: { nome: "Astro", icon: siAstro },
-  electron: { nome: "Electron", icon: siElectron },
-  aws: { nome: "AWS", icon: awsIcon },
-  vercel: { nome: "Vercel", icon: siVercel },
-  cloudflare: { nome: "Cloudflare", icon: siCloudflare },
-  hostinger: { nome: "Hostinger", icon: siHostinger },
-  git: { nome: "Git", icon: siGit },
-  github: { nome: "GitHub", icon: siGithub },
-  docker: { nome: "Docker", icon: siDocker },
-  cursor: { nome: "Cursor", icon: siCursor },
-  claude: { nome: "Claude Code", icon: siClaudecode },
-  codex: { nome: "Codex", icon: openaiIcon },
-};
+import { siGithub } from "simple-icons";
+import { tec } from "../data/tec";
 
 const projetos = [
   {
@@ -360,6 +298,10 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
           ))
         }
       </div>
+      <a class="link link-xs usos-link" href="/usos" data-anim>
+        <span>o resto da stack em /usos</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+      </a>
     </section>
 
     <section class="section" id="contato">
@@ -647,6 +589,10 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
 
   .activity-tip[data-visible="true"] {
     opacity: 1;
+  }
+
+  .usos-link {
+    align-self: flex-start;
   }
 
   .brand-icon {
