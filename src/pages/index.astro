@@ -69,26 +69,35 @@ const tec = {
 const projetos = [
   {
     nome: "EduConnect",
+    tipo: "Produto próprio",
+    ano: "2026",
     descricao:
       "Plataforma escolar completa: turmas, avaliações, presença e atividades com IA.",
     tec: [tec.ruby, tec.rails, tec.postgres, tec.scss],
     site: "",
     repo: "",
+    codigoPrivado: true,
   },
   {
     nome: "Meigana",
+    tipo: "Cliente",
+    ano: "2024",
     descricao: "Loja online completa, do catálogo ao checkout.",
     tec: [tec.ruby, tec.rails, tec.postgres, tec.tailwind],
     site: "",
     repo: "",
+    codigoPrivado: true,
   },
   {
     nome: "My VPNs",
+    tipo: "Ferramenta pessoal",
+    ano: "2026",
     descricao:
       "App Linux para gerenciar múltiplas conexões OpenFortiVPN, com bandeja e reconexão automática.",
     tec: [tec.typescript, tec.react, tec.electron],
     site: "",
-    repo: "",
+    repo: "https://github.com/LucasCavalheri/my-vpns",
+    codigoPrivado: false,
   },
 ];
 
@@ -98,6 +107,8 @@ const experiencias = [
     site: "tropicalhub.co",
     url: "https://tropicalhub.co",
     periodo: "2024 — hoje",
+    evidencia:
+      "Integrações com HubSpot e ERP, APIs e painéis internos. Conduzo os code reviews e o fluxo de Git da squad.",
     tec: [tec.ruby, tec.rails, tec.hotwire, tec.postgres, tec.redis],
   },
   {
@@ -105,6 +116,7 @@ const experiencias = [
     site: "polgo.com.br",
     url: "https://www.polgo.com.br",
     periodo: "2023 — 2024",
+    evidencia: "Aplicações web e mobile, do levantamento de requisitos ao deploy em produção.",
     tec: [tec.ruby, tec.rails, tec.javascript, tec.react, tec.postgres],
   },
   {
@@ -112,19 +124,17 @@ const experiencias = [
     site: "github.com/LucasCavalheri",
     url: "https://github.com/LucasCavalheri",
     periodo: "2022 — hoje",
+    evidencia: "Produtos sob medida para pessoas e negócios, do primeiro rascunho ao que fica no ar.",
     tec: [tec.rails, tec.typescript, tec.react, tec.next, tec.astro],
   },
 ];
 
+// Home fica com o essencial; o resto da stack vai para /usos.
 const stack = [
-  { nome: "Linguagens", itens: [tec.ruby, tec.javascript, tec.typescript] },
-  { nome: "Back-End", itens: [tec.rails, tec.node] },
-  { nome: "Front-End", itens: [tec.react, tec.next, tec.vue, tec.scss, tec.tailwind] },
-  { nome: "Testes", itens: [tec.rspec, tec.vitest, tec.playwright] },
-  { nome: "Dados", itens: [tec.postgres, tec.mysql, tec.sqlite, tec.redis, tec.mongo] },
-  { nome: "Cloud", itens: [tec.aws, tec.vercel, tec.cloudflare, tec.hostinger] },
-  { nome: "Ferramentas", itens: [tec.git, tec.github, tec.docker] },
-  { nome: "IA", itens: [tec.cursor, tec.codex, tec.claude] },
+  { nome: "Ruby & Rails", itens: [tec.ruby, tec.rails, tec.hotwire, tec.rspec] },
+  { nome: "Dados", itens: [tec.postgres, tec.redis, tec.sqlite] },
+  { nome: "Front-end", itens: [tec.typescript, tec.react, tec.tailwind] },
+  { nome: "Infra & fluxo", itens: [tec.docker, tec.aws, tec.git, tec.github] },
 ];
 
 const contatos = [
@@ -134,6 +144,8 @@ const contatos = [
   { rotulo: "Local", valor: "Mogi Mirim, SP · remoto", url: "" },
 ];
 
+const disponivel = true;
+const emailContato = "lucas.dev.carvalho@gmail.com";
 const usuarioGithub = "LucasCavalheri";
 const celulasEsqueleto = Array.from({ length: 371 }, (_, i) => i);
 
@@ -153,8 +165,8 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     <nav id="nav" aria-label="Navegação principal">
       <a class="nav-link" href="#inicio">início</a>
       <a class="nav-link" href="#projetos">projetos</a>
-      <a class="nav-link" href="#atividade">atividade</a>
       <a class="nav-link" href="#experiencia">experiência</a>
+      <a class="nav-link nav-opcional" href="#atividade">atividade</a>
       <a class="nav-link" href="#contato">contato</a>
       <span class="nav-line" aria-hidden="true"></span>
     </nav>
@@ -185,6 +197,14 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
         <div>
           <h1><span>Lucas</span> <span>Cavalheri</span></h1>
           <p class="intro-role">Desenvolvedor Web Full Stack Pleno</p>
+          {
+            disponivel && (
+              <p class="disponivel">
+                <span class="dot dot-live" aria-hidden="true">●</span>
+                Aberto a vagas Rails remotas
+              </p>
+            )
+          }
         </div>
       </div>
 
@@ -213,6 +233,13 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
           </svg>
           Enviar e-mail
         </a>
+        <button class="button" id="copiar-email" type="button" data-email={emailContato} aria-live="polite">
+          <svg class="icon-stroke" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+            <path d="M15 6.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h.5"></path>
+          </svg>
+          <span data-rotulo>Copiar e-mail</span>
+        </button>
         <a class="button" href="https://github.com/LucasCavalheri" target="_blank" rel="noopener">
           <svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">
             <path d={siGithub.path}></path>
@@ -231,6 +258,9 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
         {
           projetos.map((projeto, i) => (
             <div class="row" data-anim style={`--stagger: ${i * 0.07}s`}>
+              <p class="row-meta">
+                {projeto.tipo} · {projeto.ano}
+              </p>
               <div class="row-top">
                 <h3>{projeto.nome}</h3>
                 <div class="row-links">
@@ -246,11 +276,44 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
                       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
                     </a>
                   )}
+                  {projeto.codigoPrivado && <span class="row-nota">código privado</span>}
                 </div>
               </div>
               <p class="row-text">{projeto.descricao}</p>
               <div class="tec-row">
                 {projeto.tec.map((item) => <Tec item={item} />)}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" id="experiencia">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">experiência<span class="dot">.</span></h2>
+        <a class="anchor" href="#experiencia" aria-label="Link para experiência">#</a>
+      </div>
+      <div class="rows">
+        {
+          experiencias.map((experiencia, i) => (
+            <div class="row" data-anim style={`--stagger: ${i * 0.07}s`}>
+              <div class="row-top">
+                <div>
+                  <h3>{experiencia.cargo}</h3>
+                  <div class="row-at">
+                    <span>em,</span>
+                    <a class="link link-sm" href={experiencia.url} target="_blank" rel="noopener">
+                      <span>{experiencia.site}</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+                    </a>
+                  </div>
+                </div>
+                <p class="row-date">{experiencia.periodo}</p>
+              </div>
+              <p class="row-text">{experiencia.evidencia}</p>
+              <div class="tec-row">
+                {experiencia.tec.map((item) => <Tec item={item} />)}
               </div>
             </div>
           ))
@@ -298,37 +361,6 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
         </div>
       </div>
       <div class="activity-tip" id="contrib-tip" role="tooltip" aria-hidden="true"></div>
-    </section>
-
-    <section class="section" id="experiencia">
-      <div class="section-head" data-anim>
-        <h2 class="section-title">experiência<span class="dot">.</span></h2>
-        <a class="anchor" href="#experiencia" aria-label="Link para experiência">#</a>
-      </div>
-      <div class="rows">
-        {
-          experiencias.map((experiencia, i) => (
-            <div class="row" data-anim style={`--stagger: ${i * 0.07}s`}>
-              <div class="row-top">
-                <div>
-                  <h3>{experiencia.cargo}</h3>
-                  <div class="row-at">
-                    <span>em,</span>
-                    <a class="link link-sm" href={experiencia.url} target="_blank" rel="noopener">
-                      <span>{experiencia.site}</span>
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
-                    </a>
-                  </div>
-                </div>
-                <p class="row-date">{experiencia.periodo}</p>
-              </div>
-              <div class="tec-row">
-                {experiencia.tec.map((item) => <Tec item={item} />)}
-              </div>
-            </div>
-          ))
-        }
-      </div>
     </section>
 
     <section class="section" id="stack">
@@ -619,12 +651,31 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     line-height: 1.375;
   }
 
+  /* Disponibilidade: reusa o ponto pulsante dos títulos de seção */
+  .disponivel {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: 0.5rem;
+    animation: enter 0.6s ease both;
+    animation-delay: 0.4s;
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+  }
+
+  .dot-live {
+    animation: dot-beat 2.4s ease-in-out infinite;
+    color: var(--primary);
+    font-size: 0.625rem;
+    line-height: 1;
+  }
+
   .prose {
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
     animation: enter 0.6s ease both;
-    animation-delay: 0.45s;
+    animation-delay: 0.5s;
     color: var(--muted-foreground);
     font-size: 0.875rem;
     line-height: 1.625rem;
@@ -640,7 +691,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     flex-wrap: wrap;
     gap: 0.5rem;
     animation: enter 0.6s ease both;
-    animation-delay: 0.55s;
+    animation-delay: 0.6s;
   }
 
   .button {
@@ -718,6 +769,20 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
+  }
+
+  /* Tipo e ano do projeto, acima do nome */
+  .row-meta {
+    margin-bottom: 0.125rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  /* Substitui o link quando não há código público */
+  .row-nota {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
 
   .row h3 {
@@ -1038,6 +1103,11 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
   }
 
   @media (max-width: 30rem) {
+    /* Cinco itens não cabem em tela estreita; o gráfico segue acessível pelo scroll */
+    .nav-opcional {
+      display: none;
+    }
+
     h1 {
       white-space: normal;
     }
@@ -1265,6 +1335,31 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
 
   avatar?.addEventListener("pointerleave", soltarAvatar);
   avatar?.addEventListener("pointercancel", soltarAvatar);
+
+  // Copiar e-mail: webmail no desktop costuma ignorar mailto:
+  const botaoCopiar = document.querySelector<HTMLButtonElement>("#copiar-email");
+  const rotuloCopiar = botaoCopiar?.querySelector<HTMLElement>("[data-rotulo]");
+  const textoOriginal = rotuloCopiar?.textContent ?? "";
+  let voltarRotulo: number | undefined;
+
+  botaoCopiar?.addEventListener("click", async () => {
+    const email = botaoCopiar.dataset.email;
+    if (!email || !rotuloCopiar) return;
+    let espera = 1500;
+    try {
+      await navigator.clipboard.writeText(email);
+      rotuloCopiar.textContent = "copiado";
+    } catch {
+      // Sem permissão de área de transferência: mostra o e-mail para
+      // copiar à mão, e por mais tempo.
+      rotuloCopiar.textContent = email;
+      espera = 4000;
+    }
+    window.clearTimeout(voltarRotulo);
+    voltarRotulo = window.setTimeout(() => {
+      rotuloCopiar.textContent = textoOriginal;
+    }, espera);
+  });
 
   // Contribuições do GitHub
   const grid = document.querySelector<HTMLDivElement>("#contrib-grid");
