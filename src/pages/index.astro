@@ -1,965 +1,1384 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Tec from "../components/Tec.astro";
 import {
-  siAlpinedotjs,
   siAstro,
   siClaudecode,
   siCursor,
-  siDrizzle,
-  siExpress,
-  siFastapi,
-  siFilament,
-  siInertia,
+  siCloudflare,
+  siDocker,
+  siElectron,
+  siGit,
+  siGithub,
+  siHotwire,
   siJavascript,
-  siLaravel,
-  siLivewire,
   siMongodb,
   siMysql,
   siNextdotjs,
   siNodedotjs,
-  siPhp,
+  siHostinger,
   siPostgresql,
-  siPrisma,
-  siPython,
   siReact,
   siRedis,
-  siShadcnui,
+  siRuby,
+  siRubyonrails,
+  siSass,
+  siSqlite,
   siTailwindcss,
-  siTanstack,
   siTypescript,
-  siTypeorm,
+  siVercel,
+  siVitest,
   siVuedotjs,
-  siZod,
 } from "simple-icons";
+import { awsIcon, openaiIcon, playwrightIcon } from "../data/icons";
 
-const experiencias = [
-  {
-    periodo: "2024 — hoje",
-    cargo: "Desenvolvedor Web Full Stack Pleno",
-    empresa: "Tropical Hub",
-    descricao:
-      "Integrações HubSpot e ERP, APIs e painéis administrativos em Laravel. Também cuido dos code reviews e do fluxo completo de Git da squad.",
-  },
-  {
-    periodo: "2023 — 2024",
-    cargo: "Desenvolvedor Web Full Stack Júnior",
-    empresa: "Grupo Polgo",
-    descricao:
-      "Aplicações web e mobile, do requisito ao deploy em produção, sempre com atenção aos detalhes que fazem a experiência parecer simples.",
-  },
-  {
-    periodo: "2022 — hoje",
-    cargo: "Desenvolvedor Freelancer",
-    empresa: "Projetos independentes",
-    descricao:
-      "Produtos digitais com PHP, Laravel, JavaScript, TypeScript, React e Next.js para pessoas e negócios que querem sair do lugar.",
-  },
-];
+const tec = {
+  ruby: { nome: "Ruby", icon: siRuby },
+  rails: { nome: "Rails", icon: siRubyonrails },
+  hotwire: { nome: "Hotwire", icon: siHotwire },
+  rspec: { nome: "RSpec", img: "/rspec.svg" },
+  minitest: { nome: "Minitest", mark: "M" },
+  vitest: { nome: "Vitest", icon: siVitest },
+  playwright: { nome: "Playwright", icon: playwrightIcon },
+  scss: { nome: "SCSS", icon: siSass },
+  tailwind: { nome: "Tailwind", icon: siTailwindcss },
+  javascript: { nome: "JavaScript", icon: siJavascript },
+  typescript: { nome: "TypeScript", icon: siTypescript },
+  node: { nome: "Node.js", icon: siNodedotjs },
+  postgres: { nome: "PostgreSQL", icon: siPostgresql },
+  mysql: { nome: "MySQL", icon: siMysql },
+  sqlite: { nome: "SQLite", icon: siSqlite },
+  redis: { nome: "Redis", icon: siRedis },
+  mongo: { nome: "MongoDB", icon: siMongodb },
+  react: { nome: "React", icon: siReact },
+  next: { nome: "Next.js", icon: siNextdotjs },
+  vue: { nome: "Vue", icon: siVuedotjs },
+  astro: { nome: "Astro", icon: siAstro },
+  electron: { nome: "Electron", icon: siElectron },
+  aws: { nome: "AWS", icon: awsIcon },
+  vercel: { nome: "Vercel", icon: siVercel },
+  cloudflare: { nome: "Cloudflare", icon: siCloudflare },
+  hostinger: { nome: "Hostinger", icon: siHostinger },
+  git: { nome: "Git", icon: siGit },
+  github: { nome: "GitHub", icon: siGithub },
+  docker: { nome: "Docker", icon: siDocker },
+  cursor: { nome: "Cursor", icon: siCursor },
+  claude: { nome: "Claude Code", icon: siClaudecode },
+  codex: { nome: "Codex", icon: openaiIcon },
+};
 
 const projetos = [
   {
-    numero: "01",
-    tipo: "educação · 2026",
     nome: "EduConnect",
     descricao:
-      "API de uma plataforma escolar: turmas, avaliações, presença e atividades com IA. Pensada para o dia a dia de professores, alunos e da operação da escola.",
-    tecnologias: ["Laravel", "Sanctum", "Pest", "Reverb"],
-    classe: "project-primary",
+      "Plataforma escolar completa: turmas, avaliações, presença e atividades com IA.",
+    tec: [tec.ruby, tec.rails, tec.postgres, tec.scss],
+    site: "",
+    repo: "",
   },
   {
-    numero: "02",
-    tipo: "loja online · 2024",
     nome: "Meigana",
-    descricao:
-      "Uma loja completa, do catálogo ao checkout. A experiência foi pensada para deixar a compra leve e a operação fácil de administrar.",
-    tecnologias: ["Ruby on Rails", "Hotwire", "Tailwind"],
-    classe: "project-warm",
+    descricao: "Loja online completa, do catálogo ao checkout.",
+    tec: [tec.ruby, tec.rails, tec.postgres, tec.tailwind],
+    site: "",
+    repo: "",
   },
   {
-    numero: "03",
-    tipo: "desktop · 2026",
     nome: "My VPNs",
     descricao:
-      "App Linux para gerenciar conexões OpenFortiVPN. Vários túneis ao mesmo tempo, bandeja do sistema e reconexão automática — sem ficar de babá no terminal.",
-    tecnologias: ["TypeScript", "React", "Electron"],
-    classe: "project-dark",
+      "App Linux para gerenciar múltiplas conexões OpenFortiVPN, com bandeja e reconexão automática.",
+    tec: [tec.typescript, tec.react, tec.electron],
+    site: "",
+    repo: "",
   },
 ];
 
-const codexIcon = { path: "M8 7 4 12l4 5M16 7l4 5-4 5M13 5l-2 14" };
-const zustandIcon = { path: "M7 6.5c0-1.7 1.5-3 3.3-3 .6 0 1.2.2 1.7.5.5-.6 1.3-1 2.2-1 1.8 0 3.3 1.3 3.3 3 0 .6-.2 1.2-.6 1.7 1.3.5 2.2 1.6 2.2 3.1 0 1.8-1.5 3.2-3.4 3.2-.4 0-.8-.1-1.2-.2.1.5.2 1 .2 1.5 0 2.1-1 4-2.4 5.7-1.4-1.7-2.4-3.6-2.4-5.7 0-.5.1-1 .2-1.5-.4.1-.8.2-1.2.2-1.9 0-3.4-1.4-3.4-3.2 0-1.5.9-2.6 2.2-3.1-.4-.5-.6-1.1-.6-1.7Z" };
+const experiencias = [
+  {
+    cargo: "Desenvolvedor Web Full Stack Pleno, Tropical Hub",
+    site: "tropicalhub.co",
+    url: "https://tropicalhub.co",
+    periodo: "2024 — hoje",
+    tec: [tec.ruby, tec.rails, tec.hotwire, tec.postgres, tec.redis],
+  },
+  {
+    cargo: "Desenvolvedor Web Full Stack Júnior, Grupo Polgo",
+    site: "polgo.com.br",
+    url: "https://www.polgo.com.br",
+    periodo: "2023 — 2024",
+    tec: [tec.ruby, tec.rails, tec.javascript, tec.react, tec.postgres],
+  },
+  {
+    cargo: "Desenvolvedor Freelancer, projetos independentes",
+    site: "github.com/LucasCavalheri",
+    url: "https://github.com/LucasCavalheri",
+    periodo: "2022 — hoje",
+    tec: [tec.rails, tec.typescript, tec.react, tec.next, tec.astro],
+  },
+];
 
 const stack = [
-  {
-    area: "01",
-    nome: "Linguagens",
-    itens: [
-      { nome: "PHP", icon: siPhp },
-      { nome: "JavaScript", icon: siJavascript },
-      { nome: "TypeScript", icon: siTypescript },
-      { nome: "Python", icon: siPython },
-    ],
-  },
-  {
-    area: "02",
-    nome: "Servidor",
-    itens: [
-      { nome: "Laravel", icon: siLaravel },
-      { nome: "Livewire", icon: siLivewire },
-      { nome: "Inertia", icon: siInertia },
-      { nome: "Filament", icon: siFilament },
-      { nome: "Pest", icon: { path: "" }, custom: true, mark: "P" },
-      { nome: "Node.js", icon: siNodedotjs },
-      { nome: "Express.js", icon: siExpress },
-      { nome: "FastAPI", icon: siFastapi },
-    ],
-  },
-  {
-    area: "03",
-    nome: "Banco de dados",
-    itens: [
-      { nome: "Prisma", icon: siPrisma },
-      { nome: "Drizzle", icon: siDrizzle },
-      { nome: "TypeORM", icon: siTypeorm },
-      { nome: "PostgreSQL", icon: siPostgresql },
-      { nome: "MySQL", icon: siMysql },
-      { nome: "Redis", icon: siRedis },
-      { nome: "MongoDB", icon: siMongodb },
-    ],
-  },
-  {
-    area: "04",
-    nome: "Interface",
-    itens: [
-      { nome: "Vue.js", icon: siVuedotjs },
-      { nome: "Alpine.js", icon: siAlpinedotjs },
-      { nome: "React.js", icon: siReact },
-      { nome: "Next.js", icon: siNextdotjs },
-      { nome: "Astro.js", icon: siAstro },
-      { nome: "TailwindCSS", icon: siTailwindcss },
-      { nome: "TanStack", icon: siTanstack },
-      { nome: "shadcn/ui", icon: siShadcnui },
-      { nome: "Zod", icon: siZod },
-      { nome: "Zustand", icon: zustandIcon, custom: true, mark: "z" },
-    ],
-  },
-  {
-    area: "05",
-    nome: "IA",
-    itens: [
-      { nome: "Cursor", icon: siCursor },
-      { nome: "Codex", icon: codexIcon, custom: true },
-      { nome: "Claude Code", icon: siClaudecode },
-    ],
-  },
+  { nome: "Linguagens", itens: [tec.ruby, tec.javascript, tec.typescript] },
+  { nome: "Back-End", itens: [tec.rails, tec.node] },
+  { nome: "Front-End", itens: [tec.react, tec.next, tec.vue, tec.scss, tec.tailwind] },
+  { nome: "Testes", itens: [tec.rspec, tec.minitest, tec.vitest, tec.playwright] },
+  { nome: "Dados", itens: [tec.postgres, tec.mysql, tec.sqlite, tec.redis, tec.mongo] },
+  { nome: "Cloud", itens: [tec.aws, tec.vercel, tec.cloudflare, tec.hostinger] },
+  { nome: "Ferramentas", itens: [tec.git, tec.github, tec.docker] },
+  { nome: "IA", itens: [tec.cursor, tec.codex, tec.claude] },
 ];
 
-const contributionCells = Array.from({ length: 364 }, (_, index) => {
-  const week = Math.floor(index / 7);
-  const wave =
-    (Math.sin(index * 0.27) + Math.sin(index * 0.071 + 1.8) + Math.cos((index % 7) * 1.5)) /
-    3;
-  const trend = week > 27 ? 0.16 : week > 14 ? 0.04 : -0.05;
-  const score = wave + trend;
+const contatos = [
+  { rotulo: "GitHub", valor: "@LucasCavalheri", url: "https://github.com/LucasCavalheri" },
+  { rotulo: "E-mail", valor: "lucas.dev.carvalho@gmail.com", url: "mailto:lucas.dev.carvalho@gmail.com" },
+  { rotulo: "Currículo", valor: "PDF", url: "/Curriculo-LucasCavalheri.pdf" },
+  { rotulo: "Local", valor: "Mogi Mirim, SP · remoto", url: "" },
+];
 
-  return score > 0.52 ? 4 : score > 0.2 ? 3 : score > -0.12 ? 2 : score > -0.45 ? 1 : 0;
+const usuarioGithub = "LucasCavalheri";
+const celulasEsqueleto = Array.from({ length: 371 }, (_, i) => i);
+
+const anoAtual = new Date().getFullYear();
+const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
 });
 ---
 
 <Layout
   title="Lucas Cavalheri — Desenvolvedor Web Full Stack"
-  description="Lucas Cavalheri é desenvolvedor web full stack. Cria produtos digitais com PHP, Laravel e código que dá gosto de manter."
+  description="Lucas Cavalheri é desenvolvedor web full stack. Cria produtos digitais com Ruby on Rails e código que dá gosto de manter."
 >
-  <div class="site-shell">
-    <header class="topbar">
-      <a class="brand" href="#home" aria-label="Lucas Cavalheri, início">
-        <span class="brand-mark">LC</span>
-        <span class="brand-name">Lucas Cavalheri</span>
-      </a>
+  <header class="container topbar reveal-top">
+    <nav id="nav" aria-label="Navegação principal">
+      <a class="nav-link" href="#inicio">início</a>
+      <a class="nav-link" href="#projetos">projetos</a>
+      <a class="nav-link" href="#atividade">atividade</a>
+      <a class="nav-link" href="#experiencia">experiência</a>
+      <a class="nav-link" href="#contato">contato</a>
+      <span class="nav-line" aria-hidden="true"></span>
+    </nav>
+    <button id="theme-toggle" type="button" aria-label="Alternar tema" aria-pressed="true">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+      </svg>
+    </button>
+  </header>
 
-      <nav class="main-nav" aria-label="Navegação principal">
-        <a class="active" href="#home">início</a>
-        <a href="#work">trabalho</a>
-        <a href="#stack">stack</a>
-        <a href="#contact">contato</a>
-      </nav>
-
-      <div class="topbar-actions">
-        <a
-          class="social-link"
-          href="https://github.com/LucasCavalheri"
-          target="_blank"
-          rel="noopener"
-          aria-label="GitHub de Lucas Cavalheri"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2.5a9.5 9.5 0 0 0-3 18.51c.48.09.66-.21.66-.46v-1.68c-2.69.58-3.26-1.14-3.26-1.14-.44-1.12-1.07-1.42-1.07-1.42-.88-.6.07-.59.07-.59.97.07 1.48.99 1.48.99.86 1.48 2.25 1.05 2.8.8.09-.62.34-1.05.61-1.29-2.15-.24-4.41-1.08-4.41-4.79 0-1.06.38-1.93.99-2.61-.1-.24-.43-1.24.09-2.58 0 0 .81-.26 2.63 1a9.12 9.12 0 0 1 4.8 0c1.82-1.26 2.63-1 2.63-1 .52 1.34.19 2.34.1 2.58.61.68.98 1.55.98 2.61 0 3.72-2.26 4.55-4.42 4.79.35.3.65.88.65 1.77v2.56c0 .25.17.55.66.46A9.5 9.5 0 0 0 12 2.5Z"></path>
-          </svg>
-        </a>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ativar tema escuro" aria-pressed="false">
-          <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="3.5"></circle>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-          </svg>
-          <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.5 15.2A8.7 8.7 0 0 1 8.8 3.5 8.7 8.7 0 1 0 20.5 15.2Z"></path>
-          </svg>
-        </button>
+  <main class="container">
+    <section class="section intro" id="inicio">
+      <div class="intro-head">
+        <div class="avatar" id="avatar">
+          <img
+            src="https://github.com/LucasCavalheri.png?size=160"
+            alt="Retrato de Lucas Cavalheri"
+            width="60"
+            height="60"
+            loading="eager"
+          />
+          <span class="avatar-glow" aria-hidden="true"></span>
+        </div>
+        <div>
+          <h1><span>Lucas</span> <span>Cavalheri</span></h1>
+          <p class="intro-role">Desenvolvedor Web Full Stack Pleno</p>
+        </div>
       </div>
-    </header>
 
-    <main>
-      <section class="hero" id="home" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <div class="section-index"><span>00 /</span> apresentação</div>
-          <p class="availability"><span class="live-dot"></span> disponível para projetos remotos</p>
-          <h1 id="hero-title">
-            Construo <em>produtos</em><br />
-            que parecem<br />
-            simples<span class="hero-dot">.</span>
-          </h1>
-          <p class="hero-description">
-            Há mais de quatro anos construo aplicações web robustas e de fácil manutenção, de APIs e integrações a painéis administrativos e deploy em produção. Hoje meu dia a dia é PHP, Laravel e o ecossistema em volta — sempre pensando em quem vai manter o código amanhã.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-dark" href="#contact">
-              Vamos conversar
-              <span class="button-arrow">↗</span>
-            </a>
-            <a class="button button-light" href="#work">
-              Ver trabalho
-              <span class="button-arrow">↓</span>
-            </a>
-          </div>
-          <div class="hero-details">
-            <span><i></i> Mogi Mirim / Mogi Guaçu</span>
-            <span>remoto somente</span>
-            <span>desde 2022</span>
-          </div>
-        </div>
+      <div class="prose">
+        <p>
+          Construo aplicações web robustas e fáceis de manter, de APIs e integrações a painéis
+          administrativos e deploy em produção.
+        </p>
+        <p>
+          Sou Desenvolvedor Web Full Stack Pleno na <a class="link link-text link-brand" href="https://tropicalhub.co" target="_blank" rel="noopener"><img class="brand-icon" src="/tropical-hub.png" alt="" width="16" height="16" />Tropical Hub</a>, onde cuido de integrações, APIs e painéis administrativos, além dos code reviews e do fluxo de Git da squad.
+        </p>
+        <p>
+          Meu dia a dia é <strong>Ruby</strong> e <strong>Rails</strong>, sempre pensando em quem vai
+          manter o código amanhã.
+        </p>
+        <p>
+          Quer trabalhar junto? Veja meu <a class="link link-text" href="/Curriculo-LucasCavalheri.pdf" download>currículo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"></path></svg></a>.
+        </p>
+      </div>
 
-        <aside class="profile-card" aria-label="Perfil de Lucas Cavalheri">
-          <div class="profile-card-top">
-            <span class="card-label">perfil / 001</span>
-            <span class="card-corner">↗</span>
-          </div>
-          <div class="avatar-wrap">
-            <div class="avatar-orbit"></div>
-            <img
-              src="https://github.com/LucasCavalheri.png?size=512"
-              alt="Lucas Cavalheri"
-              width="176"
-              height="176"
-              loading="eager"
-            />
-            <span class="avatar-status" title="Disponível para conversar"></span>
-          </div>
-          <div class="profile-identity">
-            <h2>Lucas Cavalheri</h2>
-            <p>Desenvolvedor web full stack</p>
-          </div>
-          <div class="profile-rule"></div>
-          <div class="profile-highlight">
-            <strong>4<span>+</span></strong>
-            <span>anos criando<br />para a web</span>
-          </div>
-          <div class="profile-facts">
-            <div><span>base</span><strong>Mogi Mirim<br />/ Mogi Guaçu</strong></div>
-            <div><span>modo</span><strong><i></i> remoto somente</strong></div>
-          </div>
-          <div class="profile-tools" aria-label="Principais ferramentas">
-            <span>PHP</span><span>Laravel</span><span>TypeScript</span>
-          </div>
-          <div class="profile-footer">
-            <span>aberto a bons desafios</span>
-            <a href="/Curriculo-LucasCavalheri.pdf" download aria-label="Baixar currículo">CV ↗</a>
-          </div>
-        </aside>
-      </section>
+      <div class="intro-actions">
+        <a class="button button-primary" href="mailto:lucas.dev.carvalho@gmail.com">
+          <svg class="icon-stroke" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5.5" width="18" height="13" rx="2"></rect>
+            <path d="m3.5 7 8.5 6 8.5-6"></path>
+          </svg>
+          Enviar e-mail
+        </a>
+        <a class="button" href="https://github.com/LucasCavalheri" target="_blank" rel="noopener">
+          <svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">
+            <path d={siGithub.path}></path>
+          </svg>
+          Ver GitHub
+        </a>
+      </div>
+    </section>
 
-      <section class="github-section" id="github" aria-labelledby="github-title">
-        <div class="section-heading">
-          <div class="section-index"><span>01 /</span> ritmo de trabalho</div>
-          <span class="heading-aside" id="github-status">ao vivo do GitHub</span>
-        </div>
-        <div class="github-intro">
-          <div>
-            <h2 id="github-title">Código em movimento<span class="hero-dot">.</span></h2>
-            <p>Um ano de pequenos commits, grandes obsessões e coisas que saíram do papel.</p>
-          </div>
-          <div class="github-total">
-            <strong id="commit-total">carregando</strong>
-            <span>contribuições no último ano</span>
-          </div>
-        </div>
-        <div class="contribution-card">
-          <div class="contribution-topline">
-            <span>ago 2025</span>
-            <span>jul 2026</span>
-          </div>
-          <div class="month-labels" aria-hidden="true">
-            <span>ago</span><span>set</span><span>out</span><span>nov</span><span>dez</span><span>jan</span><span>fev</span><span>mar</span><span>abr</span><span>mai</span><span>jun</span><span>jul</span>
-          </div>
-          <div class="contribution-grid" id="contribution-grid" aria-label="Contribuições do último ano no GitHub">
-            {
-              contributionCells.map((cell, index) => (
-                <span class={`contribution level-${cell}`}></span>
-              ))
-            }
-          </div>
-          <div class="contribution-tooltip" id="contribution-tooltip" role="tooltip" aria-hidden="true"></div>
-          <div class="contribution-bottomline">
-            <span id="contribution-note">menos</span>
-            <div class="legend" aria-hidden="true">
-              <i class="contribution level-0"></i><i class="contribution level-1"></i><i class="contribution level-2"></i><i class="contribution level-3"></i><i class="contribution level-4"></i>
-            </div>
-            <span>mais</span>
-            <a href="https://github.com/LucasCavalheri" target="_blank" rel="noopener">abrir GitHub ↗</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="work-section" id="work" aria-labelledby="work-title">
-        <div class="section-heading">
-          <div class="section-index"><span>02 /</span> coisas que construí</div>
-          <span class="heading-aside">seleção 2022—26</span>
-        </div>
-        <div class="section-title-row">
-          <h2 id="work-title">Trabalho selecionado<span class="hero-dot">.</span></h2>
-          <p>Uma amostra de produtos, experimentos e problemas interessantes.</p>
-        </div>
-        <div class="project-grid">
-          {
-            projetos.map((projeto) => (
-              <article class={`project-card ${projeto.classe}`}>
-                <div class="project-card-top"><span>{projeto.numero}</span><span>{projeto.tipo}</span></div>
-                <div class="project-art" aria-hidden="true">
-                  {projeto.nome === "EduConnect" && <><span class="art-copy">escola<br /><em>conectada</em></span><span class="art-line line-one"></span><span class="art-line line-two"></span><span class="art-orb"></span></>}
-                  {projeto.nome === "Meigana" && <><span class="art-window"><i></i><i></i><i></i></span><span class="art-line line-one"></span><span class="art-line line-two"></span><span class="art-orb"></span></>}
-                  {projeto.nome === "My VPNs" && <><span class="art-terminal"><b>my_vpns</b><br /><i>&gt; tunnel up_</i><br /><small>status: connected</small></span><span class="art-pixel"></span></>}
-                </div>
-                <div class="project-content">
-                  <h3>{projeto.nome}</h3>
-                  <p>{projeto.descricao}</p>
-                  <div class="tech-list">
-                    {projeto.tecnologias.map((tecnologia) => <span>{tecnologia}</span>)}
-                  </div>
-                </div>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="about-section" id="about" aria-labelledby="about-title">
-        <div class="section-heading">
-          <div class="section-index"><span>03 /</span> um pouco mais</div>
-          <span class="heading-aside">sobre + experiência</span>
-        </div>
-        <div class="about-grid">
-          <div class="about-copy">
-            <h2 id="about-title">Código com<br /><em>intenção.</em></h2>
-            <p>
-              Gosto de estar perto do problema antes de tocar no código. É daí que vêm produtos mais honestos: com menos ruído, decisões claras e detalhes que respeitam quem está do outro lado da tela.
-            </p>
-            <p>
-              Quando não estou construindo, provavelmente estou lendo sobre design, desenhando uma ideia ou tentando melhorar alguma coisa que já estava funcionando.
-            </p>
-            <a class="text-link" href="mailto:lucas.dev.carvalho@gmail.com">me manda um oi <span>↗</span></a>
-          </div>
-          <div class="timeline">
-            {
-              experiencias.map((experiencia) => (
-                <article class="timeline-item">
-                  <span class="timeline-year">{experiencia.periodo}</span>
-                  <div>
-                    <h3>{experiencia.cargo}</h3>
-                    <p class="timeline-company">{experiencia.empresa}</p>
-                    <p class="timeline-description">{experiencia.descricao}</p>
-                  </div>
-                </article>
-              ))
-            }
-          </div>
-        </div>
-      </section>
-
-      <section class="stack-section" id="stack" aria-labelledby="stack-title">
-        <div class="stack-heading">
-          <h2 id="stack-title">stack<span class="hero-dot">.</span></h2>
-          <div class="stack-controls" aria-label="Modo de visualização da stack">
-            <button class="stack-control active" id="stack-list-toggle" type="button" aria-label="Ver stack em lista" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"></path></svg></button>
-            <button class="stack-control" id="stack-grid-toggle" type="button" aria-label="Ver stack em grade" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="5" height="5" rx="1"></rect><rect x="14" y="5" width="5" height="5" rx="1"></rect><rect x="5" y="14" width="5" height="5" rx="1"></rect><rect x="14" y="14" width="5" height="5" rx="1"></rect></svg></button>
-          </div>
-        </div>
-        <div class="stack-list" id="stack-list">
-          {
-            stack.map((grupo) => (
-              <div class="stack-row">
-                <div class="stack-label">
-                  <span class="stack-number">{grupo.area}</span>
-                  <strong>{grupo.nome}</strong>
-                </div>
-                <div class="stack-chips">
-                  {grupo.itens.map((item) => (
-                    <span class="stack-chip" title={item.nome}>
-                      {item.custom ? (
-                        <span class="chip-custom-icon" aria-hidden="true">{item.mark ?? "<>"}</span>
-                      ) : (
-                        <svg class="chip-icon" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d={item.icon.path}></path>
-                        </svg>
-                      )}
-                      {item.nome}
-                    </span>
-                  ))}
+    <section class="section" id="projetos">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">projetos<span class="dot">.</span></h2>
+        <a class="anchor" href="#projetos" aria-label="Link para projetos">#</a>
+      </div>
+      <div class="rows">
+        {
+          projetos.map((projeto, i) => (
+            <div class="row" data-anim style={`--stagger: ${i * 0.07}s`}>
+              <div class="row-top">
+                <h3>{projeto.nome}</h3>
+                <div class="row-links">
+                  {projeto.site && (
+                    <a class="link link-xs" href={projeto.site} target="_blank" rel="noopener">
+                      <span>Site</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+                    </a>
+                  )}
+                  {projeto.repo && (
+                    <a class="link link-xs" href={projeto.repo} target="_blank" rel="noopener">
+                      <span>GitHub</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+                    </a>
+                  )}
                 </div>
               </div>
-            ))
-          }
-        </div>
-        <a class="stack-view-all" href="https://github.com/LucasCavalheri" target="_blank" rel="noopener">ver tudo <span>↗</span></a>
-      </section>
+              <p class="row-text">{projeto.descricao}</p>
+              <div class="tec-row">
+                {projeto.tec.map((item) => <Tec item={item} />)}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
 
-      <section class="contact-section" id="contact" aria-labelledby="contact-title">
-        <div class="contact-card">
-          <div class="contact-decoration" aria-hidden="true"><span>✳</span><i></i><b></b></div>
-          <div class="section-index"><span>05 /</span> próximo capítulo</div>
-          <h2 id="contact-title">Tem uma ideia?<br /><em>Vamos dar forma.</em></h2>
-          <p>Se você tem um produto em mente, uma interface para destravar ou só quer trocar uma ideia, meu inbox está aberto.</p>
-          <a class="button button-dark" href="mailto:lucas.dev.carvalho@gmail.com">lucas.dev.carvalho@gmail.com <span class="button-arrow">↗</span></a>
-          <div class="contact-meta"><span>© {new Date().getFullYear()} Lucas Cavalheri</span><span>feito com atenção · em Astro</span></div>
+    <section class="section" id="atividade">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">atividade<span class="dot">.</span></h2>
+        <a class="anchor" href="#atividade" aria-label="Link para atividade">#</a>
+      </div>
+      <div class="activity" data-anim>
+        <div class="activity-top">
+          <p><strong id="contrib-total">—</strong> contribuições no último ano</p>
+          <a
+            class="link link-xs"
+            href={`https://github.com/${usuarioGithub}`}
+            target="_blank"
+            rel="noopener"
+          >
+            <span id="contrib-status">GitHub</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+          </a>
         </div>
-      </section>
-    </main>
+        <div class="activity-scroll">
+          <div class="activity-months" id="contrib-months" aria-hidden="true"></div>
+          <div
+            class="activity-grid"
+            id="contrib-grid"
+            role="img"
+            aria-label="Contribuições no GitHub no último ano"
+          >
+            {celulasEsqueleto.map(() => <span class="cell" data-level="0" />)}
+          </div>
+        </div>
+        <div class="activity-legend">
+          <span>menos</span>
+          <i class="cell" data-level="0"></i>
+          <i class="cell" data-level="1"></i>
+          <i class="cell" data-level="2"></i>
+          <i class="cell" data-level="3"></i>
+          <i class="cell" data-level="4"></i>
+          <span>mais</span>
+        </div>
+      </div>
+      <div class="activity-tip" id="contrib-tip" role="tooltip" aria-hidden="true"></div>
+    </section>
 
-    <footer class="site-footer">
-      <span>LC / 2026</span>
-      <span>construindo coisas para a web</span>
-      <a href="#home">voltar ao topo ↑</a>
-    </footer>
-  </div>
+    <section class="section" id="experiencia">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">experiência<span class="dot">.</span></h2>
+        <a class="anchor" href="#experiencia" aria-label="Link para experiência">#</a>
+      </div>
+      <div class="rows">
+        {
+          experiencias.map((experiencia, i) => (
+            <div class="row" data-anim style={`--stagger: ${i * 0.07}s`}>
+              <div class="row-top">
+                <div>
+                  <h3>{experiencia.cargo}</h3>
+                  <div class="row-at">
+                    <span>em,</span>
+                    <a class="link link-sm" href={experiencia.url} target="_blank" rel="noopener">
+                      <span>{experiencia.site}</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+                    </a>
+                  </div>
+                </div>
+                <p class="row-date">{experiencia.periodo}</p>
+              </div>
+              <div class="tec-row">
+                {experiencia.tec.map((item) => <Tec item={item} />)}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">stack<span class="dot">.</span></h2>
+        <a class="anchor" href="#stack" aria-label="Link para stack">#</a>
+      </div>
+      <div class="rows">
+        {
+          stack.map((grupo, i) => (
+            <div class="row row-inline" data-anim style={`--stagger: ${i * 0.05}s`}>
+              <h3>{grupo.nome}</h3>
+              <div class="tec-row tec-row-end">
+                {grupo.itens.map((item) => <Tec item={item} label />)}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" id="contato">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">contato<span class="dot">.</span></h2>
+        <a class="anchor" href="#contato" aria-label="Link para contato">#</a>
+      </div>
+      <div class="contact-grid">
+        {
+          contatos.map((contato, i) =>
+            contato.url ? (
+              <a
+                class="link link-sm"
+                data-anim
+                style={`--stagger: ${i * 0.06}s`}
+                href={contato.url}
+                target={contato.url.startsWith("http") ? "_blank" : undefined}
+                rel="noopener"
+              >
+                <span>{contato.valor}</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+              </a>
+            ) : (
+              <span class="contact-plain" data-anim style={`--stagger: ${i * 0.06}s`}>{contato.valor}</span>
+            )
+          )
+        }
+      </div>
+    </section>
+  </main>
+
+  <footer class="container site-footer" data-anim>
+    <div>
+      <p>Atualizado · {atualizadoEm}</p>
+      <p>© {anoAtual} <span>Lucas Cavalheri</span></p>
+    </div>
+  </footer>
+
+  <button id="scroll-top" type="button" aria-label="Voltar ao topo" data-visible="false" data-direction="down">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
+  </button>
 </Layout>
 
-<script>
-  const root = document.documentElement;
-  const themeToggle = document.querySelector("#theme-toggle");
-  const contributionGrid = document.querySelector("#contribution-grid");
-  const contributionTooltip = document.querySelector("#contribution-tooltip");
-  const contributionTotal = document.querySelector("#commit-total");
-  const githubStatus = document.querySelector("#github-status");
-  const profileCard = document.querySelector(".profile-card");
-  const avatarWrap = document.querySelector(".avatar-wrap");
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const stackList = document.querySelector("#stack-list");
-  const stackListToggle = document.querySelector("#stack-list-toggle");
-  const stackGridToggle = document.querySelector("#stack-grid-toggle");
-  let audioContext;
-
-  const playWaterDrop = () => {
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      audioContext ||= new AudioContext();
-      if (audioContext.state === "suspended") audioContext.resume();
-
-      const now = audioContext.currentTime;
-      const body = audioContext.createOscillator();
-      const shimmer = audioContext.createOscillator();
-      const bodyGain = audioContext.createGain();
-      const shimmerGain = audioContext.createGain();
-
-      body.type = "sine";
-      body.frequency.setValueAtTime(1120, now);
-      body.frequency.exponentialRampToValueAtTime(280, now + 0.34);
-      bodyGain.gain.setValueAtTime(0.0001, now);
-      bodyGain.gain.exponentialRampToValueAtTime(0.12, now + 0.008);
-      bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
-
-      shimmer.type = "triangle";
-      shimmer.frequency.setValueAtTime(2200, now);
-      shimmer.frequency.exponentialRampToValueAtTime(620, now + 0.22);
-      shimmerGain.gain.setValueAtTime(0.0001, now);
-      shimmerGain.gain.exponentialRampToValueAtTime(0.025, now + 0.006);
-      shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
-
-      body.connect(bodyGain).connect(audioContext.destination);
-      shimmer.connect(shimmerGain).connect(audioContext.destination);
-      body.start(now);
-      shimmer.start(now);
-      body.stop(now + 0.45);
-      shimmer.stop(now + 0.24);
-    } catch {}
-  };
-
-  const updateThemeButton = () => {
-    const isDark = root.dataset.theme === "dark";
-    themeToggle?.setAttribute("aria-pressed", String(isDark));
-    themeToggle?.setAttribute("aria-label", isDark ? "Ativar tema claro" : "Ativar tema escuro");
-  };
-
-  updateThemeButton();
-
-  const setStackView = (grid) => {
-    stackList?.classList.toggle("stack-grid-view", grid);
-    stackListToggle?.classList.toggle("active", !grid);
-    stackGridToggle?.classList.toggle("active", grid);
-    stackListToggle?.setAttribute("aria-pressed", String(!grid));
-    stackGridToggle?.setAttribute("aria-pressed", String(grid));
-  };
-
-  stackListToggle?.addEventListener("click", () => setStackView(false));
-  stackGridToggle?.addEventListener("click", () => setStackView(true));
-
-  themeToggle?.addEventListener("click", (event) => {
-    const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
-    const pointerEvent = event instanceof MouseEvent ? event : null;
-    const x = pointerEvent?.clientX ?? window.innerWidth - 44;
-    const y = pointerEvent?.clientY ?? 30;
-    playWaterDrop();
-    root.style.setProperty("--theme-x", `${x}px`);
-    root.style.setProperty("--theme-y", `${y}px`);
-
-    const applyTheme = () => {
-      if (nextTheme === "dark") root.dataset.theme = "dark";
-      else delete root.dataset.theme;
-      themeMeta?.setAttribute("content", nextTheme === "dark" ? "#111111" : "#f5f5f2");
-      try {
-        localStorage.setItem("lucas-theme", nextTheme);
-      } catch {}
-      updateThemeButton();
-    };
-
-    if (typeof document.startViewTransition === "function") document.startViewTransition(applyTheme);
-    else applyTheme();
-  });
-
-  window.addEventListener("pointermove", (event) => {
-    root.style.setProperty("--pointer-x", `${event.clientX}px`);
-    root.style.setProperty("--pointer-y", `${event.clientY}px`);
-  }, { passive: true });
-
-  profileCard?.addEventListener("pointermove", (event) => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const bounds = profileCard.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    profileCard.style.setProperty("--card-rotate-x", `${y * -3.5}deg`);
-    profileCard.style.setProperty("--card-rotate-y", `${x * 3.5}deg`);
-    avatarWrap?.style.setProperty("--avatar-x", `${x * 10}px`);
-    avatarWrap?.style.setProperty("--avatar-y", `${y * 10}px`);
-  });
-
-  profileCard?.addEventListener("pointerleave", () => {
-    profileCard.style.setProperty("--card-rotate-x", "0deg");
-    profileCard.style.setProperty("--card-rotate-y", "0deg");
-    avatarWrap?.style.setProperty("--avatar-x", "0px");
-    avatarWrap?.style.setProperty("--avatar-y", "0px");
-  });
-
-  const formatContributionDate = (date) => {
-    const [year, month, day] = date.split("-");
-    const months = ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."];
-    const monthIndex = Number(month) - 1;
-    if (!year || !day || !months[monthIndex]) return date;
-    return `${Number(day)} ${months[monthIndex]} ${year}`;
-  };
-
-  const renderContributions = (items) => {
-    if (!contributionGrid || !items?.length) return;
-    contributionGrid.innerHTML = "";
-    items.slice(-364).forEach((item) => {
-      const cell = document.createElement("span");
-      const level = Math.min(4, Math.max(0, Number(item.level) || 0));
-      cell.className = `contribution level-${level}`;
-      const readableDate = formatContributionDate(item.date);
-      const label = `${readableDate}: ${item.count} commit${item.count === 1 ? "" : "s"}`;
-      cell.dataset.date = readableDate;
-      cell.dataset.count = String(item.count);
-      cell.setAttribute("aria-label", label);
-      contributionGrid.appendChild(cell);
-    });
-  };
-
-  const moveContributionTooltip = (cell) => {
-    if (!contributionTooltip) return;
-    const bounds = cell.getBoundingClientRect();
-    contributionTooltip.style.left = `${bounds.left + bounds.width / 2}px`;
-    contributionTooltip.style.top = `${bounds.top}px`;
-  };
-
-  contributionGrid?.addEventListener("pointerover", (event) => {
-    const cell = event.target instanceof Element ? event.target.closest(".contribution-grid .contribution") : null;
-    if (!cell || !contributionTooltip || !cell.dataset.date) return;
-    const count = Number(cell.dataset.count) || 0;
-    contributionTooltip.textContent = `${cell.dataset.date} · ${count} commit${count === 1 ? "" : "s"}`;
-    moveContributionTooltip(cell);
-    contributionTooltip.dataset.visible = "true";
-    contributionTooltip.setAttribute("aria-hidden", "false");
-  });
-
-  contributionGrid?.addEventListener("pointermove", (event) => {
-    const cell = event.target instanceof Element ? event.target.closest(".contribution-grid .contribution") : null;
-    if (cell) moveContributionTooltip(cell);
-  });
-
-  contributionGrid?.addEventListener("pointerout", (event) => {
-    const cell = event.target instanceof Element ? event.target.closest(".contribution-grid .contribution") : null;
-    const nextTarget = event.relatedTarget;
-    if (!cell || (nextTarget instanceof Node && cell.contains(nextTarget))) return;
-    if (contributionTooltip) {
-      contributionTooltip.dataset.visible = "false";
-      contributionTooltip.setAttribute("aria-hidden", "true");
-    }
-  });
-
-  fetch("https://github-contributions-api.jogruber.de/v4/LucasCavalheri?y=last")
-    .then((response) => {
-      if (!response.ok) throw new Error("GitHub contributions unavailable");
-      return response.json();
-    })
-    .then((data) => {
-      const items = Array.isArray(data.contributions) ? data.contributions : [];
-      const total = items.reduce((sum, item) => sum + (Number(item.count) || 0), 0);
-      if (contributionTotal) contributionTotal.textContent = total.toLocaleString("pt-BR");
-      if (githubStatus) githubStatus.textContent = "sincronizado agora";
-      renderContributions(items);
-    })
-    .catch(() => {
-      if (contributionTotal) contributionTotal.textContent = "atividade";
-      if (githubStatus) githubStatus.textContent = "snapshot local";
-    });
-</script>
-
-<style is:global>
-  .site-shell {
-    width: min(100% - 3rem, 1180px);
-    margin-inline: auto;
-  }
-
+<style>
   .topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 84px;
-    border-bottom: 1px solid var(--line);
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.03em;
+    gap: 1rem;
+    padding-top: 2.5rem;
   }
 
-  .brand,
-  .main-nav,
-  .topbar-actions,
-  .social-link,
-  .theme-toggle {
+  .topbar nav {
+    position: relative;
     display: flex;
     align-items: center;
+    margin-left: -0.625rem;
   }
 
-  .brand { gap: 0.7rem; }
-  .brand-mark {
-    display: grid;
-    width: 2rem;
-    height: 2rem;
-    place-items: center;
-    border-radius: 50%;
-    background: var(--ink);
-    color: var(--bg);
-    font-size: 0.64rem;
-    font-weight: 500;
-    letter-spacing: -0.08em;
-  }
-  .brand-name { color: var(--muted); }
-  .brand:hover .brand-mark { background: var(--accent); }
-
-  .main-nav { gap: clamp(1rem, 3vw, 2.5rem); margin-left: 8%; }
-  .main-nav a { position: relative; color: var(--muted); transition: color 0.25s ease; }
-  .main-nav a::after {
+  /* Sublinhado que desliza entre os itens do menu */
+  .nav-line {
     position: absolute;
-    right: 0;
-    bottom: -0.55rem;
+    bottom: 0;
     left: 0;
-    height: 1px;
-    content: "";
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.35s ease;
+    width: 0;
+    height: 1.5px;
+    border-radius: 1px;
+    background: var(--primary);
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
   }
-  .main-nav a:hover, .main-nav a.active { color: var(--ink); }
-  .main-nav a:hover::after, .main-nav a.active::after { transform: scaleX(1); transform-origin: left; }
 
-  .topbar-actions { gap: 1rem; }
-  .social-link { color: var(--muted); }
-  .social-link svg { width: 1.05rem; height: 1.05rem; fill: currentColor; transition: color 0.25s ease, transform 0.25s ease; }
-  .social-link:hover svg { color: var(--accent); transform: rotate(-8deg) scale(1.12); }
-  .theme-toggle { display: grid; width: 2.25rem; height: 2.25rem; padding: 0; place-items: center; cursor: pointer; border: 1px solid var(--line); border-radius: 50%; background: color-mix(in srgb, var(--surface) 72%, transparent); color: var(--muted); transition: color 0.3s ease, border-color 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease; }
-  .theme-toggle:hover { border-color: var(--accent); background: var(--surface); color: var(--accent); transform: rotate(12deg); }
-  .theme-toggle svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5; }
-  .moon-icon { display: none; }
-  :root[data-theme="dark"] .sun-icon { display: none; }
-  :root[data-theme="dark"] .moon-icon { display: block; }
+  .nav-line[data-ready="true"] {
+    opacity: 1;
+  }
 
-  main { overflow: hidden; }
-  .hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-    gap: clamp(3rem, 9vw, 9rem);
+  .nav-link[data-active="true"] {
+    color: var(--foreground);
+  }
+
+  .topbar nav a {
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.375rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    transition: color 0.15s;
+  }
+
+  .topbar nav a:hover {
+    color: var(--foreground);
+  }
+
+  #theme-toggle {
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
     align-items: center;
-    min-height: min(800px, calc(100vh - 84px));
-    padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 10vw, 8rem);
+    justify-content: center;
+    border-radius: 0.5rem;
+    color: var(--muted-foreground);
+    transition: background-color 0.15s, color 0.15s;
   }
 
-  .section-index {
+  #theme-toggle:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+
+  #theme-toggle svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+  }
+
+  :root[data-theme="dark"] .icon-sun,
+  :root[data-theme="light"] .icon-moon {
+    display: none;
+  }
+
+  main {
+    padding-block: 3.5rem;
+  }
+
+  .section {
     display: flex;
-    gap: 0.7rem;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 0;
+  }
+
+  .section-head {
+    display: flex;
+    flex: 1;
     align-items: center;
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .section-index span { color: var(--accent); }
-  .availability { display: flex; align-items: center; gap: 0.55rem; margin-top: 3.25rem; color: var(--muted); font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; }
-  .live-dot, .profile-card::after { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #4db285; box-shadow: 0 0 0 4px color-mix(in srgb, #4db285 14%, transparent); }
-  .live-dot { animation: pulse 2.2s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 0.55; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.15); } }
-
-  h1, h2, h3, p { margin: 0; }
-  h1 { margin-top: 1.5rem; font-family: var(--serif); font-size: clamp(4.3rem, 9.5vw, 8.8rem); font-weight: 400; letter-spacing: -0.055em; line-height: 0.86; }
-  h1 em { color: var(--accent); font-style: italic; }
-  .hero-dot { color: var(--accent); }
-  .hero-description { max-width: 31rem; margin-top: 2.25rem; color: var(--muted); font-size: 1.05rem; line-height: 1.65; text-wrap: pretty; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
-  .button { display: inline-flex; align-items: center; justify-content: space-between; gap: 1.75rem; min-height: 3.1rem; padding: 0.8rem 1.1rem; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 0.82rem; font-weight: 600; transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
-  .button:hover { transform: translateY(-3px); }
-  .button-dark { border-color: var(--ink); background: var(--ink); color: var(--bg); }
-  .button-dark:hover { border-color: var(--accent); background: var(--accent); color: #fff; }
-  .button-light { background: color-mix(in srgb, var(--surface) 55%, transparent); color: var(--ink); }
-  .button-light:hover { border-color: var(--ink); background: var(--surface); }
-  .button-arrow { font-size: 1.1rem; line-height: 0.8; }
-  .hero-details { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 4.75rem; color: var(--faint); font-family: var(--mono); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .hero-details span { display: flex; align-items: center; gap: 0.45rem; }
-  .hero-details i { width: 0.3rem; height: 0.3rem; border-radius: 50%; background: var(--accent); }
-
-  .profile-card { position: relative; max-width: 24rem; margin-inline: auto; padding: 0.35rem 0; background: transparent; transform: perspective(1000px) rotateX(var(--card-rotate-x, 0deg)) rotateY(var(--card-rotate-y, 0deg)); transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
-  .profile-card-top, .profile-footer, .project-card-top, .contribution-topline, .contribution-bottomline, .contact-meta { display: flex; align-items: center; justify-content: space-between; }
-  .card-label, .card-corner { color: var(--faint); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; }
-  .card-corner { font-size: 0.9rem; color: var(--accent); }
-  .avatar-wrap { position: relative; display: grid; width: 176px; height: 176px; margin: 3.1rem auto 1.5rem; place-items: center; }
-  .avatar-wrap img { position: relative; z-index: 1; width: 154px; height: 154px; border: 4px solid var(--surface); border-radius: 50%; object-fit: cover; filter: saturate(0.82); transform: translate3d(var(--avatar-x, 0px), var(--avatar-y, 0px), 0) scale(1.01); transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease; }
-  .avatar-orbit { position: absolute; inset: 0; border: 1px dashed var(--line-strong); border-radius: 50%; animation: spin 18s linear infinite; }
-  .avatar-orbit::before { position: absolute; top: -0.2rem; left: 50%; width: 0.4rem; height: 0.4rem; border-radius: 50%; content: ""; background: var(--accent); }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .avatar-status { position: absolute; z-index: 2; right: 0.55rem; bottom: 0.65rem; width: 0.95rem; height: 0.95rem; border: 3px solid var(--surface); border-radius: 50%; background: #4db285; }
-  .profile-identity { text-align: center; }
-  .profile-identity h2 { font-family: var(--serif); font-size: 1.8rem; font-weight: 400; letter-spacing: -0.03em; }
-  .profile-identity p { margin-top: 0.25rem; color: var(--muted); font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; }
-  .profile-rule { height: 1px; margin: 1.5rem 0 1.1rem; background: var(--line); }
-  .profile-highlight { display: flex; align-items: center; gap: 0.8rem; margin-top: 0.25rem; }
-  .profile-highlight strong { font-family: var(--serif); font-size: 3.2rem; font-weight: 400; letter-spacing: -0.06em; line-height: 0.8; }
-  .profile-highlight strong span { color: var(--accent); }
-  .profile-highlight > span { color: var(--muted); font-family: var(--mono); font-size: 0.58rem; line-height: 1.35; text-transform: uppercase; }
-  .profile-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1.3rem; padding-top: 1rem; border-top: 1px solid var(--line); }
-  .profile-facts div + div { padding-left: 0.75rem; border-left: 1px solid var(--line); }
-  .profile-facts span { display: block; margin-bottom: 0.35rem; color: var(--faint); font-family: var(--mono); font-size: 0.54rem; text-transform: uppercase; }
-  .profile-facts strong { display: block; font-size: 0.7rem; font-weight: 500; line-height: 1.35; }
-  .profile-facts strong i { display: inline-block; width: 0.38rem; height: 0.38rem; margin-right: 0.25rem; border-radius: 50%; background: #4db285; }
-  .profile-tools { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1.1rem; }
-  .profile-tools span { padding: 0.28rem 0.45rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-family: var(--mono); font-size: 0.56rem; }
-  .profile-footer { gap: 0.75rem; margin-top: 1.5rem; padding-top: 0.9rem; border-top: 1px solid var(--line); color: var(--faint); font-family: var(--mono); font-size: 0.58rem; }
-  .profile-footer a { color: var(--accent); }
-
-  .github-section, .work-section, .about-section, .stack-section, .contact-section { padding-top: clamp(5rem, 10vw, 9rem); }
-  .section-heading { display: flex; justify-content: space-between; gap: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
-  .heading-aside { color: var(--faint); font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; }
-  .github-intro, .section-title-row { display: flex; align-items: end; justify-content: space-between; gap: 3rem; margin-top: 2.5rem; }
-  .github-intro h2, .section-title-row h2 { font-family: var(--serif); font-size: clamp(3rem, 6.8vw, 6.2rem); font-weight: 400; letter-spacing: -0.055em; line-height: 0.9; }
-  .github-intro p, .section-title-row > p { max-width: 19rem; color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
-  .github-total { min-width: 10rem; text-align: right; }
-  .github-total strong { display: block; color: var(--accent); font-family: var(--serif); font-size: 2.9rem; font-weight: 400; line-height: 0.9; }
-  .github-total span { display: block; margin-top: 0.55rem; color: var(--muted); font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .contribution-card { margin-top: 2.5rem; padding: clamp(1rem, 3vw, 1.7rem); border: 1px solid var(--line); background: var(--surface); }
-  .contribution-topline { color: var(--faint); font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; }
-  .month-labels { display: grid; grid-template-columns: repeat(12, 1fr); margin: 1.4rem 0 0.55rem 2.15rem; color: var(--muted); font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; }
-  .month-labels span { text-align: center; }
-  .contribution-grid { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: clamp(3px, 0.45vw, 6px); min-height: 92px; }
-  .contribution { display: block; min-width: 5px; aspect-ratio: 1; border-radius: 2px; background: var(--surface-soft); transition: transform 0.2s ease, background-color 0.5s ease; }
-  .contribution:hover { z-index: 1; transform: scale(1.45); outline: 2px solid var(--accent); }
-  .contribution-tooltip { position: fixed; z-index: 30; pointer-events: none; max-width: 16rem; padding: 0.55rem 0.7rem; border: 1px solid var(--line-strong); border-radius: 0.45rem; background: var(--ink); color: var(--bg); font-family: var(--mono); font-size: 0.62rem; line-height: 1.2; white-space: nowrap; opacity: 0; transform: translate(-50%, -125%) translateY(6px) scale(0.96); transition: opacity 0.16s ease, transform 0.16s ease; }
-  .contribution-tooltip[data-visible="true"] { opacity: 1; transform: translate(-50%, -125%) translateY(0) scale(1); }
-  .level-1 { background: color-mix(in srgb, var(--accent) 23%, var(--surface-soft)); }
-  .level-2 { background: color-mix(in srgb, var(--accent) 45%, var(--surface-soft)); }
-  .level-3 { background: color-mix(in srgb, var(--accent) 70%, var(--surface-soft)); }
-  .level-4 { background: var(--accent); }
-  .contribution-bottomline { justify-content: flex-end; gap: 0.45rem; margin-top: 1.25rem; color: var(--faint); font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; }
-  .legend { display: flex; gap: 3px; margin: 0 0.1rem; }
-  .legend .contribution { width: 0.65rem; min-width: 0; }
-  .contribution-bottomline a { margin-left: auto; color: var(--ink); border-bottom: 1px solid var(--ink); }
-
-  .section-title-row { align-items: end; }
-  .section-title-row > p { margin-bottom: 0.3rem; }
-  .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 3.5rem; }
-  .project-card { position: relative; display: flex; min-height: 29rem; flex-direction: column; padding: 1.25rem; overflow: hidden; border: 1px solid var(--line); background: var(--surface); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease; }
-  .project-card:hover { z-index: 1; transform: translateY(-8px) rotate(-0.4deg); box-shadow: 0 25px 60px color-mix(in srgb, var(--ink) 10%, transparent); }
-  .project-primary { grid-row: span 2; min-height: 60rem; background: #f1e9dd; color: #1f1b18; }
-  .project-warm { background: #e3e9df; color: #1e241f; }
-  .project-dark { background: #242426; color: #f4f1eb; }
-  :root[data-theme="dark"] .project-primary { background: #3b3028; color: #f6eee4; }
-  :root[data-theme="dark"] .project-warm { background: #283329; color: #eff5ed; }
-  :root[data-theme="dark"] .project-dark { background: #2b2b2e; }
-  .project-card-top { position: relative; z-index: 1; font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .project-card-top span:last-child { opacity: 0.58; }
-  .project-art { position: relative; flex: 1; min-height: 13rem; margin: 2rem -0.4rem 2.2rem; overflow: hidden; border: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
-  .project-primary .project-art { min-height: 34rem; background: #e5d4c2; }
-  .project-primary .art-copy { bottom: 12%; left: 12%; font-size: clamp(2.8rem, 6vw, 5.5rem); }
-  .project-warm .project-art { background: #cdd9ca; }
-  .project-dark .project-art { background: #171719; }
-  :root[data-theme="dark"] .project-primary .project-art { background: #524135; }
-  :root[data-theme="dark"] .project-warm .project-art { background: #384a3b; }
-  :root[data-theme="dark"] .project-dark .project-art { background: #151517; }
-  .art-window { position: absolute; top: 15%; left: 11%; width: 78%; height: 70%; border: 1px solid rgba(31, 27, 24, 0.3); background: rgba(255,255,255,0.25); box-shadow: 22px 22px 0 rgba(31, 27, 24, 0.08); }
-  .art-window i { display: block; width: 6px; height: 6px; margin: 11px 4px 0; border-radius: 50%; background: #b96848; }
-  .art-window i + i { position: absolute; top: 0; left: 14px; margin-left: 0; background: #d3a05c; }
-  .art-window i + i + i { left: 28px; background: #6e8f72; }
-  .art-line { position: absolute; left: 13%; height: 1px; background: rgba(31, 27, 24, 0.32); transform: rotate(-22deg); }
-  .line-one { top: 54%; width: 35%; }
-  .line-two { top: 61%; left: 44%; width: 29%; transform: rotate(38deg); }
-  .art-orb { position: absolute; right: 9%; bottom: 12%; width: 4rem; height: 4rem; border: 1px solid #b96848; border-radius: 50%; background: #c77e5d; box-shadow: 0 0 0 13px rgba(199, 126, 93, 0.15); }
-  .art-sun { position: absolute; top: 12%; right: 15%; width: 4.5rem; height: 4.5rem; border-radius: 50%; background: #dca25e; box-shadow: 0 0 0 18px rgba(220,162,94,0.16); }
-  .art-arch { position: absolute; bottom: -15%; left: 14%; width: 72%; height: 72%; border: 1px solid rgba(30, 36, 31, 0.48); border-bottom: 0; border-radius: 14rem 14rem 0 0; }
-  .art-copy { position: absolute; bottom: 15%; left: 17%; font-family: var(--serif); font-size: clamp(1.7rem, 3.5vw, 3.2rem); line-height: 0.82; }
-  .art-copy em { color: #b36845; font-size: 0.8em; }
-  .project-dark .art-orb { border-color: #ff7254; background: #c77e5d; box-shadow: 0 0 0 13px rgba(255, 114, 84, 0.18); }
-  .project-dark .art-line { background: rgba(244, 241, 235, 0.35); }
-  .art-terminal { position: absolute; top: 20%; left: 13%; padding: 1.2rem; color: #d4d1c8; font-family: var(--mono); font-size: clamp(0.72rem, 1.4vw, 1rem); line-height: 1.8; }
-  .art-terminal b { color: #ff7254; font-weight: 400; }
-  .art-terminal i { color: #dca25e; font-style: normal; }
-  .art-terminal small { color: #81b18c; }
-  .art-pixel { position: absolute; right: 15%; bottom: 16%; width: 5rem; height: 5rem; border: 1px solid #ff7254; box-shadow: 8px 8px 0 #ff7254, 16px 16px 0 rgba(255,114,84,0.35); transform: rotate(45deg); }
-  .project-content { position: relative; z-index: 1; }
-  .project-content h3 { font-family: var(--serif); font-size: 2.4rem; font-weight: 400; letter-spacing: -0.04em; line-height: 0.9; }
-  .project-content p { max-width: 30rem; margin-top: 0.75rem; font-size: 0.88rem; line-height: 1.55; opacity: 0.72; }
-  .tech-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.1rem; }
-  .tech-list span { padding: 0.3rem 0.5rem; border: 1px solid currentColor; border-radius: 999px; font-family: var(--mono); font-size: 0.56rem; opacity: 0.7; }
-  .about-grid { display: grid; grid-template-columns: minmax(250px, 0.8fr) minmax(0, 1.2fr); gap: clamp(3rem, 10vw, 10rem); margin-top: 3.2rem; }
-  .about-copy h2, .contact-card h2 { font-family: var(--serif); font-size: clamp(3.4rem, 6.7vw, 6.4rem); font-weight: 400; letter-spacing: -0.06em; line-height: 0.85; }
-  .about-copy h2 em, .stack-heading h2 em, .contact-card h2 em { color: var(--accent); font-style: italic; }
-  .about-copy > p { max-width: 25rem; margin-top: 2rem; color: var(--muted); font-size: 0.95rem; line-height: 1.65; }
-  .about-copy > p + p { margin-top: 1rem; }
-  .text-link { display: inline-flex; gap: 0.75rem; align-items: center; margin-top: 2rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; transition: gap 0.25s ease, color 0.25s ease; }
-  .text-link:hover { gap: 1.15rem; color: var(--accent); border-color: var(--accent); }
-  .timeline { border-top: 1px solid var(--line); }
-  .timeline-item { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1.2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
-  .timeline-year { color: var(--accent); font-family: var(--mono); font-size: 0.63rem; text-transform: uppercase; }
-  .timeline-item h3 { font-size: 1rem; font-weight: 600; }
-  .timeline-company { margin-top: 0.2rem; color: var(--muted); font-family: var(--mono); font-size: 0.64rem; text-transform: uppercase; }
-  .timeline-description { margin-top: 0.85rem; color: var(--muted); font-size: 0.86rem; line-height: 1.6; }
-
-  .stack-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
-  .stack-heading h2 { font-family: var(--serif); font-size: 1.55rem; font-style: italic; font-weight: 400; letter-spacing: -0.03em; line-height: 1; }
-  .stack-controls { display: flex; gap: 0.25rem; padding: 0.25rem; border: 1px solid var(--line); border-radius: 0.75rem; background: color-mix(in srgb, var(--surface-soft) 72%, transparent); }
-  .stack-control { display: grid; width: 1.7rem; height: 1.7rem; padding: 0; place-items: center; cursor: pointer; border: 0; border-radius: 0.5rem; background: transparent; color: var(--muted); transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease; }
-  .stack-control:hover { color: var(--ink); transform: translateY(-1px); }
-  .stack-control.active { background: var(--surface); box-shadow: 0 1px 5px color-mix(in srgb, var(--ink) 10%, transparent); color: var(--ink); }
-  .stack-control svg { width: 0.85rem; height: 0.85rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
-  .stack-list { margin-top: 3.5rem; border-top: 1px solid var(--line); }
-  .stack-row { display: grid; grid-template-columns: 10rem minmax(0, 1fr); gap: 1.25rem; align-items: start; padding: 1.2rem 0 1.3rem; border-bottom: 1px solid var(--line); transition: background 0.3s ease, padding 0.3s ease; }
-  .stack-row:hover { padding-inline: 0.8rem; background: color-mix(in srgb, var(--surface) 62%, transparent); }
-  .stack-label { display: flex; align-items: baseline; gap: 0.7rem; padding-top: 0.35rem; }
-  .stack-number { color: var(--faint); font-family: var(--mono); font-size: 0.63rem; }
-  .stack-label strong { font-size: 0.9rem; font-weight: 500; }
-  .stack-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .stack-chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.62rem; border-radius: 999px; background: color-mix(in srgb, var(--surface-soft) 82%, transparent); color: var(--ink); font-family: var(--mono); font-size: 0.67rem; line-height: 1; transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease; }
-  .stack-chip:hover { background: var(--ink); color: var(--bg); transform: translateY(-2px); }
-  .chip-icon { width: 0.76rem; height: 0.76rem; flex: 0 0 auto; fill: currentColor; }
-  .chip-custom-icon { display: inline-grid; width: 0.76rem; height: 0.76rem; place-items: center; font-size: 0.6rem; font-weight: 500; letter-spacing: -0.14em; }
-  .stack-view-all { display: flex; width: max-content; align-items: center; gap: 0.55rem; margin: 1.8rem auto 0; padding: 0.7rem 1rem; border-radius: 0.7rem; background: var(--surface-soft); font-size: 0.8rem; transition: background 0.25s ease, transform 0.25s ease; }
-  .stack-view-all:hover { background: var(--ink); color: var(--bg); transform: translateY(-2px); }
-  .stack-view-all span { color: var(--accent); }
-  .stack-list.stack-grid-view { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; border-top: 0; }
-  .stack-grid-view .stack-row { display: flex; min-height: 12rem; flex-direction: column; padding: 1.25rem; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 66%, transparent); }
-  .stack-grid-view .stack-row:hover { padding: 1.25rem; }
-  .stack-grid-view .stack-label { width: 100%; padding-top: 0; }
-  .stack-grid-view .stack-chips { margin-top: auto; }
-
-  .contact-card { position: relative; min-height: 35rem; margin-top: 3.3rem; padding: clamp(1.5rem, 5vw, 4.5rem); overflow: hidden; background: var(--ink); color: var(--bg); }
-  .contact-card::before, .contact-card::after { position: absolute; border: 1px solid color-mix(in srgb, var(--bg) 18%, transparent); border-radius: 50%; content: ""; pointer-events: none; }
-  .contact-card::before { right: -8rem; bottom: -13rem; width: 33rem; height: 33rem; }
-  .contact-card::after { right: 7rem; bottom: -7rem; width: 14rem; height: 14rem; }
-  .contact-card .section-index { position: relative; z-index: 1; color: color-mix(in srgb, var(--bg) 52%, transparent); }
-  .contact-card .section-index span { color: var(--accent); }
-  .contact-card h2 { position: relative; z-index: 1; max-width: 40rem; margin-top: 4rem; font-size: clamp(4rem, 8vw, 8rem); }
-  .contact-card > p { position: relative; z-index: 1; max-width: 28rem; margin-top: 2rem; color: color-mix(in srgb, var(--bg) 62%, transparent); font-size: 0.95rem; line-height: 1.6; }
-  .contact-card .button { position: relative; z-index: 1; max-width: 100%; margin-top: 2rem; overflow-wrap: anywhere; }
-  .contact-card .button-dark { background: var(--bg); color: var(--ink); }
-  .contact-card .button-dark:hover { background: var(--accent); color: #fff; }
-  .contact-decoration { position: absolute; top: 2rem; right: 4rem; z-index: 0; width: 10rem; height: 10rem; color: var(--accent); }
-  .contact-decoration span { position: absolute; top: 1rem; right: 1.3rem; font-size: 2rem; animation: spin 15s linear infinite; }
-  .contact-decoration i, .contact-decoration b { position: absolute; border: 1px solid color-mix(in srgb, var(--bg) 22%, transparent); border-radius: 50%; }
-  .contact-decoration i { inset: 0; }
-  .contact-decoration b { inset: 1.8rem; }
-  .contact-meta { position: absolute; right: clamp(1.5rem, 5vw, 4.5rem); bottom: 1.5rem; left: clamp(1.5rem, 5vw, 4.5rem); z-index: 1; color: color-mix(in srgb, var(--bg) 42%, transparent); font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-  .site-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.3rem 0 2.5rem; color: var(--faint); font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .site-footer a { color: var(--ink); }
-  .site-footer a:hover { color: var(--accent); }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-copy > *, .profile-card { animation: enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
-    .hero-copy > :nth-child(2) { animation-delay: 0.08s; }
-    .hero-copy > :nth-child(3) { animation-delay: 0.14s; }
-    .hero-copy > :nth-child(4) { animation-delay: 0.2s; }
-    .hero-copy > :nth-child(5) { animation-delay: 0.26s; }
-    .hero-copy > :nth-child(6) { animation-delay: 0.32s; }
-    .profile-card { animation-delay: 0.16s; }
-    @keyframes enter { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    gap: 0.25rem;
   }
 
-  @media (max-width: 780px) {
-    .site-shell { width: min(100% - 2rem, 680px); }
-    .topbar { min-height: 72px; }
-    .brand-name, .theme-label, .main-nav a:nth-child(3) { display: none; }
-    .main-nav { gap: 1.25rem; margin-left: auto; margin-right: 1.25rem; }
-    .main-nav a::after { bottom: -0.35rem; }
-    .hero { grid-template-columns: 1fr; gap: 4rem; min-height: auto; padding-top: 4.5rem; }
-    .availability { margin-top: 2.5rem; }
-    h1 { font-size: clamp(4rem, 17vw, 7rem); }
-    .hero-details { margin-top: 3.5rem; }
-    .profile-card { max-width: 24rem; }
-    .github-intro, .section-title-row { display: block; }
-    .stack-heading { display: flex; }
-    .github-total { margin-top: 2rem; text-align: left; }
-    .github-intro h2, .section-title-row h2 { font-size: clamp(3.5rem, 14vw, 6rem); }
-    .github-intro p, .section-title-row > p { margin-top: 1.25rem; }
-    .contribution-card { margin-top: 2rem; }
-    .project-primary { grid-row: auto; min-height: 38rem; }
-    .project-grid { grid-template-columns: 1fr; }
-    .project-art, .project-primary .project-art { min-height: 17rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 4rem; }
-    .about-copy h2 { font-size: clamp(4rem, 15vw, 6rem); }
-    .stack-row { grid-template-columns: 8rem minmax(0, 1fr); gap: 0.75rem; }
-    .stack-list.stack-grid-view { grid-template-columns: 1fr; }
-    .contact-card h2 { margin-top: 3rem; font-size: clamp(4rem, 15vw, 7rem); }
-    .contact-decoration { right: -2rem; opacity: 0.75; }
+  .dot {
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.3s ease;
   }
 
-  @media (max-width: 520px) {
-    .topbar-actions { gap: 0.75rem; }
-    .main-nav { gap: 0.8rem; margin-right: 0.7rem; }
-    .main-nav a { font-size: 0.6rem; }
-    .section-heading { align-items: start; flex-direction: column; gap: 0.5rem; }
-    .section-title-row h2, .github-intro h2 { font-size: 3.55rem; }
-    .month-labels { margin-left: 0; font-size: 0.48rem; }
-    .contribution-grid { gap: 2px; }
-    .contribution-bottomline { flex-wrap: wrap; }
-    .contribution-bottomline a { width: 100%; margin: 0.8rem 0 0; }
-    .timeline-item { grid-template-columns: 1fr; gap: 0.55rem; }
-    .stack-row { grid-template-columns: 1fr; gap: 0.7rem; }
-    .stack-label { padding-top: 0; }
-    .site-footer { align-items: start; flex-direction: column; }
-    .contact-meta { align-items: start; flex-direction: column; gap: 0.35rem; }
+  .section[data-active="true"] .dot {
+    animation: dot-beat 2.4s ease-in-out infinite;
+    color: var(--foreground);
+  }
+
+  @keyframes dot-beat {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-1px) scale(1.15);
+    }
+  }
+
+  .anchor {
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    opacity: 0;
+    transition: background-color 0.15s, color 0.15s, opacity 0.15s;
+  }
+
+  .section-head:hover .anchor {
+    opacity: 1;
+  }
+
+  .anchor:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+
+  /* Abertura: avatar e nome entram em sequência */
+  .intro-head {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .avatar {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    animation: enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    border-radius: 9999px;
+    isolation: isolate;
+    perspective: 400px;
+    transform-style: preserve-3d;
+    transition: border-radius 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1));
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Brilho especular que acompanha o ponteiro */
+  .avatar-glow {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at var(--glow-x, 50%) var(--glow-y, 50%),
+      color-mix(in oklab, var(--foreground) 45%, transparent),
+      transparent 55%
+    );
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    transition: opacity 0.35s ease;
+  }
+
+  .avatar[data-hover="true"] {
+    border-radius: 38%;
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .avatar[data-hover="true"] .avatar-glow {
+    opacity: 1;
+  }
+
+  h1 {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.375;
+    white-space: nowrap;
+  }
+
+  h1 span {
+    display: inline-block;
+    animation: enter 0.6s ease both;
+  }
+
+  h1 span:first-child {
+    animation-delay: 0.15s;
+  }
+
+  h1 span:last-child {
+    animation-delay: 0.25s;
+  }
+
+  .intro-role {
+    margin-top: 0.25rem;
+    animation: enter 0.6s ease both;
+    animation-delay: 0.35s;
+    color: var(--muted-foreground);
+    font-size: 1rem;
+    line-height: 1.375;
+  }
+
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    animation: enter 0.6s ease both;
+    animation-delay: 0.45s;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+  }
+
+  .prose strong {
+    color: var(--primary);
+    font-weight: 500;
+  }
+
+  .intro-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    animation: enter 0.6s ease both;
+    animation-delay: 0.55s;
+  }
+
+  .button {
+    display: inline-flex;
+    height: 2rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 0.15s, border-color 0.15s, translate 0.1s;
+  }
+
+  .button:hover {
+    background: var(--muted);
+  }
+
+  .button:active {
+    translate: 0 1px;
+  }
+
+  .button svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    margin-right: 0.375rem;
+  }
+
+  .button .icon-fill {
+    fill: currentColor;
+  }
+
+  .button .icon-stroke {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .button-primary {
+    border-color: transparent;
+    background: var(--primary);
+    color: var(--background);
+  }
+
+  .button-primary:hover {
+    background: var(--foreground);
+  }
+
+  /* Reveal por scroll: sobe 10px, desfoca 6px, com stagger por item */
+  :global([data-js]) [data-anim] {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(6px);
+  }
+
+  :global([data-js]) [data-anim][data-in="true"] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition:
+      opacity 0.5s ease var(--stagger, 0s),
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 0s),
+      filter 0.5s ease var(--stagger, 0s);
+  }
+
+  .row-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .row h3 {
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .row-links {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .row-text {
+    margin-top: 0.25rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .tec-row {
+    display: flex;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.875rem;
+  }
+
+  .tec-row :global(.tec) {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .tec-row-end {
+    margin-top: 0;
+    justify-content: flex-end;
+  }
+
+  /* Gráfico de contribuições */
+  .activity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .activity-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .activity-top strong {
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+
+  .activity-scroll {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .activity-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .activity-grid {
+    --cell: 9px;
+    display: grid;
+    width: max-content;
+    grid-auto-columns: var(--cell);
+    grid-auto-flow: column;
+    grid-template-rows: repeat(7, var(--cell));
+    gap: 2px;
+  }
+
+  /* As células do gráfico são criadas por JavaScript, então o estilo precisa
+     ser global: seletor com escopo do Astro não alcança elemento criado em runtime. */
+  :global(.cell) {
+    border-radius: 2px;
+    background: var(--cell-0);
+    transition: transform 0.15s ease, background-color 0.3s ease;
+  }
+
+  :global(.cell[data-level="1"]) {
+    background: var(--cell-1);
+  }
+
+  :global(.cell[data-level="2"]) {
+    background: var(--cell-2);
+  }
+
+  :global(.cell[data-level="3"]) {
+    background: var(--cell-3);
+  }
+
+  :global(.cell[data-level="4"]) {
+    background: var(--cell-4);
+  }
+
+  .activity-grid[data-in="true"] :global(.cell) {
+    animation: cell-in 0.4s ease both;
+    animation-delay: var(--d, 0s);
+  }
+
+  /* A onda atravessa o gráfico da esquerda para a direita */
+  @keyframes cell-in {
+    from {
+      opacity: 0;
+      transform: scale(0.35);
+    }
+  }
+
+  .activity-grid :global(.cell:hover) {
+    transform: scale(1.45);
+  }
+
+  /* Faixa com as iniciais dos meses, alinhada às colunas do gráfico */
+  .activity-months {
+    display: grid;
+    width: max-content;
+    margin-bottom: 0.375rem;
+    grid-auto-columns: 9px;
+    grid-auto-flow: column;
+    gap: 2px;
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    line-height: 1;
+  }
+
+  .activity-months :global(span) {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .activity-legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .activity-legend :global(.cell) {
+    width: 9px;
+    height: 9px;
+  }
+
+  .activity-legend span:first-child {
+    margin-right: 0.25rem;
+  }
+
+  .activity-legend span:last-child {
+    margin-left: 0.25rem;
+  }
+
+  .activity-tip {
+    position: fixed;
+    z-index: 60;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    background: var(--card);
+    color: var(--foreground);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    translate: -50% calc(-100% - 8px);
+    transition: opacity 0.15s;
+  }
+
+  .activity-tip[data-visible="true"] {
+    opacity: 1;
+  }
+
+  .row-at {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .row-date {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .row-inline {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .row-inline .row-text {
+    margin: 0;
+    max-width: 70%;
+    text-align: right;
+  }
+
+  .brand-icon {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.375rem;
+    margin-left: 0.125rem;
+    border-radius: 9999px;
+    vertical-align: -3px;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-brand:hover .brand-icon {
+    transform: rotate(-8deg) scale(1.12);
+  }
+
+  .link-xs {
+    font-size: 0.75rem;
+  }
+
+  .link-sm {
+    font-size: 0.875rem;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 0.5rem;
+  }
+
+  .contact-plain {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .site-footer {
+    margin-top: auto;
+  }
+
+  .site-footer > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+    border-top: 1px solid var(--border);
+  }
+
+  .site-footer p {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  #scroll-top {
+    position: fixed;
+    z-index: 50;
+    right: 1rem;
+    bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: var(--muted);
+    color: var(--foreground);
+    transition: background-color 0.3s, opacity 0.3s;
+  }
+
+  #scroll-top svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+  }
+
+  #scroll-top[data-visible="false"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #scroll-top[data-direction="down"] {
+    opacity: 0.3;
+  }
+
+  #scroll-top[data-direction="down"]:hover,
+  #scroll-top[data-direction="up"] {
+    opacity: 1;
+  }
+
+  @media (min-width: 40rem) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    #scroll-top {
+      bottom: 1rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    #scroll-top {
+      right: 2rem;
+      bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    h1 {
+      white-space: normal;
+    }
+
+    .row-inline {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .row-inline .row-text {
+      max-width: 100%;
+      text-align: left;
+    }
+
+    .tec-row :global(.tec) {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .tec-row-end {
+      margin-top: 0.25rem;
+      justify-content: flex-start;
+    }
   }
 </style>
+
+<script>
+  const root = document.documentElement;
+  const themeToggle = document.querySelector<HTMLButtonElement>("#theme-toggle");
+  const scrollTop = document.querySelector<HTMLButtonElement>("#scroll-top");
+  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+
+  const applyTheme = (theme: "dark" | "light") => {
+    root.dataset.theme = theme;
+    if (themeMeta) themeMeta.content = theme === "dark" ? "#050505" : "#ffffff";
+    themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
+    try {
+      localStorage.setItem("lucas-theme", theme);
+    } catch {}
+  };
+
+  applyTheme(root.dataset.theme === "light" ? "light" : "dark");
+
+  themeToggle?.addEventListener("click", (event) => {
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    root.style.setProperty("--theme-x", `${event.clientX}px`);
+    root.style.setProperty("--theme-y", `${event.clientY}px`);
+
+    const startTransition = (document as any).startViewTransition?.bind(document);
+    if (!startTransition || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      applyTheme(next);
+      return;
+    }
+
+    // A transição só executa o callback se a aba estiver compondo frames;
+    // o timeout garante a troca de tema mesmo quando ela fica pendente.
+    let applied = false;
+    const apply = () => {
+      if (applied) return;
+      applied = true;
+      applyTheme(next);
+    };
+
+    startTransition(apply);
+    setTimeout(apply, 300);
+  });
+
+  let lastY = window.scrollY;
+
+  const updateScrollButton = () => {
+    if (!scrollTop) return;
+    const y = window.scrollY;
+    scrollTop.dataset.visible = String(y > 200);
+    if (Math.abs(y - lastY) > 4) {
+      scrollTop.dataset.direction = y > lastY ? "down" : "up";
+      lastY = y;
+    }
+  };
+
+  updateScrollButton();
+  window.addEventListener("scroll", updateScrollButton, { passive: true });
+
+  scrollTop?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  const semMovimento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Reveal por scroll: cada bloco entra quando chega na tela
+  const revelador = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        (entry.target as HTMLElement).dataset.in = "true";
+        revelador.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -8% 0px", threshold: 0.15 }
+  );
+
+  const blocos = [...document.querySelectorAll<HTMLElement>("[data-anim]")];
+  blocos.forEach((el) => revelador.observe(el));
+
+  // Rede de segurança: se o observer não rodar (aba em segundo plano, navegador
+  // sem suporte), o conteúdo aparece de qualquer forma.
+  const revelarTudo = () => {
+    blocos.forEach((el) => {
+      el.dataset.in = "true";
+    });
+    revelador.disconnect();
+  };
+
+  setTimeout(revelarTudo, 1600);
+
+  // Sublinhado do menu: segue o item ativo e acompanha o hover
+  const nav = document.querySelector<HTMLElement>("#nav");
+  const navLine = nav?.querySelector<HTMLElement>(".nav-line");
+  const navLinks = [...(nav?.querySelectorAll<HTMLAnchorElement>(".nav-link") ?? [])];
+  let linkAtivo = navLinks[0];
+
+  const moverLinha = (alvo?: HTMLElement) => {
+    if (!navLine || !alvo) return;
+    navLine.style.width = `${alvo.offsetWidth}px`;
+    navLine.style.transform = `translateX(${alvo.offsetLeft}px)`;
+    navLine.dataset.ready = "true";
+  };
+
+  navLinks.forEach((link) => {
+    link.addEventListener("pointerenter", () => moverLinha(link));
+    link.addEventListener("focus", () => moverLinha(link));
+  });
+
+  nav?.addEventListener("pointerleave", () => moverLinha(linkAtivo));
+
+  // Qual seção está em foco: marca o link e faz o ponto do título pulsar
+  const secoes = [...document.querySelectorAll<HTMLElement>("main > section")];
+  const espia = new IntersectionObserver(
+    (entries) => {
+      const visivel = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visivel) return;
+      const id = visivel.target.id;
+      secoes.forEach((secao) => {
+        secao.dataset.active = String(secao.id === id);
+      });
+      const link = navLinks.find((item) => item.hash === `#${id}`);
+      navLinks.forEach((item) => {
+        item.dataset.active = String(item === link);
+      });
+      if (link) {
+        linkAtivo = link;
+        moverLinha(link);
+      }
+    },
+    { rootMargin: "-25% 0px -55% 0px", threshold: [0.05, 0.3, 0.6] }
+  );
+
+  secoes.forEach((secao) => espia.observe(secao));
+
+  linkAtivo.dataset.active = "true";
+  moverLinha(linkAtivo);
+  // A largura muda quando a fonte termina de carregar
+  document.fonts?.ready.then(() => moverLinha(linkAtivo));
+  window.addEventListener("resize", () => moverLinha(linkAtivo));
+
+  // Leve magnetismo nos ícones: quem está perto do ponteiro cresce e se aproxima
+  document.querySelectorAll<HTMLElement>(".tec-row").forEach((fila) => {
+    const itens = [...fila.querySelectorAll<HTMLElement>(".tec")];
+    let pendente = false;
+
+    const soltar = () => {
+      itens.forEach((item) => {
+        item.style.transform = "";
+      });
+    };
+
+    fila.addEventListener("pointermove", (event) => {
+      if (semMovimento() || pendente) return;
+      pendente = true;
+      requestAnimationFrame(() => {
+        pendente = false;
+        itens.forEach((item) => {
+          const box = item.getBoundingClientRect();
+          const centro = box.left + box.width / 2;
+          const distancia = event.clientX - centro;
+          const alcance = 90;
+          const forca = Math.max(0, 1 - Math.abs(distancia) / alcance);
+          if (forca === 0) {
+            item.style.transform = "";
+            return;
+          }
+          item.style.transform = `translateX(${distancia * 0.06 * forca}px) scale(${1 + 0.1 * forca})`;
+        });
+      });
+    });
+
+    fila.addEventListener("pointerleave", soltar);
+    fila.addEventListener("pointercancel", soltar);
+  });
+
+  // Foto: inclina de leve na direção do ponteiro, com brilho acompanhando
+  const avatar = document.querySelector<HTMLElement>("#avatar");
+
+  avatar?.addEventListener("pointermove", (event) => {
+    if (semMovimento()) return;
+    const box = avatar.getBoundingClientRect();
+    const x = (event.clientX - box.left) / box.width - 0.5;
+    const y = (event.clientY - box.top) / box.height - 0.5;
+    avatar.dataset.hover = "true";
+    avatar.style.setProperty("--tilt-y", `${x * 12}deg`);
+    avatar.style.setProperty("--tilt-x", `${y * -12}deg`);
+    avatar.style.setProperty("--tilt-scale", "1.04");
+    avatar.style.setProperty("--glow-x", `${(x + 0.5) * 100}%`);
+    avatar.style.setProperty("--glow-y", `${(y + 0.5) * 100}%`);
+  });
+
+  const soltarAvatar = () => {
+    if (!avatar) return;
+    delete avatar.dataset.hover;
+    avatar.style.setProperty("--tilt-y", "0deg");
+    avatar.style.setProperty("--tilt-x", "0deg");
+    avatar.style.setProperty("--tilt-scale", "1");
+  };
+
+  avatar?.addEventListener("pointerleave", soltarAvatar);
+  avatar?.addEventListener("pointercancel", soltarAvatar);
+
+  // Contribuições do GitHub
+  const grid = document.querySelector<HTMLDivElement>("#contrib-grid");
+  const total = document.querySelector<HTMLElement>("#contrib-total");
+  const status = document.querySelector<HTMLElement>("#contrib-status");
+  const tip = document.querySelector<HTMLDivElement>("#contrib-tip");
+
+  const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+
+  const formatarData = (iso: string) => {
+    const [ano, mes, dia] = iso.split("-");
+    return `${dia} ${meses[Number(mes) - 1]} ${ano}`;
+  };
+
+  const renderContribuicoes = (dias: { date: string; count: number; level: number }[]) => {
+    if (!grid) return;
+    const fragment = document.createDocumentFragment();
+    // Preenche o começo para a primeira coluna alinhar com o dia da semana correto
+    const offset = new Date(`${dias[0].date}T12:00:00`).getDay();
+    for (let i = 0; i < offset; i += 1) {
+      const vazio = document.createElement("span");
+      vazio.className = "cell";
+      vazio.dataset.level = "0";
+      vazio.style.visibility = "hidden";
+      fragment.appendChild(vazio);
+    }
+    dias.forEach((dia, indice) => {
+      const cell = document.createElement("span");
+      const coluna = Math.floor((indice + offset) / 7);
+      const linha = (indice + offset) % 7;
+      cell.className = "cell";
+      cell.dataset.level = String(Math.min(4, Math.max(0, Number(dia.level) || 0)));
+      cell.dataset.date = dia.date;
+      cell.dataset.count = String(dia.count);
+      cell.style.setProperty("--d", `${coluna * 9 + linha * 22}ms`);
+      fragment.appendChild(cell);
+    });
+    grid.replaceChildren(fragment);
+    const colunasTotais = Math.ceil((dias.length + offset) / 7);
+    grid.parentElement?.scrollTo({ left: grid.scrollWidth });
+
+    // Faixa de meses: um rótulo por vez que o mês virar
+    const faixa = document.querySelector<HTMLElement>("#contrib-months");
+    if (faixa) {
+      const marcos: { coluna: number; mes: number }[] = [];
+      dias.forEach((dia, indice) => {
+        const mes = Number(dia.date.split("-")[1]);
+        if (marcos[marcos.length - 1]?.mes === mes) return;
+        marcos.push({ coluna: Math.floor((indice + offset) / 7), mes });
+      });
+
+      faixa.replaceChildren(
+        ...marcos.map((marco, i) => {
+          const largura = (marcos[i + 1]?.coluna ?? colunasTotais) - marco.coluna;
+          const rotulo = document.createElement("span");
+          rotulo.style.gridColumn = `${marco.coluna + 1} / span ${Math.max(1, largura)}`;
+          rotulo.textContent = largura >= 2 ? meses[marco.mes - 1] : "";
+          return rotulo;
+        })
+      );
+    }
+
+    const onda = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          grid.dataset.in = "true";
+          onda.disconnect();
+        });
+      },
+      { threshold: 0.2 }
+    );
+    onda.observe(grid);
+    setTimeout(() => {
+      grid.dataset.in = "true";
+      onda.disconnect();
+    }, 1600);
+  };
+
+  const posicionarTip = (cell: HTMLElement) => {
+    if (!tip) return;
+    const bounds = cell.getBoundingClientRect();
+    tip.style.left = `${bounds.left + bounds.width / 2}px`;
+    tip.style.top = `${bounds.top}px`;
+  };
+
+  grid?.addEventListener("pointerover", (event) => {
+    const cell = (event.target as Element)?.closest<HTMLElement>(".cell");
+    if (!cell?.dataset.date || !tip) return;
+    const count = Number(cell.dataset.count) || 0;
+    tip.textContent = `${formatarData(cell.dataset.date)} · ${count} ${count === 1 ? "contribuição" : "contribuições"}`;
+    posicionarTip(cell);
+    tip.dataset.visible = "true";
+  });
+
+  grid?.addEventListener("pointerleave", () => {
+    if (tip) tip.dataset.visible = "false";
+  });
+
+  fetch("https://github-contributions-api.jogruber.de/v4/LucasCavalheri?y=last")
+    .then((response) => {
+      if (!response.ok) throw new Error("contribuições indisponíveis");
+      return response.json();
+    })
+    .then((data) => {
+      const dias = Array.isArray(data.contributions) ? data.contributions.slice(-371) : [];
+      if (!dias.length) throw new Error("sem dados");
+      const soma = dias.reduce((acc: number, dia: { count: number }) => acc + (Number(dia.count) || 0), 0);
+      if (total) total.textContent = soma.toLocaleString("pt-BR");
+      renderContribuicoes(dias);
+    })
+    .catch(() => {
+      if (total) total.textContent = "—";
+      if (status) status.textContent = "ver no GitHub";
+    });
+</script>
