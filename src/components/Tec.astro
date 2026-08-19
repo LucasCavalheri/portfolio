@@ -1,16 +1,31 @@
 ---
+import { legivel, FUNDO_CLARO, FUNDO_ESCURO } from "../data/cor";
+import type { Tecnologia } from "../data/tec";
+
 interface Props {
-  item: { id: string; nome: string };
+  item: Tecnologia;
   label?: boolean;
 }
 
 const { item, label = false } = Astro.props;
+
+// simple-icons entrega o hex sem cerquilha
+const marca = item.hex.startsWith("#") ? item.hex : `#${item.hex}`;
 ---
 
-<span class="tec" title={item.nome}>
+<a
+  class="tec"
+  href={item.url}
+  target="_blank"
+  rel="noopener"
+  data-tec={item.nome}
+  data-sobre={item.sobre}
+  aria-label={`${item.nome}: ${item.sobre}`}
+  style={`--marca-escura: ${legivel(marca, FUNDO_ESCURO)}; --marca-clara: ${legivel(marca, FUNDO_CLARO)}`}
+>
   <svg class="tec-icon" aria-hidden="true"><use href={`#i-${item.id}`} /></svg>
   {label ? <span>{item.nome}</span> : <span class="sr-only">{item.nome}</span>}
-</span>
+</a>
 
 <style>
   .tec {
@@ -25,7 +40,8 @@ const { item, label = false } = Astro.props;
     will-change: transform;
   }
 
-  .tec:hover {
+  .tec:hover,
+  .tec:focus-visible {
     color: var(--primary);
   }
 
@@ -34,6 +50,17 @@ const { item, label = false } = Astro.props;
     height: 0.875rem;
     flex-shrink: 0;
     fill: currentColor;
+    transition: color 0.25s ease;
   }
 
+  /* No hover o ícone assume a cor da marca, já ajustada ao fundo do tema */
+  :global(:root[data-theme="dark"]) .tec:hover .tec-icon,
+  :global(:root[data-theme="dark"]) .tec:focus-visible .tec-icon {
+    color: var(--marca-escura);
+  }
+
+  :global(:root[data-theme="light"]) .tec:hover .tec-icon,
+  :global(:root[data-theme="light"]) .tec:focus-visible .tec-icon {
+    color: var(--marca-clara);
+  }
 </style>

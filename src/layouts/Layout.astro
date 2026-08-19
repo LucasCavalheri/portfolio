@@ -79,12 +79,18 @@ const dadosEstruturados = {
     <slot />
     <Footer />
     <ScrollTop />
+    <div class="tec-tip" id="tec-tip" role="tooltip" aria-hidden="true" data-visible="false">
+      <strong data-titulo></strong>
+      <span data-texto></span>
+      <span class="tec-tip-acao">abrir site ↗</span>
+    </div>
     <script>
       import "../scripts/tema";
       import "../scripts/reveal";
       import "../scripts/nav";
       import "../scripts/scroll-top";
       import "../scripts/magnetismo";
+      import "../scripts/tec-tooltip";
     </script>
   </body>
 </html>
@@ -104,6 +110,7 @@ const dadosEstruturados = {
     --cell-2: #6b6b6a;
     --cell-3: #9c9c9a;
     --cell-4: #e6e6e6;
+    --brilho: rgba(255, 255, 255, 0.14);
     color-scheme: dark;
   }
 
@@ -121,6 +128,7 @@ const dadosEstruturados = {
     --cell-2: #96969d;
     --cell-3: #5d5d65;
     --cell-4: #1f1f22;
+    --brilho: rgba(0, 0, 0, 0.07);
     color-scheme: light;
   }
 
@@ -596,6 +604,60 @@ const dadosEstruturados = {
       margin-top: 0.25rem;
       justify-content: flex-start;
     }
+  }
+
+  /* Tooltip das tecnologias */
+  .tec-tip {
+    position: fixed;
+    z-index: 60;
+    display: flex;
+    max-width: min(18rem, calc(100vw - 2rem));
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--card);
+    opacity: 0;
+    pointer-events: none;
+    translate: 0 -100%;
+    transition: opacity 0.18s ease, translate 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .tec-tip[data-lado="abaixo"] {
+    translate: 0 0;
+  }
+
+  .tec-tip[data-visible="true"] {
+    opacity: 1;
+  }
+
+  .tec-tip[data-visible="true"][data-lado="acima"] {
+    translate: 0 calc(-100% - 3px);
+  }
+
+  .tec-tip[data-visible="true"][data-lado="abaixo"] {
+    translate: 0 3px;
+  }
+
+  .tec-tip strong {
+    color: var(--primary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .tec-tip [data-texto] {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    text-wrap: pretty;
+  }
+
+  .tec-tip-acao {
+    margin-top: 0.125rem;
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    opacity: 0.7;
   }
 
   ::view-transition-old(root),

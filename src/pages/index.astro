@@ -249,6 +249,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
           </a>
         </div>
         <div class="activity-scroll">
+          <div class="activity-track">
           <div class="activity-months" id="contrib-months" aria-hidden="true"></div>
           <div
             class="activity-grid"
@@ -256,6 +257,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
             role="img"
             aria-label="Contribuições no GitHub no último ano"
           >
+          </div>
           </div>
         </div>
         <div class="activity-legend">
@@ -449,6 +451,45 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
 
   .activity-scroll::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Um brilho atravessa a grade de vez em quando, de leve */
+  .activity-track {
+    position: relative;
+    width: max-content;
+  }
+
+  .activity-track::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 38%;
+    height: 100%;
+    background: linear-gradient(100deg, transparent, var(--brilho), transparent);
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Começa só depois que a grade entrou na tela e a onda diagonal passou */
+  .activity-track:has(.activity-grid[data-in="true"])::after {
+    animation: passar-luz 9s cubic-bezier(0.45, 0, 0.3, 1) 1.2s infinite;
+  }
+
+  @keyframes passar-luz {
+    0%,
+    6% {
+      opacity: 0;
+      transform: translateX(-110%);
+    }
+    18% {
+      opacity: 1;
+    }
+    44%,
+    100% {
+      opacity: 0;
+      transform: translateX(300%);
+    }
   }
 
   .activity-grid {
