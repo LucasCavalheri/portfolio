@@ -10,18 +10,28 @@ if (botao && rotulo) {
     const email = botao.dataset.email;
     if (!email) return;
     let espera = 1500;
+    // Reinicia a animação de entrada a cada troca de texto
+    const trocar = (texto: string) => {
+      rotulo.textContent = texto;
+      rotulo.style.animation = "none";
+      void rotulo.offsetWidth;
+      rotulo.style.animation = "";
+    };
+
     try {
       await navigator.clipboard.writeText(email);
-      rotulo.textContent = "copiado";
+      botao.dataset.copiado = "true";
+      trocar("copiado");
     } catch {
       // Sem permissão de área de transferência: mostra o e-mail para
       // copiar à mão, e por mais tempo.
-      rotulo.textContent = email;
+      trocar(email);
       espera = 4000;
     }
     window.clearTimeout(voltar);
     voltar = window.setTimeout(() => {
-      rotulo.textContent = textoOriginal;
+      delete botao.dataset.copiado;
+      trocar(textoOriginal);
     }, espera);
   });
 }

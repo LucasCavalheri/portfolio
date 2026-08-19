@@ -94,8 +94,8 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
 ---
 
 <Layout
-  title="Lucas Cavalheri — Desenvolvedor Web Full Stack"
-  description="Lucas Cavalheri é desenvolvedor web full stack. Cria produtos digitais com Ruby on Rails e código que dá gosto de manter."
+  title="Lucas Cavalheri — Desenvolvedor Web Full Stack Pleno"
+  description="Lucas Cavalheri é desenvolvedor web full stack pleno. Cria produtos digitais com Ruby on Rails e código que dá gosto de manter."
 >
   <main class="container">
     <section class="section intro" id="inicio">
@@ -142,12 +142,17 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
           </svg>
           Enviar e-mail
         </a>
-        <button class="button" id="copiar-email" type="button" data-email={emailContato} aria-live="polite">
-          <svg class="icon-stroke" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="9" y="9" width="11" height="11" rx="2"></rect>
-            <path d="M15 6.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h.5"></path>
-          </svg>
-          <span data-rotulo>Copiar e-mail</span>
+        <button class="button botao-copiar" id="copiar-email" type="button" data-email={emailContato} aria-live="polite">
+          <span class="copiar-icones" aria-hidden="true">
+            <svg class="icon-stroke copiar-papel" viewBox="0 0 24 24">
+              <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+              <path d="M15 6.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h.5"></path>
+            </svg>
+            <svg class="icon-stroke copiar-certo" viewBox="0 0 24 24">
+              <path d="m5 13 4.5 4.5L19 7"></path>
+            </svg>
+          </span>
+          <span class="copiar-rotulo"><span data-rotulo>Copiar e-mail</span></span>
         </button>
         <a class="button" href="https://github.com/LucasCavalheri" target="_blank" rel="noopener">
           <svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">
@@ -345,16 +350,30 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     isolation: isolate;
     perspective: 400px;
     transform-style: preserve-3d;
-    transition: border-radius 0.4s ease, box-shadow 0.4s ease;
+    /* o contorno segue a forma, então anima junto com a imagem */
+    transition: border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease;
+  }
+
+  /* border-radius herdado não anima: a imagem e o brilho precisam do
+     valor próprio para o círculo virar squircle com suavidade */
+  .avatar img,
+  .avatar-glow {
+    border-radius: 9999px;
+    transition: border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .avatar img {
     width: 100%;
     height: 100%;
-    border-radius: inherit;
     object-fit: cover;
     transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1));
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .avatar[data-hover="true"] img,
+  .avatar[data-hover="true"] .avatar-glow {
+    border-radius: 34%;
   }
 
   /* Brilho especular que acompanha o ponteiro */
@@ -362,7 +381,6 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     position: absolute;
     z-index: 1;
     inset: 0;
-    border-radius: inherit;
     background: radial-gradient(
       circle at var(--glow-x, 50%) var(--glow-y, 50%),
       color-mix(in oklab, var(--foreground) 45%, transparent),
@@ -375,7 +393,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
   }
 
   .avatar[data-hover="true"] {
-    border-radius: 38%;
+    border-radius: 34%;
     box-shadow: 0 0 0 1px var(--border);
   }
 
@@ -631,6 +649,60 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
   @media (max-width: 30rem) {
     h1 {
       white-space: normal;
+    }
+  }
+
+  /* Botão de copiar: o clipboard vira certo e o rótulo troca subindo */
+  .botao-copiar {
+    position: relative;
+  }
+
+  .copiar-icones {
+    position: relative;
+    display: inline-flex;
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    margin-right: 0.375rem;
+  }
+
+  .copiar-icones svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    transition: opacity 0.28s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .copiar-certo {
+    opacity: 0;
+    transform: scale(0.5) rotate(-12deg);
+  }
+
+  .botao-copiar[data-copiado="true"] .copiar-papel {
+    opacity: 0;
+    transform: scale(0.6) rotate(10deg);
+  }
+
+  .botao-copiar[data-copiado="true"] .copiar-certo {
+    opacity: 1;
+    transform: none;
+  }
+
+  .copiar-rotulo {
+    display: inline-flex;
+    overflow: hidden;
+  }
+
+  .copiar-rotulo span {
+    animation: rotulo-entra 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes rotulo-entra {
+    from {
+      opacity: 0;
+      transform: translateY(0.6em);
     }
   }
 </style>
