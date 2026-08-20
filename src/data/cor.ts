@@ -1,5 +1,5 @@
 // Cores de marca não servem em qualquer fundo: o preto do Next.js
-// desaparece no tema escuro, o amarelo do Hotwire no tema claro. Aqui a cor
+// desaparece no tema escuro, o amarelo do JavaScript no tema claro. Aqui a cor
 // é clareada ou escurecida só o necessário para ficar legível.
 
 const canais = (hex: string) => {
