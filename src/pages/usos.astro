@@ -4,18 +4,25 @@ import Tec from "../components/Tec.astro";
 import { tec } from "../data/tec";
 
 const grupos = [
-  { nome: "Linguagens", itens: [tec.ruby, tec.javascript, tec.typescript] },
-  { nome: "Back-end", itens: [tec.rails, tec.hotwire, tec.node] },
+  { nome: "Linguagens", itens: [tec.javascript, tec.typescript] },
   {
     nome: "Front-end",
-    itens: [tec.react, tec.vue, tec.next, tec.astro, tec.scss, tec.tailwind],
+    itens: [tec.react, tec.next, tec.vue, tec.astro, tec.shadcn, tec.tailwind],
   },
-  { nome: "Testes", itens: [tec.rspec, tec.vitest, tec.playwright] },
-  { nome: "Dados", itens: [tec.postgres, tec.mysql, tec.sqlite, tec.redis, tec.mongo] },
-  { nome: "Cloud", itens: [tec.aws, tec.vercel, tec.cloudflare, tec.hostinger] },
-  { nome: "Desktop", itens: [tec.electron] },
-  { nome: "Ferramentas", itens: [tec.git, tec.github, tec.docker] },
-  { nome: "IA", itens: [tec.cursor, tec.codex, tec.claude] },
+  { nome: "Back-end", itens: [tec.node, tec.express, tec.fastify, tec.nest] },
+  { nome: "ORMs", itens: [tec.drizzle, tec.prisma] },
+  { nome: "Dados", itens: [tec.postgres, tec.mysql, tec.sqlite, tec.mongo] },
+  {
+    nome: "Cloud",
+    itens: [tec.aws, tec.vercel, tec.render, tec.railway, tec.cloudflare, tec.hostinger],
+  },
+  {
+    nome: "Ferramentas",
+    itens: [tec.git, tec.github, tec.docker, tec.vscode, tec.insomnia, tec.npm],
+  },
+  { nome: "IA", itens: [tec.cursor, tec.chatgpt, tec.claudecode, tec.claude] },
+  { nome: "Sistema", itens: [tec.ubuntu, tec.fedora] },
+  { nome: "Trabalho", itens: [tec.slack, tec.meet] },
 ];
 ---
 

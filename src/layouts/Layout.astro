@@ -4,6 +4,7 @@ interface Props {
   description: string;
 }
 
+import { contatos } from "../data/contato";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ScrollTop from "../components/ScrollTop.astro";
@@ -28,7 +29,15 @@ const dadosEstruturados = {
   url: Astro.site?.href,
   image: imagemSocial.href,
   email: "mailto:lucas.dev.carvalho@gmail.com",
-  knowsAbout: ["Ruby", "Ruby on Rails", "Hotwire", "PostgreSQL", "TypeScript", "React"],
+  knowsAbout: [
+    "TypeScript",
+    "JavaScript",
+    "React",
+    "Next.js",
+    "Node.js",
+    "NestJS",
+    "PostgreSQL",
+  ],
   address: {
     "@type": "PostalAddress",
     addressLocality: "Mogi Mirim",
@@ -36,7 +45,9 @@ const dadosEstruturados = {
     addressCountry: "BR",
   },
   worksFor: { "@type": "Organization", name: "Tropical Hub", url: "https://tropicalhub.co" },
-  sameAs: ["https://github.com/LucasCavalheri"],
+  sameAs: contatos
+    .filter((c) => c.url?.startsWith("https://"))
+    .map((c) => c.url),
 };
 ---
 

@@ -65,17 +65,18 @@ const experiencias = [
     url: "https://github.com/LucasCavalheri",
     periodo: "2022 — hoje",
     evidencia: "Produtos sob medida para pessoas e negócios, do primeiro rascunho ao que fica no ar.",
-    tec: [tec.ruby, tec.rails, tec.javascript, tec.typescript, tec.react, tec.next, tec.vue, tec.postgres],
+    tec: [tec.javascript, tec.typescript, tec.react, tec.next, tec.vue, tec.node, tec.postgres],
   },
 ];
 
 // Home fica com o essencial; /usos tem a lista completa.
 const stack = [
-  { nome: "Linguagens", itens: [tec.ruby, tec.javascript, tec.typescript] },
-  { nome: "Back-end", itens: [tec.rails, tec.hotwire, tec.node] },
-  { nome: "Front-end", itens: [tec.react, tec.vue, tec.next, tec.scss, tec.tailwind] },
-  { nome: "IA", itens: [tec.cursor, tec.codex, tec.claude] },
+  { nome: "Linguagens", itens: [tec.javascript, tec.typescript] },
+  { nome: "Front-end", itens: [tec.react, tec.next, tec.vue, tec.tailwind] },
+  { nome: "Back-end", itens: [tec.node, tec.fastify, tec.nest] },
+  { nome: "IA", itens: [tec.cursor, tec.chatgpt, tec.claudecode] },
 ];
+
 
 // o botão de copiar usa o mesmo endereço da lista de contatos
 const emailContato = contatos.find((c) => c.id === "email")!.valor;
@@ -91,7 +92,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
 
 <Layout
   title="Lucas Cavalheri — Desenvolvedor Web Full Stack Pleno"
-  description="Lucas Cavalheri é desenvolvedor web full stack pleno. Cria produtos digitais com Ruby on Rails e código que dá gosto de manter."
+  description="Lucas Cavalheri é desenvolvedor web full stack pleno. Cria produtos digitais com TypeScript, React e Node.js, e código que dá gosto de manter."
 >
   <main class="container">
     <section class="section intro" id="inicio">
@@ -121,9 +122,10 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
           Sou Desenvolvedor Web Full Stack Pleno na <a class="link link-text link-brand" href="https://tropicalhub.co" target="_blank" rel="noopener"><img class="brand-icon" src="/tropical-hub.png" alt="" width="16" height="16" />Tropical Hub</a>, onde cuido de integrações, APIs e painéis administrativos, além dos code reviews e do fluxo de Git da squad.
         </p>
         <p>
-          No trabalho meu dia a dia é <strong>TypeScript</strong> e <strong>React</strong>. Nos
-          projetos próprios é <strong>Ruby</strong> e <strong>Rails</strong>, e é para onde estou
-          levando minha carreira. Em qualquer uma das duas, penso em quem vai manter o código amanhã.
+          Trabalho só no ecossistema <strong>JavaScript</strong> e <strong>TypeScript</strong>:
+          <strong>React</strong> e <strong>Next.js</strong> na frente, <strong>Node.js</strong> com
+          Fastify e NestJS atrás. Uma stack só, do banco à tela, pensando em quem vai manter o
+          código amanhã.
         </p>
         <p>
           Quer trabalhar junto? Veja meu <a class="link link-text" href="/Curriculo-LucasCavalheri.pdf" download>currículo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"></path></svg></a>.
