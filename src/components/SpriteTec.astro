@@ -22,7 +22,7 @@ const itens = Object.values(tec);
   {
     contatos.map((contato) => (
       <symbol id={`c-${contato.id}`} viewBox="0 0 24 24">
-        <path d={contato.icon.path} />
+        <path d={contato.icon.path} fill-rule="evenodd" />
       </symbol>
     ))
   }

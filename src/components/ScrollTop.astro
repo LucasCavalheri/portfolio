@@ -1,11 +1,13 @@
 ---
 ---
 
-<button id="scroll-top" type="button" aria-label="Voltar ao topo" data-visible="false" data-direction="down">
+<button id="scroll-top" type="button" aria-label="Voltar ao topo" data-visible="false">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
 </button>
 
 <style>
+  /* Escondido por padrão: qualquer estado de destaque precisa vir depois,
+     senão empata na especificidade e o botão aparece antes do primeiro scroll. */
   #scroll-top {
     position: fixed;
     z-index: 50;
@@ -19,6 +21,8 @@
     border-radius: 0.5rem;
     background: var(--muted);
     color: var(--foreground);
+    opacity: 0;
+    pointer-events: none;
     transition: background-color 0.3s, opacity 0.3s;
   }
 
@@ -31,17 +35,18 @@
     stroke-width: 1.6;
   }
 
-  #scroll-top[data-visible="false"] {
-    opacity: 0;
-    pointer-events: none;
+  #scroll-top[data-visible="true"] {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  #scroll-top[data-direction="down"] {
+  /* Discreto só enquanto a leitura desce; ao parar volta a ficar nítido */
+  #scroll-top[data-visible="true"][data-dim="true"] {
     opacity: 0.3;
   }
 
-  #scroll-top[data-direction="down"]:hover,
-  #scroll-top[data-direction="up"] {
+  #scroll-top[data-visible="true"]:hover,
+  #scroll-top[data-visible="true"]:focus-visible {
     opacity: 1;
   }
 

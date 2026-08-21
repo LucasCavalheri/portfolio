@@ -323,10 +323,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
             const cores = `--marca-escura: ${legivel(contato.hex, FUNDO_ESCURO)}; --marca-clara: ${legivel(contato.hex, FUNDO_CLARO)}`;
             const conteudo = (
               <>
-                <svg
-                  class:list={["contato-icone", contato.traco && "contato-icone-traco"]}
-                  aria-hidden="true"
-                >
+                <svg class="contato-icone" aria-hidden="true">
                   <use href={`#c-${contato.id}`} />
                 </svg>
                 <span>{contato.valor}</span>
@@ -747,14 +744,6 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     transition: color 0.25s ease;
   }
 
-  /* Envelope, documento e alfinete são traçados, não preenchidos */
-  .contato-icone-traco {
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.7;
-  }
 
   :root[data-theme="dark"] .contato:hover .contato-icone {
     color: var(--marca-escura);
