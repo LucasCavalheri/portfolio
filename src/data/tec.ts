@@ -3,7 +3,6 @@
 import {
   siAstro,
   siClaude,
-  siClaudecode,
   siCloudflare,
   siCursor,
   siDocker,
@@ -37,7 +36,7 @@ import {
   siVercel,
   siVuedotjs,
 } from "simple-icons";
-import { awsIcon, openaiIcon, slackIcon, vscodeIcon } from "./icons";
+import { awsIcon, grokIcon, openaiIcon, slackIcon, vscodeIcon } from "./icons";
 
 export type Tecnologia = {
   id: string;
@@ -298,21 +297,21 @@ export const tec = {
     hex: siCursor.hex,
     icon: siCursor,
   },
-  chatgpt: {
-    id: "chatgpt",
-    nome: "ChatGPT",
-    url: "https://chatgpt.com",
-    sobre: "Assistente da OpenAI.",
-    hex: "#74AA9C",
-    icon: openaiIcon,
+  grok: {
+    id: "grok",
+    nome: "Grok",
+    url: "https://grok.com",
+    sobre: "Assistente da xAI.",
+    hex: "#000000",
+    icon: grokIcon,
   },
-  claudecode: {
-    id: "claudecode",
-    nome: "Claude Code",
-    url: "https://claude.com/product/claude-code",
-    sobre: "Agente de código da Anthropic no terminal.",
-    hex: siClaudecode.hex,
-    icon: siClaudecode,
+  codex: {
+    id: "codex",
+    nome: "Codex",
+    url: "https://openai.com/codex",
+    sobre: "Agente de código da OpenAI.",
+    hex: "#412991",
+    icon: openaiIcon,
   },
   claude: {
     id: "claude",
