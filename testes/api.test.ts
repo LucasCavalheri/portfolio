@@ -3,6 +3,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { site, paginas } from "../src/data/site";
+import { CHAVE_INDEXNOW } from "../src/data/indexnow";
 import { VERSAO_API } from "../src/data/api";
 import { openapi } from "../src/data/openapi";
 import middleware, { corpo404Markdown, decidir, preferecMarkdown, corpoErroJson } from "../middleware";
@@ -312,5 +313,67 @@ describe("Organization no JSON-LD", () => {
     const vendas = principal.contactPoint.find((c: any) => c.contactType === "sales");
     expect(vendas.email).toBe(site.email);
     expect(vendas.telephone).toBe(site.telefone);
+  });
+});
+
+describe("migração do portfólio anterior", () => {
+  const config = JSON.parse(readFileSync(new URL("../vercel.json", import.meta.url), "utf8"));
+
+  it("as rotas antigas respondem 301, não 404", () => {
+    // 404 não diz para onde foi; 301 troca a entrada no índice do buscador
+    const esperados: Record<string, string> = {
+      "/projects": "/#projetos",
+      "/projetos": "/#projetos",
+      "/projects/:slug": "/#projetos",
+      "/services": "/sobre",
+      "/blog": "/",
+      "/en": "/",
+      "/stack": "/usos",
+      "/experience": "/#experiencia",
+      "/resume": "/Curriculo-LucasCavalheri.pdf",
+    };
+    for (const [origem, destino] of Object.entries(esperados)) {
+      const regra = config.redirects.find((r: any) => r.source === origem);
+      expect(regra, origem).toBeTruthy();
+      expect(regra.destination, origem).toBe(destino);
+      expect(regra.permanent, origem).toBe(true);
+    }
+  });
+
+  it("nenhum redirect aponta para rota inexistente", () => {
+    const validos = new Set([
+      ...paginas.map((p) => p.rota),
+      "/Curriculo-LucasCavalheri.pdf",
+      "/usos",
+    ]);
+    for (const regra of config.redirects) {
+      const base = regra.destination.split("#")[0] || "/";
+      expect(validos.has(base), `${regra.source} -> ${regra.destination}`).toBe(true);
+    }
+  });
+
+  it("o endereço .vercel.app não é indexável", () => {
+    const regra = config.headers.find((h: any) => h.has?.[0]?.type === "host");
+    expect(regra).toBeTruthy();
+    // o valor é regex, então os pontos vêm escapados
+    expect(regra.has[0].value.replace(/\\/g, "")).toContain("vercel.app");
+    expect(regra.headers).toEqual(
+      expect.arrayContaining([{ key: "X-Robots-Tag", value: "noindex, nofollow" }])
+    );
+  });
+
+  it("a chave do IndexNow está publicada e o conteúdo bate com o nome", () => {
+    expect(CHAVE_INDEXNOW).toMatch(/^[a-f0-9]{32}$/);
+    const publicado = readFileSync(
+      new URL(`../public/${CHAVE_INDEXNOW}.txt`, import.meta.url),
+      "utf8"
+    );
+    expect(publicado.trim()).toBe(CHAVE_INDEXNOW);
+  });
+
+  it("o sitemap traz lastmod para o buscador revisitar", () => {
+    const sitemap = ler("sitemap-0.xml");
+    expect(sitemap).toContain("<lastmod>");
+    expect(sitemap).toContain("<changefreq>weekly</changefreq>");
   });
 });

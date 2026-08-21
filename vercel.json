@@ -48,6 +48,21 @@
           "value": "Accept, Accept-Encoding"
         }
       ]
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "(.*\\.vercel\\.app)"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ],
   "rewrites": [
@@ -82,6 +97,113 @@
     {
       "source": "/api-docs",
       "destination": "/desenvolvedores"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/projects",
+      "destination": "/#projetos",
+      "permanent": true
+    },
+    {
+      "source": "/projetos",
+      "destination": "/#projetos",
+      "permanent": true
+    },
+    {
+      "source": "/projects/:slug",
+      "destination": "/#projetos",
+      "permanent": true
+    },
+    {
+      "source": "/projetos/:slug",
+      "destination": "/#projetos",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/servicos",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:slug*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/:caminho*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/pt",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/pt/:caminho*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/index",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/stack",
+      "destination": "/usos",
+      "permanent": true
+    },
+    {
+      "source": "/skills",
+      "destination": "/usos",
+      "permanent": true
+    },
+    {
+      "source": "/experience",
+      "destination": "/#experiencia",
+      "permanent": true
+    },
+    {
+      "source": "/experiencia",
+      "destination": "/#experiencia",
+      "permanent": true
+    },
+    {
+      "source": "/resume",
+      "destination": "/Curriculo-LucasCavalheri.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/cv",
+      "destination": "/Curriculo-LucasCavalheri.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/curriculo",
+      "destination": "/Curriculo-LucasCavalheri.pdf",
+      "permanent": true
     }
   ]
 }
