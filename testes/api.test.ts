@@ -372,6 +372,14 @@ describe("migração do portfólio anterior", () => {
     expect(publicado.trim()).toBe(CHAVE_INDEXNOW);
   });
 
+  it("/sitemap.xml responde no caminho convencional", () => {
+    // ferramentas procuram este caminho antes do índice nomeado
+    const xml = ler("sitemap.xml");
+    expect(xml).toContain("<sitemapindex");
+    expect(xml).toContain(`${site.url}/sitemap-0.xml`);
+    expect(xml).toContain("<lastmod>");
+  });
+
   it("o sitemap traz lastmod para o buscador revisitar", () => {
     const sitemap = ler("sitemap-0.xml");
     expect(sitemap).toContain("<lastmod>");
