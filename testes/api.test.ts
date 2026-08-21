@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { site, paginas } from "../src/data/site";
 import { VERSAO_API } from "../src/data/api";
 import { openapi } from "../src/data/openapi";
-import middleware, { decidir, preferecMarkdown, corpoErroJson } from "../middleware";
+import middleware, { corpo404Markdown, decidir, preferecMarkdown, corpoErroJson } from "../middleware";
 
 const DIST = new URL("../dist/", import.meta.url);
 const lerJson = (caminho: string) => JSON.parse(readFileSync(new URL(caminho, DIST), "utf8"));
@@ -139,7 +139,7 @@ describe("negociação de conteúdo no middleware", () => {
 
   it("responde 404 em markdown para rota inexistente pedida em markdown", () => {
     const decisao = decidir(new URL(`${site.url}/nao-existe`), "text/markdown");
-    expect(decisao).toMatchObject({ tipo: "reescrever", para: "/404.md", status: 404 });
+    expect(decisao).toMatchObject({ tipo: "markdown404", status: 404 });
   });
 
   it("não interfere quando o cliente quer HTML", () => {
@@ -194,6 +194,46 @@ describe("negociação de conteúdo no middleware", () => {
     const { erro } = corpoErroJson(404, "teste", "mensagem", "dica", "/x");
     expect(erro).toMatchObject({ status: 404, codigo: "teste", caminho: "/x" });
     expect(erro.indice).toBe(`${site.url}/api/index.json`);
+  });
+});
+
+describe("404 em markdown", () => {
+  it("traz título, páginas e onde procurar", () => {
+    const corpo = corpo404Markdown("/rota-inexistente");
+    expect(corpo.startsWith("# 404")).toBe(true);
+    expect(corpo).toContain("/rota-inexistente");
+    expect(corpo).toContain("/llms.txt");
+    expect(corpo).toContain("/sitemap-index.xml");
+    expect(corpo).toContain("/api/index.json");
+  });
+
+  it("a lista do 404 acompanha site.ts", () => {
+    // o middleware repete as rotas porque é empacotado sozinho para a borda;
+    // este teste falha se alguém publicar página nova e esquecer de somar lá
+    const corpo = corpo404Markdown("/x");
+    for (const pagina of paginas) {
+      const alvo = pagina.rota === "/" ? "- / —" : `- ${pagina.rota} —`;
+      expect(corpo, pagina.rota).toContain(alvo);
+    }
+    const listadas = [...corpo.matchAll(/^- (\/[a-z]*) —/gm)].map((m) => m[1]);
+    expect(listadas.sort()).toEqual(paginas.map((p) => p.rota).sort());
+  });
+
+  it("responde com status 404 e tipo markdown", () => {
+    const resposta = middleware(
+      new Request(`${site.url}/nao-existe`, { headers: { Accept: "text/markdown" } })
+    )!;
+    expect(resposta.status).toBe(404);
+    expect(resposta.headers.get("content-type")).toContain("text/markdown");
+    expect(resposta.headers.get("vary")).toContain("Accept");
+  });
+
+  it("asset não é negociado", () => {
+    for (const rota of ["/favicon.svg", "/og.png", "/Curriculo-LucasCavalheri.pdf", "/llms.txt"]) {
+      expect(decidir(new URL(`${site.url}${rota}`), "text/markdown"), rota).toMatchObject({
+        tipo: "seguir",
+      });
+    }
   });
 });
 

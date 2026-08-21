@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "verify": "astro build && vitest run"
+    "verify": "astro build && vitest run",
+    "verificar:producao": "node scripts/verificar-producao.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
