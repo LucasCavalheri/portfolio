@@ -44,6 +44,7 @@ const projetos = [
 const experiencias = [
   {
     cargo: "Desenvolvedor Web Full Stack Pleno, Tropical Hub",
+    logo: "/tropical-hub.png",
     site: "tropicalhub.co",
     url: "https://tropicalhub.co",
     periodo: "2024 — hoje",
@@ -53,6 +54,7 @@ const experiencias = [
   },
   {
     cargo: "Desenvolvedor Web Full Stack Júnior, Grupo Polgo",
+    logo: "/grupo-polgo.png",
     site: "polgo.com.br",
     url: "https://www.polgo.com.br",
     periodo: "2023 — 2024",
@@ -61,6 +63,7 @@ const experiencias = [
   },
   {
     cargo: "Desenvolvedor Freelancer, projetos independentes",
+    logo: "/favicon.svg",
     site: "github.com/LucasCavalheri",
     url: "https://github.com/LucasCavalheri",
     periodo: "2022 — hoje",
@@ -122,7 +125,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
           Sou Desenvolvedor Web Full Stack Pleno na <a class="link link-text link-brand" href="https://tropicalhub.co" target="_blank" rel="noopener"><img class="brand-icon" src="/tropical-hub.png" alt="" width="16" height="16" />Tropical Hub</a>, onde cuido de integrações, APIs e painéis administrativos, além dos code reviews e do fluxo de Git da squad.
         </p>
         <p>
-          Trabalho só no ecossistema <strong>JavaScript</strong> e <strong>TypeScript</strong>:
+          Trabalho só no ecossistema <strong>JavaScript</strong> e <strong>TypeScript</strong>.{" "}
           <strong>React</strong> e <strong>Next.js</strong> na frente, <strong>Node.js</strong> com
           Fastify e NestJS atrás. Uma stack só, do banco à tela, pensando em quem vai manter o
           código amanhã.
@@ -212,7 +215,17 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
             <div class="row" data-anim style={`--stagger: ${i * 0.07}s`}>
               <div class="row-top">
                 <div>
-                  <h3>{experiencia.cargo}</h3>
+                  <h3>
+                    <img
+                      class="empresa-logo"
+                      src={experiencia.logo}
+                      alt=""
+                      width="16"
+                      height="16"
+                      loading="lazy"
+                    />
+                    {experiencia.cargo}
+                  </h3>
                   <div class="row-at">
                     <span>em,</span>
                     <a class="link link-sm" href={experiencia.url} target="_blank" rel="noopener">
@@ -749,6 +762,17 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
 
   :root[data-theme="light"] .contato:hover .contato-icone {
     color: var(--marca-clara);
+  }
+
+  /* Marca da empresa antes do cargo, como na bio */
+  .empresa-logo {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.4375rem;
+    border-radius: 4px;
+    object-fit: contain;
+    vertical-align: -3px;
   }
 </style>
 
