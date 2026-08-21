@@ -20,14 +20,14 @@ const marca = item.hex.startsWith("#") ? item.hex : `#${item.hex}`;
   rel="noopener"
   data-tec={item.nome}
   data-sobre={item.sobre}
-  aria-label={`${item.nome}: ${item.sobre}`}
   style={`--marca-escura: ${legivel(marca, FUNDO_ESCURO)}; --marca-clara: ${legivel(marca, FUNDO_CLARO)}`}
 >
   <svg class="tec-icon" aria-hidden="true"><use href={`#i-${item.id}`} /></svg>
-  {label ? <span>{item.nome}</span> : <span class="sr-only">{item.nome}</span>}
+  {label && <span>{item.nome}</span>}
+  <span class="sr-only">{label ? item.sobre : `${item.nome}. ${item.sobre}`}</span>
 </a>
 
-<style>
+<style is:global>
   .tec {
     display: inline-flex;
     align-items: center;

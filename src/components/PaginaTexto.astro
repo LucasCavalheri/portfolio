@@ -1,0 +1,115 @@
+---
+// Casca das páginas de texto: sobre, contato, privacidade e 404.
+import Layout from "../layouts/Layout.astro";
+
+interface Props {
+  titulo: string;
+  tituloPagina: string;
+  descricao: string;
+  resumo: string;
+}
+
+const { titulo, tituloPagina, descricao, resumo } = Astro.props;
+---
+
+<Layout title={tituloPagina} description={descricao}>
+  <main class="container pagina-texto">
+    <article class="section">
+      <div class="section-head" data-anim>
+        <h1 class="section-title">{titulo}<span class="dot">.</span></h1>
+      </div>
+      <p class="pagina-resumo" data-anim>{resumo}</p>
+      <div class="texto" data-anim>
+        <slot />
+      </div>
+      <a class="link link-sm" href="/" data-anim>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 7 7 17M7 17h8M7 17V9" /></svg>
+        <span>voltar para a home</span>
+      </a>
+    </article>
+  </main>
+</Layout>
+
+<style is:global>
+  .pagina-texto {
+    padding-block: 3.5rem;
+  }
+
+  .pagina-resumo {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+  }
+
+  .texto {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .texto :where(h2) {
+    color: var(--primary);
+    font-family: var(--heading);
+    font-size: 1.125rem;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .texto :where(h2:not(:first-child)) {
+    margin-top: 0.5rem;
+  }
+
+  .texto :where(p),
+  .texto :where(li) {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+  }
+
+  .texto :where(p + p) {
+    margin-top: 0.625rem;
+  }
+
+  .texto :where(strong) {
+    color: var(--primary);
+    font-weight: 500;
+  }
+
+  .texto :where(ul) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin: 0;
+    padding-left: 1.125rem;
+  }
+
+  .texto :where(li) {
+    list-style: disc;
+  }
+
+  .texto :where(dl) {
+    display: grid;
+    gap: 0.5rem 1rem;
+  }
+
+  .texto :where(dt) {
+    color: var(--primary);
+    font-size: 0.875rem;
+  }
+
+  .texto :where(dd) {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .link-sm {
+    align-self: flex-start;
+  }
+
+  @media (min-width: 40rem) {
+    .texto :where(dl) {
+      grid-template-columns: 7rem 1fr;
+    }
+  }
+</style>

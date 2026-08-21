@@ -1,10 +1,17 @@
 ---
 // Cada ícone de tecnologia entra uma única vez no documento; os usos viram
 // <use href="#i-…">. Antes o mesmo path aparecia repetido a cada ocorrência.
-import { tec } from "../data/tec";
-import { contatos } from "../data/contato";
+import type { Tecnologia } from "../data/tec";
+import type { Contato } from "../data/contato";
 
-const itens = Object.values(tec);
+interface Props {
+  // só os ícones que a página usa: o sprite completo respondia por metade do HTML
+  tecnologias?: readonly Tecnologia[];
+  contatos?: readonly Contato[];
+}
+
+const { tecnologias = [], contatos = [] } = Astro.props;
+const itens = [...new Map(tecnologias.map((t) => [t.id, t])).values()];
 ---
 
 <svg class="sprite" aria-hidden="true" focusable="false">

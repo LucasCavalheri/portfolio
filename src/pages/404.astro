@@ -1,0 +1,42 @@
+---
+import PaginaTexto from "../components/PaginaTexto.astro";
+import { paginas } from "../data/site";
+---
+
+<PaginaTexto
+  titulo="404"
+  tituloPagina="Página não encontrada — Lucas Cavalheri"
+  descricao="Este endereço não existe neste site. Veja a lista de páginas disponíveis."
+  resumo="Este endereço não existe. Abaixo está tudo o que existe."
+>
+  <h2>páginas do site</h2>
+  <ul>
+    {
+      paginas.map((pagina) => (
+        <li>
+          <a class="link link-text" href={pagina.rota}>
+            {pagina.rota}
+          </a>{" "}
+          — {pagina.resumo}
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>arquivos para agentes</h2>
+  <ul>
+    <li>
+      <a class="link link-text" href="/llms.txt">/llms.txt</a> — o que este site é e quando me chamar
+    </li>
+    <li>
+      <a class="link link-text" href="/sitemap-index.xml">/sitemap-index.xml</a> — todas as URLs
+    </li>
+    <li>
+      <a class="link link-text" href="/robots.txt">/robots.txt</a> — regras de rastreamento
+    </li>
+  </ul>
+  <p>
+    Qualquer página responde em markdown com <strong>Accept: text/markdown</strong> ou pelo sufixo
+    <strong>.md</strong>.
+  </p>
+</PaginaTexto>

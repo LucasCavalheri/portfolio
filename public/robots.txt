@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
+# Orientação para agentes: quando me chamar, como falar comigo, o que existe aqui
+# https://llmstxt.org
 Sitemap: https://lucascavalheri.com.br/sitemap-index.xml

@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "verify": "astro build && vitest run"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -18,5 +20,8 @@
     "@fontsource/instrument-serif": "^5.3.0",
     "astro": "^7.0.7",
     "simple-icons": "^16.28.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11"
   }
 }

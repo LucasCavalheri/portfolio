@@ -4,33 +4,65 @@ import Tec from "../components/Tec.astro";
 import { tec } from "../data/tec";
 
 const grupos = [
-  { nome: "Linguagens", itens: [tec.javascript, tec.typescript] },
+  {
+    nome: "Linguagens",
+    nota: "TypeScript em tudo que é novo. JavaScript onde o projeto ainda não tem tipos.",
+    itens: [tec.javascript, tec.typescript],
+  },
   {
     nome: "Front-end",
+    nota: "React com Next.js é o padrão. Astro quando a página é conteúdo e precisa ser rápida.",
     itens: [tec.react, tec.next, tec.vue, tec.astro, tec.shadcn, tec.tailwind],
   },
-  { nome: "Back-end", itens: [tec.node, tec.express, tec.fastify, tec.nest] },
-  { nome: "ORMs", itens: [tec.drizzle, tec.prisma] },
-  { nome: "Dados", itens: [tec.postgres, tec.mysql, tec.sqlite, tec.mongo] },
+  {
+    nome: "Back-end",
+    nota: "Fastify para API enxuta, NestJS quando o time precisa de estrutura clara desde o começo.",
+    itens: [tec.node, tec.express, tec.fastify, tec.nest],
+  },
+  {
+    nome: "ORMs",
+    nota: "Drizzle pelo SQL explícito e pela tipagem. Prisma quando o projeto já vem com ele.",
+    itens: [tec.drizzle, tec.prisma],
+  },
+  {
+    nome: "Dados",
+    nota: "PostgreSQL como escolha padrão. SQLite em ferramenta local, MongoDB quando o dado é documento.",
+    itens: [tec.postgres, tec.mysql, tec.sqlite, tec.mongo],
+  },
   {
     nome: "Cloud",
+    nota: "Vercel para front-end, Render e Railway para serviço com banco, AWS quando a conta é do cliente.",
     itens: [tec.aws, tec.vercel, tec.render, tec.railway, tec.cloudflare, tec.hostinger],
   },
   {
     nome: "Ferramentas",
+    nota: "Docker para subir o ambiente igual em qualquer máquina, Insomnia para testar as rotas na mão.",
     itens: [tec.git, tec.github, tec.docker, tec.vscode, tec.insomnia, tec.npm],
   },
-  { nome: "IA", itens: [tec.grok, tec.codex, tec.claude, tec.cursor] },
-  { nome: "Sistema", itens: [tec.ubuntu, tec.fedora] },
-  { nome: "Trabalho", itens: [tec.slack, tec.meet] },
+  {
+    nome: "IA",
+    nota: "Agentes de código no dia a dia, sempre com revisão minha antes do commit.",
+    itens: [tec.grok, tec.codex, tec.claude, tec.cursor],
+  },
+  {
+    nome: "Sistema",
+    nota: "Linux no desktop e no servidor, o que aproxima o ambiente de desenvolvimento da produção.",
+    itens: [tec.ubuntu, tec.fedora],
+  },
+  {
+    nome: "Trabalho",
+    nota: "Onde a squad conversa e onde acontecem as dailies e os alinhamentos.",
+    itens: [tec.slack, tec.meet],
+  },
 ];
 ---
 
 <Layout
   title="Usos — Lucas Cavalheri"
   description="Linguagens, frameworks e ferramentas que Lucas Cavalheri, desenvolvedor web full stack pleno, usa no dia a dia."
+  tecnologias={grupos.flatMap((g) => g.itens)}
 >
-  <main class="container">
+  <main class="container pagina-usos">
     <section class="section">
       <div class="section-head" data-anim>
         <h1 class="section-title">usos<span class="dot">.</span></h1>
@@ -41,13 +73,16 @@ const grupos = [
       <div class="rows">
         {
           grupos.map((grupo, i) => (
-            <div class="row row-inline" data-anim style={`--stagger: ${i * 0.05}s`}>
-              <h2>{grupo.nome}</h2>
-              <div class="tec-row tec-row-end">
-                {grupo.itens.map((item) => (
-                  <Tec item={item} label />
-                ))}
+            <div class="row" data-anim style={`--stagger: ${i * 0.05}s`}>
+              <div class="grupo-topo">
+                <h2>{grupo.nome}</h2>
+                <div class="tec-row tec-row-end">
+                  {grupo.itens.map((item) => (
+                    <Tec item={item} label />
+                  ))}
+                </div>
               </div>
+              <p class="grupo-nota">{grupo.nota}</p>
             </div>
           ))
         }
@@ -60,8 +95,8 @@ const grupos = [
   </main>
 </Layout>
 
-<style>
-  main {
+<style is:global>
+  .pagina-usos {
     padding-block: 3.5rem;
   }
 
@@ -72,10 +107,31 @@ const grupos = [
   }
 
   /* Nas linhas, o nome da categoria tem o mesmo peso do h3 da home */
-  .row-inline h2 {
+  .grupo-topo h2 {
     color: var(--primary);
     font-size: 1rem;
     font-weight: 400;
+  }
+
+  .grupo-topo {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .grupo-nota {
+    margin-top: 0.375rem;
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 30rem) {
+    .grupo-topo {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
   }
 
   .link-sm {

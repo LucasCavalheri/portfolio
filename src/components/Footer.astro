@@ -1,22 +1,45 @@
 ---
+import { paginas } from "../data/site";
+
 const anoAtual = new Date().getFullYear();
 const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
   day: "2-digit",
   month: "short",
   year: "numeric",
 });
+
+const rotaAtual = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
 
 <footer class="container site-footer" data-anim>
+  <nav class="rodape-links" aria-label="Páginas do site">
+    {
+      paginas
+        .filter((pagina) => pagina.rota !== rotaAtual)
+        .map((pagina) => (
+          <a class="link link-xs" href={pagina.rota}>
+            <span>{pagina.titulo.toLowerCase()}</span>
+          </a>
+        ))
+    }
+    <a class="link link-xs" href="/llms.txt"><span>llms.txt</span></a>
+  </nav>
   <div>
     <p>Atualizado · {atualizadoEm}</p>
     <p>© {anoAtual} <span>Lucas Cavalheri</span></p>
   </div>
 </footer>
 
-<style>
+<style is:global>
   .site-footer {
     margin-top: auto;
+  }
+
+  .rodape-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    padding-bottom: 0.875rem;
   }
 
   .site-footer > div {

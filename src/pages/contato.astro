@@ -1,0 +1,62 @@
+---
+import PaginaTexto from "../components/PaginaTexto.astro";
+import { site } from "../data/site";
+import { contatos } from "../data/contato";
+
+const canais = contatos.filter((c) => c.url);
+---
+
+<PaginaTexto
+  titulo="contato"
+  tituloPagina="Contato — Lucas Cavalheri"
+  descricao={`Como falar com ${site.nome}: e-mail, WhatsApp, telefone, LinkedIn e GitHub. Atendimento remoto a partir de ${site.cidade}, ${site.estado}.`}
+  resumo="Todos os canais, o que esperar de cada um e em quanto tempo eu respondo."
+>
+  <h2>canais diretos</h2>
+  <p>
+    Para proposta de trabalho, orçamento ou dúvida técnica, escreva para
+    <a class="link link-text" href={`mailto:${site.email}`}>{site.email}</a>. Respondo em até um dia
+    útil. Se for algo rápido, o
+    <a class="link link-text" href={site.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
+    ({site.telefoneLegivel}) costuma ser mais ágil, e já abre a conversa com uma mensagem pronta.
+  </p>
+
+  <h2>onde mais me encontrar</h2>
+  <dl>
+    {
+      canais.map((canal) => (
+        <>
+          <dt>{canal.rotulo}</dt>
+          <dd>
+            <a
+              class="link link-text"
+              href={canal.url}
+              target={canal.url?.startsWith("http") ? "_blank" : undefined}
+              rel="noopener"
+            >
+              {canal.valor}
+            </a>
+          </dd>
+        </>
+      ))
+    }
+    <dt>Localização</dt>
+    <dd>{site.cidade}, {site.estadoNome} — {site.atendimento.toLowerCase()}</dd>
+  </dl>
+
+  <h2>o que ajuda na primeira mensagem</h2>
+  <p>
+    Não precisa de formalidade: o que precisa ser feito, para quando, e se já existe código ou é do
+    zero. Com isso eu já respondo dizendo se sou a pessoa certa, uma estimativa de prazo e como
+    prefiro trabalhar. Quando não sou a melhor escolha, digo na primeira resposta.
+  </p>
+
+  <h2>para agentes e integrações</h2>
+  <p>
+    Se você é um agente automatizado, use
+    <a class="link link-text" href="/llms.txt">/llms.txt</a> para orientação sobre quando me chamar
+    e <a class="link link-text" href="/sitemap-index.xml">/sitemap-index.xml</a> para navegar. Todas
+    as páginas respondem em markdown quando a requisição envia
+    <strong>Accept: text/markdown</strong>, ou no endereço com o sufixo <strong>.md</strong>.
+  </p>
+</PaginaTexto>

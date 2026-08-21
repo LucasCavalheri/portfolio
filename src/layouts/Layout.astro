@@ -2,9 +2,13 @@
 interface Props {
   title: string;
   description: string;
+  tecnologias?: readonly Tecnologia[];
+  comContatos?: boolean;
 }
 
 import { contatos } from "../data/contato";
+import { site } from "../data/site";
+import type { Tecnologia } from "../data/tec";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ScrollTop from "../components/ScrollTop.astro";
@@ -15,20 +19,32 @@ import "@fontsource/geist-mono/400.css";
 import "@fontsource/instrument-serif/400.css";
 import "@fontsource/instrument-serif/400-italic.css";
 
-const { title, description } = Astro.props;
+const { title, description, tecnologias = [], comContatos = false } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const imagemSocial = new URL("/og.png", Astro.site);
 
-// Ajuda quem procura pelo nome depois de uma conversa
-const dadosEstruturados = {
-  "@context": "https://schema.org",
+// Identidade legível por máquina: Person (quem sou), ProfessionalService
+// (o serviço que presto, com contato e endereço) e WebSite, num só @graph.
+const enderecoPostal = {
+  "@type": "PostalAddress",
+  addressLocality: site.cidade,
+  addressRegion: site.estado,
+  addressCountry: site.pais,
+};
+
+const pessoa = {
   "@type": "Person",
-  name: "Lucas Cavalheri",
-  jobTitle: "Desenvolvedor Web Full Stack Pleno",
-  url: Astro.site?.href,
+  "@id": `${site.url}/#lucas`,
+  name: site.nome,
+  alternateName: site.nomeCompleto,
+  description: site.descricao,
+  url: site.url,
   image: imagemSocial.href,
-  email: "mailto:lucas.dev.carvalho@gmail.com",
+  jobTitle: site.cargo,
+  email: `mailto:${site.email}`,
+  telephone: site.telefone,
+  knowsLanguage: ["pt-BR", "en"],
   knowsAbout: [
     "TypeScript",
     "JavaScript",
@@ -36,18 +52,62 @@ const dadosEstruturados = {
     "Next.js",
     "Node.js",
     "NestJS",
+    "Fastify",
     "PostgreSQL",
   ],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Mogi Mirim",
-    addressRegion: "SP",
-    addressCountry: "BR",
+  address: enderecoPostal,
+  worksFor: {
+    "@type": "Organization",
+    name: site.empresaAtual.nome,
+    url: site.empresaAtual.url,
   },
-  worksFor: { "@type": "Organization", name: "Tropical Hub", url: "https://tropicalhub.co" },
-  sameAs: contatos
-    .filter((c) => c.url?.startsWith("https://"))
-    .map((c) => c.url),
+  sameAs: Object.values(site.redes),
+};
+
+const servico = {
+  "@type": "ProfessionalService",
+  "@id": `${site.url}/#servico`,
+  name: `${site.nome}, desenvolvimento web`,
+  description: site.descricao,
+  url: site.url,
+  image: imagemSocial.href,
+  founder: { "@id": `${site.url}/#lucas` },
+  address: enderecoPostal,
+  areaServed: { "@type": "Country", name: "Brasil" },
+  availableLanguage: ["pt-BR", "en"],
+  knowsAbout: pessoa.knowsAbout,
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      email: site.email,
+      telephone: site.telefone,
+      availableLanguage: ["pt-BR", "en"],
+      areaServed: "BR",
+    },
+    {
+      "@type": "ContactPoint",
+      contactType: "technical support",
+      email: site.email,
+      availableLanguage: ["pt-BR", "en"],
+    },
+  ],
+  sameAs: Object.values(site.redes),
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": `${site.url}/#site`,
+  name: `${site.nome} — ${site.cargo}`,
+  description: site.resumoCurto,
+  url: site.url,
+  inLanguage: "pt-BR",
+  publisher: { "@id": `${site.url}/#lucas` },
+};
+
+const dadosEstruturados = {
+  "@context": "https://schema.org",
+  "@graph": [pessoa, servico, website],
 };
 ---
 
@@ -90,7 +150,7 @@ const dadosEstruturados = {
     </script>
   </head>
   <body>
-    <SpriteTec />
+    <SpriteTec tecnologias={tecnologias} contatos={comContatos ? contatos : []} />
     <div class="top-fade" aria-hidden="true"></div>
     <Header />
     <slot />

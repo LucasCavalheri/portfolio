@@ -1,0 +1,58 @@
+---
+import PaginaTexto from "../components/PaginaTexto.astro";
+import { site } from "../data/site";
+---
+
+<PaginaTexto
+  titulo="privacidade"
+  tituloPagina="Privacidade — Lucas Cavalheri"
+  descricao="Que dados este site coleta, quais não coleta, e como tratamos o contato enviado por e-mail ou WhatsApp."
+  resumo="Site estático, sem rastreadores. O que sai do seu navegador, e para onde vai."
+>
+  <h2>resumo</h2>
+  <p>
+    Este site é <strong>estático</strong>: páginas prontas, sem banco de dados, sem login e sem
+    formulário. Não uso Google Analytics nem qualquer outro rastreador, não instalo cookie de
+    publicidade e não vendo, aluguel ou compartilho dado nenhum com terceiros para marketing.
+  </p>
+
+  <h2>o que fica no seu navegador</h2>
+  <p>
+    Uma única informação: a sua preferência de tema, guardada em <strong>localStorage</strong> com a
+    chave <code>lucas-theme</code>, para o site abrir claro ou escuro como você deixou. Ela nunca
+    sai do seu dispositivo e você pode apagá-la limpando os dados do site no navegador.
+  </p>
+
+  <h2>o que o servidor registra</h2>
+  <p>
+    A hospedagem é feita pela Vercel, que mantém registros técnicos de acesso — endereço IP, data e
+    hora, página pedida e navegador — pelo tempo necessário para operar e proteger a
+    infraestrutura. Não tenho acesso a esses registros de forma individualizada nem os uso para
+    perfilar visitantes. As fontes são servidas por este mesmo domínio, então a leitura da página
+    não faz requisição a servidores de terceiros.
+  </p>
+
+  <h2>dados de terceiros que a página carrega</h2>
+  <p>
+    A seção de atividade busca o número de contribuições públicas do meu perfil no GitHub em uma API
+    pública, no seu navegador. É uma chamada com dados meus, não seus, e nada é enviado sobre você
+    nessa requisição. A foto de perfil vem do GitHub. Os links de redes sociais só levam você ao
+    site correspondente quando você clica.
+  </p>
+
+  <h2>quando você me escreve</h2>
+  <p>
+    Se você entra em contato por e-mail, WhatsApp ou telefone, passo a ter o que você me enviou:
+    nome, meio de contato e o conteúdo da mensagem. Uso isso apenas para responder e conduzir o
+    trabalho, guardo enquanto a conversa fizer sentido, e não cadastro ninguém em lista de
+    disparo.
+  </p>
+
+  <h2>seus direitos</h2>
+  <p>
+    Pela Lei Geral de Proteção de Dados, você pode pedir acesso, correção ou exclusão dos dados que
+    você mesmo me enviou. Basta escrever para
+    <a class="link link-text" href={`mailto:${site.email}`}>{site.email}</a> e eu respondo em até um
+    dia útil. Se este texto mudar, a data de atualização no rodapé muda junto.
+  </p>
+</PaginaTexto>

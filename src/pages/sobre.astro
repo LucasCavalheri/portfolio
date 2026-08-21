@@ -1,0 +1,60 @@
+---
+import PaginaTexto from "../components/PaginaTexto.astro";
+import { site } from "../data/site";
+---
+
+<PaginaTexto
+  titulo="sobre"
+  tituloPagina="Sobre — Lucas Cavalheri"
+  descricao={`Trajetória, forma de trabalhar e tipos de projeto de ${site.nome}, ${site.cargo.toLowerCase()} em TypeScript, React e Node.js.`}
+  resumo="Quem sou, como trabalho e em que tipo de projeto costumo somar mais."
+>
+  <h2>quem sou</h2>
+  <p>
+    Sou <strong>{site.nomeCompleto}</strong>, {site.cargo.toLowerCase()} em {site.cidade},
+    {site.estadoNome}, e trabalho de forma remota. Há mais de quatro anos construo aplicações web:
+    APIs, integrações entre sistemas, painéis administrativos e as telas que as pessoas usam todos
+    os dias. Hoje sou desenvolvedor full stack pleno na
+    <a class="link link-text" href={site.empresaAtual.url} target="_blank" rel="noopener"
+      >{site.empresaAtual.nome}</a
+    >, onde cuido de integrações com HubSpot e ERPs, conduzo os code reviews do time e mantenho o
+    fluxo de Git da squad.
+  </p>
+
+  <h2>como trabalho</h2>
+  <p>
+    Escrevo código pensando em quem vai mantê-lo depois de mim, inclusive quando esse alguém sou eu
+    seis meses à frente. Isso significa nomes claros, tipos que documentam a intenção, testes onde
+    o risco justifica, e nenhuma esperteza que só o autor entende. Prefiro entregar em fatias
+    pequenas e verificáveis a desaparecer por semanas e voltar com um volume que ninguém consegue
+    revisar.
+  </p>
+  <p>
+    Trabalho em um ecossistema só, <strong>JavaScript e TypeScript</strong>, de ponta a ponta. Isso
+    é uma escolha: uma linguagem entre o banco e a tela reduz troca de contexto, deixa tipos
+    compartilhados entre servidor e cliente, e faz o time inteiro conseguir revisar qualquer parte
+    do código.
+  </p>
+
+  <h2>bom para</h2>
+  <ul>
+    {site.bomPara.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <h2>não é comigo</h2>
+  <p>
+    Prefiro dizer o que não faço a aceitar e entregar mal. Para estes casos, o melhor que faço é
+    indicar alguém:
+  </p>
+  <ul>
+    {site.naoAtende.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <h2>conversar</h2>
+  <p>
+    O caminho mais rápido é <a class="link link-text" href={`mailto:${site.email}`}>{site.email}</a>
+    ou <a class="link link-text" href={site.whatsapp} target="_blank" rel="noopener">WhatsApp</a>. O
+    <a class="link link-text" href={site.curriculo}>currículo em PDF</a> tem o histórico completo, e
+    a página de <a class="link link-text" href="/contato">contato</a> reúne todos os canais.
+  </p>
+</PaginaTexto>
