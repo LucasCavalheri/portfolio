@@ -1,0 +1,15 @@
+{
+  "name": "lucascavalheri",
+  "version": "1.0.0",
+  "description": "CLI para consultar o perfil, os projetos e o contato de Lucas Cavalheri, desenvolvedor web full stack.",
+  "keywords": ["portfolio", "cli", "curriculo", "desenvolvedor", "fullstack", "typescript"],
+  "homepage": "https://lucascavalheri.com.br/desenvolvedores",
+  "bugs": "https://github.com/LucasCavalheri/portfolio/issues",
+  "license": "CC-BY-4.0",
+  "author": "Lucas Cavalheri <lucas.dev.carvalho@gmail.com> (https://lucascavalheri.com.br)",
+  "type": "module",
+  "bin": { "lucascavalheri": "bin/lucascavalheri.js" },
+  "files": ["bin", "README.md"],
+  "engines": { "node": ">=18" },
+  "repository": { "type": "git", "url": "git+https://github.com/LucasCavalheri/portfolio.git", "directory": "cli" }
+}

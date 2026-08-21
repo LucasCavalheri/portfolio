@@ -50,5 +50,10 @@ export const paginas = [
   { rota: "/sobre", titulo: "Sobre", resumo: "Trajetória, como trabalho e o que procuro" },
   { rota: "/contato", titulo: "Contato", resumo: "E-mail, WhatsApp, redes e tempo de resposta" },
   { rota: "/usos", titulo: "Usos", resumo: "Lista completa de linguagens, frameworks e ferramentas" },
+  {
+    rota: "/desenvolvedores",
+    titulo: "Desenvolvedores",
+    resumo: "API pública em JSON, especificação OpenAPI e CLI",
+  },
   { rota: "/privacidade", titulo: "Privacidade", resumo: "Que dados o site coleta, e quais não coleta" },
 ] as const;

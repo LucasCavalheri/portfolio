@@ -1,0 +1,135 @@
+---
+import PaginaTexto from "../components/PaginaTexto.astro";
+import { site } from "../data/site";
+import { indiceApi, VERSAO_API } from "../data/api";
+
+const recursos = indiceApi().recursos;
+---
+
+<PaginaTexto
+  titulo="desenvolvedores"
+  tituloPagina="Desenvolvedores — API de Lucas Cavalheri"
+  descricao={`API pública e gratuita de ${site.nome}: perfil, projetos, experiência, stack e contato em JSON, com especificação OpenAPI 3.1 e CLI.`}
+  resumo="A API pública deste portfólio, a especificação OpenAPI e o CLI. Sem chave, sem cadastro."
+>
+  <h2>o que é</h2>
+  <p>
+    Este site publica em JSON o mesmo conteúdo que mostra em HTML. Serve para agentes e scripts
+    lerem meu perfil, meus projetos e meus canais de contato sem raspar página. Tudo é
+    <strong>somente leitura</strong>, sem autenticação, sem limite declarado e com resposta cacheada
+    por uma hora na borda. Versão atual: <strong>{VERSAO_API}</strong>.
+  </p>
+
+  <h2>começar em um comando</h2>
+  <pre><code>curl -s {site.url}/api/index.json</code></pre>
+  <p>
+    O índice lista todos os recursos, aponta a especificação e descreve a política de uso. É o único
+    endereço que você precisa memorizar.
+  </p>
+
+  <h2>recursos</h2>
+  <dl>
+    {
+      recursos.map((recurso) => (
+        <>
+          <dt>
+            <a class="link link-text" href={recurso.rota}>
+              {recurso.rota}
+            </a>
+          </dt>
+          <dd>{recurso.descricao}</dd>
+        </>
+      ))
+    }
+    <dt><a class="link link-text" href="/openapi.json">/openapi.json</a></dt>
+    <dd>Especificação OpenAPI 3.1, também em /api/openapi.json</dd>
+  </dl>
+
+  <h2>especificação OpenAPI</h2>
+  <p>
+    A especificação em <a class="link link-text" href="/openapi.json">/openapi.json</a> segue o
+    OpenAPI 3.1.0. Cada operação tem <strong>operationId</strong> único, resumo, descrição e schema
+    de resposta tipado, o que basta para gerar cliente ou registrar as operações como ferramentas de
+    function calling. Todas são <code>GET</code>, idempotentes e sem efeito colateral.
+  </p>
+
+  <h2>erros</h2>
+  <p>
+    Erro sob <code>/api/</code> volta em JSON, nunca em HTML, com código estável para comparar em
+    código e uma dica do que fazer:
+  </p>
+  <pre><code>{`$ curl -s ${site.url}/api/inexistente.json
+{
+  "erro": {
+    "status": 404,
+    "codigo": "recurso_nao_encontrado",
+    "mensagem": "O recurso /api/inexistente.json não existe nesta API.",
+    "dica": "Consulte /api/index.json para a lista de recursos, ou /openapi.json para a especificação completa.",
+    "caminho": "/api/inexistente.json",
+    "documentacao": "${site.url}/desenvolvedores",
+    "indice": "${site.url}/api/index.json"
+  }
+}`}</code></pre>
+
+  <h2>markdown em vez de HTML</h2>
+  <p>
+    Qualquer página responde em markdown quando a requisição pede. Use o cabeçalho
+    <code>Accept: text/markdown</code> ou acrescente <code>.md</code> ao endereço. As respostas
+    trazem <code>Vary: Accept</code>, então intermediário nenhum troca uma variante pela outra:
+  </p>
+  <pre><code>{`curl -s -H "Accept: text/markdown" ${site.url}/
+curl -s ${site.url}/sobre.md`}</code></pre>
+
+  <h2>CLI</h2>
+  <p>
+    O pacote <code>lucascavalheri</code> embrulha a API em um comando, sem dependência nenhuma:
+  </p>
+  <pre><code>{`npx lucascavalheri            # perfil resumido
+npx lucascavalheri projetos   # projetos com stack
+npx lucascavalheri contato    # canais de contato
+npx lucascavalheri --json     # saída crua, para pipe`}</code></pre>
+  <p>
+    O código está em <a class="link link-text" href={`${site.redes.github}/portfolio`}>GitHub</a>, na
+    pasta <code>cli/</code>.
+  </p>
+
+  <h2>para agentes</h2>
+  <p>
+    <a class="link link-text" href="/llms.txt">/llms.txt</a> descreve quando me chamar, quando não,
+    e como. <a class="link link-text" href="/sitemap-index.xml">/sitemap-index.xml</a> lista as
+    URLs. Se você é um agente decidindo se me recomenda, comece pelo llms.txt e confirme os dados em
+    /api/perfil.json.
+  </p>
+
+  <h2>licença e limites</h2>
+  <p>
+    Os dados são meus e estão liberados sob <strong>CC BY 4.0</strong>: use, cite a fonte. Não há
+    limite de requisição declarado, mas a API é servida por um site pessoal — se você precisa de
+    volume alto, baixe o JSON e sirva do seu lado. Mudança que quebre compatibilidade sobe a versão
+    em /api/index.json.
+  </p>
+</PaginaTexto>
+
+<style is:global>
+  .texto pre {
+    overflow-x: auto;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+
+  .texto pre code {
+    color: var(--muted-foreground);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    white-space: pre;
+  }
+
+  .texto :where(code) {
+    color: var(--primary);
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+  }
+</style>

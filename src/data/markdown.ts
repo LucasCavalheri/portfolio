@@ -220,6 +220,20 @@ Ao encaminhar um contato, inclua o que precisa ser feito, o prazo e se já exist
 
 ${paginas.map((p) => `- [${p.titulo}](${site.url}${p.rota}): ${p.resumo}`).join("\n")}
 
+## API and developer resources
+
+Este site publica os próprios dados em JSON, somente leitura, sem chave nem cadastro.
+
+- [Índice da API](${site.url}/api/index.json): lista os recursos e a política de uso
+- [Especificação OpenAPI 3.1](${site.url}/openapi.json): também em /api/openapi.json
+- [Documentação](${site.url}/desenvolvedores): exemplos com curl, formato de erro e limites
+- [Perfil](${site.url}/api/perfil.json), [projetos](${site.url}/api/projetos.json), [experiência](${site.url}/api/experiencia.json), [stack](${site.url}/api/stack.json), [contato](${site.url}/api/contato.json)
+- CLI: \`npx lucascavalheri\` — pacote npm sem dependência, embrulha a API
+
+Toda operação é GET, idempotente e tem operationId próprio na especificação, o que permite
+registrá-las direto como ferramentas de function calling. Erro sob /api/ volta em JSON, com código
+estável, mensagem e dica.
+
 ## Machine-readable
 
 - [Markdown da home](${site.url}/index.md): mesma informação em markdown
@@ -237,3 +251,59 @@ ${stack.map((g) => `- ${g.nome}: ${nomes(g.itens)}`).join("\n")}
 
 ${site.cargo} na ${site.empresaAtual.nome} (${site.empresaAtual.url}), desde 2024.
 `;
+
+export const markdownDesenvolvedores = () => `# Desenvolvedores
+
+API pública de ${site.nome}: os dados deste portfólio em JSON, somente leitura, sem chave e sem
+cadastro. Respostas cacheadas por uma hora na borda.
+
+## Comece por aqui
+
+    curl -s ${site.url}/api/index.json
+
+## Recursos
+
+- \`GET /api/index.json\` — índice, versão e política de uso
+- \`GET /api/perfil.json\` — identidade, localização e disponibilidade
+- \`GET /api/projetos.json\` — projetos com stack e links
+- \`GET /api/experiencia.json\` — cargos, períodos e stack
+- \`GET /api/stack.json\` — tecnologias por categoria
+- \`GET /api/contato.json\` — canais e tempo de resposta
+- \`GET /openapi.json\` — especificação OpenAPI 3.1, também em /api/openapi.json
+
+Toda operação é GET, idempotente, com operationId próprio e schema de resposta tipado na
+especificação: dá para registrar direto como ferramenta de function calling.
+
+## Erros
+
+Erro sob /api/ volta em JSON, com código estável, mensagem e dica:
+
+    {
+      "erro": {
+        "status": 404,
+        "codigo": "recurso_nao_encontrado",
+        "mensagem": "O recurso /api/inexistente.json não existe nesta API.",
+        "dica": "Consulte /api/index.json para a lista de recursos, ou /openapi.json para a especificação completa.",
+        "caminho": "/api/inexistente.json",
+        "documentacao": "${site.url}/desenvolvedores",
+        "indice": "${site.url}/api/index.json"
+      }
+    }
+
+## Markdown
+
+Qualquer página responde markdown com \`Accept: text/markdown\` ou pelo sufixo \`.md\`, e a resposta
+traz \`Vary: Accept\`.
+
+## CLI
+
+    npx lucascavalheri            # perfil
+    npx lucascavalheri projetos   # projetos com stack
+    npx lucascavalheri contato    # canais de contato
+    npx lucascavalheri --json     # saída crua, para pipe
+
+## Licença
+
+Dados sob CC BY 4.0: use, cite a fonte. Sem limite de requisição declarado; para volume alto, baixe
+o JSON e sirva do seu lado.
+${rodape()}`;

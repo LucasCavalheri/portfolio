@@ -93,7 +93,7 @@ describe("markdown por Accept e por sufixo .md", () => {
     }
   });
 
-  it("a negociação e os apelidos em inglês estão declarados na hospedagem", () => {
+  it("os cabeçalhos e os apelidos em inglês estão declarados na hospedagem", () => {
     const config = JSON.parse(readFileSync(new URL("../vercel.json", import.meta.url), "utf8"));
 
     // Vary: Accept em toda resposta, para o CDN não misturar as variantes
@@ -107,13 +107,9 @@ describe("markdown por Accept e por sufixo .md", () => {
       expect.arrayContaining([{ key: "Content-Type", value: "text/markdown; charset=utf-8" }])
     );
 
-    for (const [rota] of rotasHtml) {
-      const regra = config.rewrites.find(
-        (r: any) => r.source === rota && r.has?.[0]?.key === "accept"
-      );
-      expect(regra, `negociação de ${rota}`).toBeTruthy();
-      expect(regra.has[0].value).toContain("text/markdown");
-    }
+    // a negociação por Accept é feita pelo middleware, coberta em api.test.ts:
+    // regra condicional no vercel.json não dispara, o cache responde antes
+    expect(config.rewrites.every((r: any) => !r.has)).toBe(true);
 
     for (const [ingles, portugues] of [
       ["/about", "/sobre"],
@@ -183,8 +179,10 @@ describe("JSON-LD", () => {
   it("é um @graph válido com Person, ProfessionalService e WebSite", () => {
     const dados = grafo();
     expect(dados["@context"]).toBe("https://schema.org");
-    const tipos = dados["@graph"].map((n: any) => n["@type"]);
-    expect(tipos).toEqual(expect.arrayContaining(["Person", "ProfessionalService", "WebSite"]));
+    const tipos = dados["@graph"].flatMap((n: any) => n["@type"]);
+    expect(tipos).toEqual(
+      expect.arrayContaining(["Person", "Organization", "ProfessionalService", "WebSite"])
+    );
   });
 
   it("a Person tem nome, descrição, url e redes", () => {
@@ -197,7 +195,9 @@ describe("JSON-LD", () => {
   });
 
   it("o serviço tem contactPoint com e-mail e telefone, e endereço", () => {
-    const servico = grafo()["@graph"].find((n: any) => n["@type"] === "ProfessionalService");
+    const servico = grafo()["@graph"].find((n: any) =>
+      Array.isArray(n["@type"]) ? n["@type"].includes("ProfessionalService") : n["@type"] === "ProfessionalService"
+    );
     expect(servico.description.length).toBeGreaterThan(50);
     expect(servico.address.addressLocality).toBe(site.cidade);
     expect(servico.address.addressCountry).toBe(site.pais);

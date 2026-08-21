@@ -65,7 +65,9 @@ const pessoa = {
 };
 
 const servico = {
-  "@type": "ProfessionalService",
+  // Organization junto de ProfessionalService: é o tipo que os validadores
+  // procuram para conferir contato e endereço
+  "@type": ["Organization", "ProfessionalService"],
   "@id": `${site.url}/#servico`,
   name: `${site.nome}, desenvolvimento web`,
   description: site.descricao,

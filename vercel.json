@@ -3,52 +3,85 @@
   "headers": [
     {
       "source": "/(.*)",
-      "headers": [{ "key": "Vary", "value": "Accept, Accept-Encoding" }]
+      "headers": [
+        {
+          "key": "Vary",
+          "value": "Accept, Accept-Encoding"
+        }
+      ]
     },
     {
       "source": "/:caminho*.md",
       "headers": [
-        { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
-        { "key": "Vary", "value": "Accept, Accept-Encoding" }
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept, Accept-Encoding"
+        }
       ]
     },
     {
       "source": "/llms.txt",
       "headers": [
-        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
-        { "key": "Vary", "value": "Accept, Accept-Encoding" }
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept, Accept-Encoding"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept, Accept-Encoding"
+        }
       ]
     }
   ],
   "rewrites": [
     {
-      "source": "/",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/index.md"
+      "source": "/about",
+      "destination": "/sobre"
     },
     {
-      "source": "/sobre",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/sobre.md"
+      "source": "/contact",
+      "destination": "/contato"
     },
     {
-      "source": "/contato",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/contato.md"
+      "source": "/privacy",
+      "destination": "/privacidade"
     },
     {
-      "source": "/usos",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/usos.md"
+      "source": "/uses",
+      "destination": "/usos"
     },
     {
-      "source": "/privacidade",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/privacidade.md"
+      "source": "/developers",
+      "destination": "/desenvolvedores"
     },
-    { "source": "/about", "destination": "/sobre" },
-    { "source": "/contact", "destination": "/contato" },
-    { "source": "/privacy", "destination": "/privacidade" },
-    { "source": "/uses", "destination": "/usos" }
+    {
+      "source": "/docs",
+      "destination": "/desenvolvedores"
+    },
+    {
+      "source": "/developer",
+      "destination": "/desenvolvedores"
+    },
+    {
+      "source": "/api-docs",
+      "destination": "/desenvolvedores"
+    }
   ]
 }
