@@ -103,107 +103,107 @@
     {
       "source": "/projects",
       "destination": "/#projetos",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/projetos",
       "destination": "/#projetos",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/projects/:slug",
       "destination": "/#projetos",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/projetos/:slug",
       "destination": "/#projetos",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services",
       "destination": "/sobre",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/servicos",
       "destination": "/sobre",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/blog",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/blog/:slug*",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/en",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/en/:caminho*",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/pt",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/pt/:caminho*",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/home",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/index",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/stack",
       "destination": "/usos",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/skills",
       "destination": "/usos",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/experience",
       "destination": "/#experiencia",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/experiencia",
       "destination": "/#experiencia",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/resume",
       "destination": "/Curriculo-LucasCavalheri.pdf",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/cv",
       "destination": "/Curriculo-LucasCavalheri.pdf",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/curriculo",
       "destination": "/Curriculo-LucasCavalheri.pdf",
-      "permanent": true
+      "statusCode": 301
     }
   ]
 }

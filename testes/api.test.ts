@@ -336,7 +336,8 @@ describe("migração do portfólio anterior", () => {
       const regra = config.redirects.find((r: any) => r.source === origem);
       expect(regra, origem).toBeTruthy();
       expect(regra.destination, origem).toBe(destino);
-      expect(regra.permanent, origem).toBe(true);
+      // 301 explícito: permanent:true emitiria 308, que crawler antigo pode ignorar
+      expect(regra.statusCode, origem).toBe(301);
     }
   });
 
