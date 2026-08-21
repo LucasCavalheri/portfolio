@@ -228,7 +228,7 @@ Este site publica os próprios dados em JSON, somente leitura, sem chave nem cad
 - [Especificação OpenAPI 3.1](${site.url}/openapi.json): também em /api/openapi.json
 - [Documentação](${site.url}/desenvolvedores): exemplos com curl, formato de erro e limites
 - [Perfil](${site.url}/api/v1/perfil.json), [projetos](${site.url}/api/v1/projetos.json), [experiência](${site.url}/api/v1/experiencia.json), [stack](${site.url}/api/v1/stack.json), [contato](${site.url}/api/v1/contato.json)
-- CLI: \`npx lucascavalheri\` — pacote npm sem dependência, embrulha a API
+- CLI: [${site.cli.nome}](${site.cli.url}) — \`npx lucascavalheri\`, sem dependência, embrulha a API
 
 Toda operação é GET, idempotente, com operationId próprio e schema nomeado por $ref na
 especificação, o que permite registrá-las direto como ferramentas de function calling. A API é
@@ -236,7 +236,7 @@ versionada em /api/v1; o caminho sem versão redireciona para a corrente. Erro s
 application/problem+json, com as extensões \`codigo\` e \`dica\`. Cada resposta traz RateLimit-Policy,
 RateLimit-Limit, RateLimit-Remaining e RateLimit-Reset; ao exceder, 429 com Retry-After.
 
-O CLI oficial está no npm: \`npm i -g lucascavalheri\` ou \`npx lucascavalheri\`.
+O CLI oficial está publicado no npm em ${site.cli.url}: \`npm i -g lucascavalheri\` ou \`npx lucascavalheri\`.
 
 ## Machine-readable
 

@@ -53,7 +53,7 @@ if (argumentos.includes("-h") || argumentos.includes("--help")) {
 }
 
 if (argumentos.includes("-v") || argumentos.includes("--version")) {
-  console.log("1.0.0");
+  console.log("1.0.1");
   process.exit(0);
 }
 
@@ -67,7 +67,7 @@ if (!rota) {
 
 const buscar = async () => {
   const resposta = await fetch(`${BASE}${rota}`, {
-    headers: { Accept: "application/json", "User-Agent": "lucascavalheri-cli/1.0.0" },
+    headers: { Accept: "application/json", "User-Agent": "lucascavalheri-cli/1.0.1" },
   });
   const corpo = await resposta.json().catch(() => null);
 
@@ -88,7 +88,7 @@ const buscar = async () => {
   return corpo;
 };
 
-const linha = (rotulo, valor) => `${String(rotulo).padEnd(24)}${valor}`;
+const linha = (rotulo, valor) => `${String(rotulo).padEnd(26)}${valor}`;
 
 const imprimir = (dados) => {
   if (comoJson) {

@@ -22,6 +22,7 @@ export const site = {
   atendimento: "Remoto, em todo o Brasil e para fora dele",
   empresaAtual: { nome: "Tropical Hub", url: "https://tropicalhub.co" },
   curriculo: "/Curriculo-LucasCavalheri.pdf",
+  cli: { nome: "lucascavalheri", url: "https://www.npmjs.com/package/lucascavalheri" },
   redes: {
     github: "https://github.com/LucasCavalheri",
     linkedin: "https://www.linkedin.com/in/lucas-cavalheri/",

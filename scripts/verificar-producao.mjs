@@ -162,6 +162,24 @@ const executar = async ({ nome, rota, accept, esperado, metodo, semSeguir }) => 
   return { nome, rota, accept, falhas };
 };
 
+const conferirNpm = async () => {
+  try {
+    const resposta = await fetch("https://registry.npmjs.org/lucascavalheri");
+    if (!resposta.ok) {
+      console.log(`${VERMELHO}✗${FIM} CLI no npm ${CINZA}lucascavalheri${FIM}`);
+      console.log(`    ${VERMELHO}não encontrado no registro (HTTP ${resposta.status})${FIM}`);
+      return false;
+    }
+    const dados = await resposta.json();
+    const versao = dados["dist-tags"]?.latest;
+    console.log(`${VERDE}✓${FIM} CLI no npm ${CINZA}lucascavalheri@${versao}${FIM}`);
+    return true;
+  } catch (erro) {
+    console.log(`${VERMELHO}✗${FIM} CLI no npm — ${erro.message}`);
+    return false;
+  }
+};
+
 console.log(`\nVerificando ${BASE}\n`);
 await conferirCanonico();
 const resultados = [];
@@ -174,9 +192,12 @@ for (const { nome, rota, accept, falhas } of resultados) {
   for (const falha of falhas) console.log(`    ${VERMELHO}${falha}${FIM}`);
 }
 
+const npmOk = await conferirNpm();
+
 const quebradas = resultados.filter((r) => r.falhas.length);
+if (!npmOk) quebradas.push({ nome: "CLI no npm", falhas: ["pacote ausente"] });
 console.log(
-  `\n${resultados.length - quebradas.length}/${resultados.length} passaram` +
+  `\n${resultados.length + 1 - quebradas.length}/${resultados.length + 1} passaram` +
     (quebradas.length ? ` — ${VERMELHO}${quebradas.length} falharam${FIM}\n` : "\n")
 );
 process.exit(quebradas.length ? 1 : 0);

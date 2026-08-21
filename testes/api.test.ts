@@ -403,6 +403,29 @@ describe("descoberta para desenvolvedores", () => {
 describe("CLI", () => {
   const pacote = JSON.parse(readFileSync(new URL("../cli/package.json", import.meta.url), "utf8"));
 
+  it("a versão do pacote e a impressa por --version são a mesma", () => {
+    const fonte = readFileSync(new URL("../cli/bin/lucascavalheri.js", import.meta.url), "utf8");
+    expect(fonte).toContain(`console.log("${pacote.version}")`);
+    expect(fonte).toContain(`lucascavalheri-cli/${pacote.version}`);
+  });
+
+  it("o padding da coluna cabe a rota mais longa", () => {
+    const fonte = readFileSync(new URL("../cli/bin/lucascavalheri.js", import.meta.url), "utf8");
+    const padding = Number(fonte.match(/padEnd\((\d+)\)/)![1]);
+    const maisLonga = Math.max(
+      ...["index", "perfil", "projetos", "experiencia", "stack", "contato"].map(
+        (r) => `/api/v1/${r}.json`.length
+      )
+    );
+    expect(padding).toBeGreaterThan(maisLonga);
+  });
+
+  it("o site aponta o pacote publicado", () => {
+    expect(site.cli.url).toBe("https://www.npmjs.com/package/lucascavalheri");
+    expect(ler("desenvolvedores/index.html")).toContain(site.cli.url);
+    expect(ler("llms.txt")).toContain(site.cli.url);
+  });
+
   it("declara bin, licença e Node mínimo", () => {
     expect(pacote.name).toBe("lucascavalheri");
     expect(pacote.bin.lucascavalheri).toBe("bin/lucascavalheri.js");
