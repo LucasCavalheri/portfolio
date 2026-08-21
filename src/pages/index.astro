@@ -323,7 +323,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
             const cores = `--marca-escura: ${legivel(contato.hex, FUNDO_ESCURO)}; --marca-clara: ${legivel(contato.hex, FUNDO_CLARO)}`;
             const conteudo = (
               <>
-                <svg class:list={["contato-icone", contato.corpo && "contato-icone-traco"]} aria-hidden="true">
+                <svg class="contato-icone" aria-hidden="true">
                   <use href={`#c-${contato.id}`} />
                 </svg>
                 <span>{contato.valor}</span>
@@ -729,7 +729,8 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     }
   }
 
-  /* Contato: ícone da rede antes do texto, colorido no hover */
+  /* Contato: ícone antes do texto, colorido no hover. Todos traçados, do
+     Tabler, para a coluna ter um peso só. */
   .contato {
     display: inline-flex;
     align-items: center;
@@ -737,10 +738,14 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
   }
 
   .contato-icone {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: 0.9375rem;
+    height: 0.9375rem;
     flex-shrink: 0;
-    fill: currentColor;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
     transition: color 0.25s ease;
   }
 
@@ -764,23 +769,6 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     vertical-align: -3px;
   }
 
-  /* Silhueta cheia pesa mais que traço no mesmo tamanho: as marcas ficam um
-     ponto menores para as duas famílias parecerem do mesmo peso. */
-  .contato-icone {
-    width: 0.8125rem;
-    height: 0.8125rem;
-  }
-
-  /* Traçados do Lucide: fino e com pontas arredondadas */
-  .contato-icone-traco {
-    width: 0.875rem;
-    height: 0.875rem;
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.75;
-  }
 </style>
 
 <script>
