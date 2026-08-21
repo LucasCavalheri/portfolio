@@ -49,10 +49,13 @@ const ROTAS_ANTIGAS = [
 const incluirAntigas = process.argv.includes("--antigas");
 const urls = [...ROTAS_ATUAIS, ...(incluirAntigas ? ROTAS_ANTIGAS : [])].map((r) => `${SITE}${r}`);
 
+// O endpoint genérico repassa para todos os participantes. O do Yandex só
+// aceita site registrado no Yandex Webmaster, então um 403 dele é esperado e
+// não conta como falha — o alcance que interessa vem pelos dois primeiros.
 const ENDPOINTS = [
-  "https://api.indexnow.org/indexnow",
-  "https://www.bing.com/indexnow",
-  "https://yandex.com/indexnow",
+  { url: "https://api.indexnow.org/indexnow", essencial: true },
+  { url: "https://www.bing.com/indexnow", essencial: true },
+  { url: "https://yandex.com/indexnow", essencial: false },
 ];
 
 console.log(`\nIndexNow — ${urls.length} URLs${incluirAntigas ? " (com as rotas antigas)" : ""}`);
@@ -67,7 +70,7 @@ if (!confirmacao?.ok) {
 console.log(`chave confirmada em ${SITE}/${CHAVE}.txt`);
 
 let falhas = 0;
-for (const endpoint of ENDPOINTS) {
+for (const { url: endpoint, essencial } of ENDPOINTS) {
   try {
     const resposta = await fetch(endpoint, {
       method: "POST",
@@ -76,20 +79,22 @@ for (const endpoint of ENDPOINTS) {
     });
     // 200 e 202 são aceite; 422 costuma ser URL fora do host declarado
     const ok = resposta.status === 200 || resposta.status === 202;
-    console.log(`${ok ? "enviado " : "recusado"} ${endpoint} — HTTP ${resposta.status}`);
+    const rotulo = ok ? "enviado " : essencial ? "recusado" : "ignorado";
+    console.log(`${rotulo} ${endpoint} — HTTP ${resposta.status}`);
     if (!ok) {
-      falhas += 1;
-      console.log(`  ${(await resposta.text()).slice(0, 200)}`);
+      if (essencial) falhas += 1;
+      else console.log("  exige cadastro no Yandex Webmaster; sem efeito no resto");
     }
   } catch (erro) {
-    falhas += 1;
+    if (essencial) falhas += 1;
     console.log(`falhou   ${endpoint} — ${erro.message}`);
   }
 }
 
 console.log(
   falhas === 0
-    ? "\nTodos os endpoints aceitaram. O reprocessamento leva de horas a poucos dias.\n"
-    : `\n${falhas} endpoint(s) recusaram. Os demais seguem valendo.\n`
+    ? "\nEnviado. O reprocessamento leva de horas a poucos dias.\n" +
+        "O Google não participa do IndexNow: para ele, use o Search Console.\n"
+    : `\n${falhas} endpoint(s) essenciais recusaram.\n`
 );
-process.exit(falhas === ENDPOINTS.length ? 1 : 0);
+process.exit(falhas > 0 ? 1 : 0);
