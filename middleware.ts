@@ -26,16 +26,50 @@ const PARES_MARKDOWN: Record<string, string> = {
   "/desenvolvedores": "/desenvolvedores.md",
 };
 
-/** Recursos que existem sob /api/. Fora desta lista, é 404 em JSON. */
-const RECURSOS_API = new Set([
-  "/api/index.json",
-  "/api/perfil.json",
-  "/api/projetos.json",
-  "/api/experiencia.json",
-  "/api/stack.json",
-  "/api/contato.json",
-  "/api/openapi.json",
-]);
+/** Versão corrente no caminho. O caminho sem versão redireciona para ela. */
+const VERSAO = "v1";
+
+const RECURSOS = ["index", "perfil", "projetos", "experiencia", "stack", "contato", "openapi"];
+
+/** Recursos que existem. Fora desta lista, é 404 em problem+json. */
+const RECURSOS_API = new Set(RECURSOS.map((r) => `/api/${VERSAO}/${r}.json`));
+
+/** Política de uso, também declarada em RateLimit-Policy. */
+const LIMITE_JANELA = 120;
+const JANELA_SEGUNDOS = 60;
+
+// Contagem por origem, na memória da instância de borda: aproximada por
+// natureza, já que cada instância conta o que passou por ela. Serve para
+// conter abuso e para os cabeçalhos refletirem algo real, não um número fixo.
+const contagem = new Map<string, { total: number; reinicioMs: number }>();
+
+export const registrarAcesso = (
+  origem: string,
+  agoraMs: number,
+  limite = LIMITE_JANELA,
+  janelaSegundos = JANELA_SEGUNDOS
+) => {
+  const atual = contagem.get(origem);
+  if (!atual || agoraMs >= atual.reinicioMs) {
+    const novo = { total: 1, reinicioMs: agoraMs + janelaSegundos * 1000 };
+    contagem.set(origem, novo);
+    return { excedeu: false, restantes: limite - 1, resetSegundos: janelaSegundos };
+  }
+  atual.total += 1;
+  const resetSegundos = Math.max(1, Math.ceil((atual.reinicioMs - agoraMs) / 1000));
+  return {
+    excedeu: atual.total > limite,
+    restantes: Math.max(0, limite - atual.total),
+    resetSegundos,
+  };
+};
+
+const cabecalhosLimite = (restantes: number, resetSegundos: number) => ({
+  "RateLimit-Policy": `${LIMITE_JANELA};w=${JANELA_SEGUNDOS}`,
+  "RateLimit-Limit": String(LIMITE_JANELA),
+  "RateLimit-Remaining": String(restantes),
+  "RateLimit-Reset": String(resetSegundos),
+});
 
 const SITE = "https://lucascavalheri.com.br";
 
@@ -91,19 +125,46 @@ export const preferecMarkdown = (accept: string | null): boolean => {
   return markdown >= Math.max(peso("text/html"), peso("application/xhtml+xml"));
 };
 
-export const corpoErroJson = (status: number, codigo: string, mensagem: string, dica: string, caminho: string) => ({
-  erro: {
-    status,
-    codigo,
-    mensagem,
-    dica,
-    caminho,
-    documentacao: `${SITE}/desenvolvedores`,
-    indice: `${SITE}/api/index.json`,
-  },
+// RFC 9457. Repetido do src/data/problema.ts porque o middleware vai para a
+// borda em pacote próprio; o teste "o problema do middleware casa com o do
+// site" falha se os dois formatos divergirem.
+export const corpoProblema = (
+  status: number,
+  tipo: string,
+  titulo: string,
+  detalhe: string,
+  instancia: string,
+  codigo: string,
+  dica: string
+) => ({
+  type: `${SITE}/desenvolvedores#${tipo}`,
+  title: titulo,
+  status,
+  detail: detalhe,
+  instance: instancia,
+  codigo,
+  dica,
+  documentacao: `${SITE}/desenvolvedores`,
 });
 
 /** Decide o que fazer com a requisição. Separado para poder testar sem rede. */
+const respostaProblema = (
+  corpo: ReturnType<typeof corpoProblema>,
+  status: number,
+  extras: Record<string, string> = {}
+) =>
+  new Response(JSON.stringify(corpo, null, 2), {
+    status,
+    headers: {
+      // RFC 9457 exige este tipo de mídia
+      "Content-Type": "application/problem+json; charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+      Vary: "Accept, Accept-Encoding",
+      "Cache-Control": "no-store",
+      ...extras,
+    },
+  });
+
 export const decidir = (url: URL, accept: string | null) => {
   const caminho = url.pathname.replace(/\/+$/, "") || "/";
 
@@ -113,19 +174,31 @@ export const decidir = (url: URL, accept: string | null) => {
   }
 
   if (caminho === "/api" || caminho === "/api/index") {
-    return { tipo: "reescrever" as const, para: "/api/index.json" };
+    return { tipo: "reescrever" as const, para: `/api/${VERSAO}/index.json` };
+  }
+
+  // caminho sem versão: redireciona para a versão corrente, com Link canônico
+  const semVersao = caminho.match(/^\/api\/([a-z]+)\.json$/);
+  if (semVersao && RECURSOS.includes(semVersao[1])) {
+    return {
+      tipo: "redirecionar" as const,
+      status: 301,
+      para: `/api/${VERSAO}/${semVersao[1]}.json`,
+    };
   }
 
   if (caminho.startsWith("/api/") && !RECURSOS_API.has(caminho)) {
     return {
-      tipo: "erroJson" as const,
+      tipo: "problema" as const,
       status: 404,
-      corpo: corpoErroJson(
+      corpo: corpoProblema(
         404,
-        "recurso_nao_encontrado",
+        "recurso-nao-encontrado",
+        "Recurso não encontrado",
         `O recurso ${caminho} não existe nesta API.`,
-        "Consulte /api/index.json para a lista de recursos, ou /openapi.json para a especificação completa.",
-        caminho
+        caminho,
+        "recurso_nao_encontrado",
+        `Consulte /api/${VERSAO}/index.json para a lista de recursos, ou /openapi.json para a especificação.`
       ),
     };
   }
@@ -144,19 +217,85 @@ export const decidir = (url: URL, accept: string | null) => {
 
 export default function middleware(request: Request): Response | undefined {
   const url = new URL(request.url);
-  const decisao = decidir(url, request.headers.get("accept"));
+  const caminho = url.pathname.replace(/\/+$/, "") || "/";
 
-  if (decisao.tipo === "erroJson") {
-    return new Response(JSON.stringify(decisao.corpo, null, 2), {
-      status: decisao.status,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-        Vary: "Accept, Accept-Encoding",
-        "Cache-Control": "public, max-age=0, s-maxage=60",
-      },
+  // só a API é contada: página estática não tem por que ter limite
+  if (caminho.startsWith("/api/") || caminho === "/api") {
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      return respostaProblema(
+        corpoProblema(
+          405,
+          "metodo-nao-permitido",
+          "Método não permitido",
+          `Esta API só aceita GET. O método ${request.method} não é suportado.`,
+          caminho,
+          "metodo_nao_permitido",
+          "Use GET. Toda operação é somente leitura e idempotente."
+        ),
+        405,
+        { Allow: "GET, HEAD" }
+      );
+    }
+
+    const origem =
+      request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+      request.headers.get("x-real-ip") ??
+      "desconhecida";
+    const uso = registrarAcesso(origem, Date.now());
+
+    if (uso.excedeu) {
+      return respostaProblema(
+        corpoProblema(
+          429,
+          "limite-excedido",
+          "Limite de requisições excedido",
+          `Muitas requisições. Tente novamente em ${uso.resetSegundos} segundos.`,
+          caminho,
+          "limite_excedido",
+          "Respeite o cabeçalho Retry-After. A política está em RateLimit-Policy."
+        ),
+        429,
+        {
+          "Retry-After": String(uso.resetSegundos),
+          ...cabecalhosLimite(0, uso.resetSegundos),
+        }
+      );
+    }
+
+    const decisaoApi = decidir(url, request.headers.get("accept"));
+    const limites = cabecalhosLimite(uso.restantes, uso.resetSegundos);
+
+    if (decisaoApi.tipo === "problema") {
+      return respostaProblema(decisaoApi.corpo, decisaoApi.status, limites);
+    }
+    if (decisaoApi.tipo === "redirecionar") {
+      return new Response(null, {
+        status: decisaoApi.status,
+        headers: {
+          Location: new URL(decisaoApi.para, url.origin).toString(),
+          Link: `<${new URL(decisaoApi.para, url.origin)}>; rel="canonical"`,
+          ...limites,
+        },
+      });
+    }
+    if (decisaoApi.tipo === "reescrever") {
+      return new Response(null, {
+        status: 200,
+        headers: {
+          "x-middleware-rewrite": new URL(decisaoApi.para, url.origin).toString(),
+          Vary: "Accept, Accept-Encoding",
+          ...limites,
+        },
+      });
+    }
+    // recurso existente: segue para o arquivo, com os cabeçalhos de limite
+    return new Response(null, {
+      status: 200,
+      headers: { "x-middleware-next": "1", ...limites },
     });
   }
+
+  const decisao = decidir(url, request.headers.get("accept"));
 
   if (decisao.tipo === "markdown404") {
     return new Response(decisao.corpo, {

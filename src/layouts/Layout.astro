@@ -107,9 +107,25 @@ const website = {
   publisher: { "@id": `${site.url}/#lucas` },
 };
 
+const api = {
+  "@type": "WebAPI",
+  "@id": `${site.url}/#api`,
+  name: `API pública de ${site.nome}`,
+  description:
+    "Perfil, projetos, experiência, stack e contato em JSON, somente leitura, sem autenticação. Especificação OpenAPI 3.1.",
+  url: `${site.url}/desenvolvedores`,
+  documentation: `${site.url}/desenvolvedores`,
+  provider: { "@id": `${site.url}/#lucas` },
+  termsOfService: `${site.url}/desenvolvedores#limites`,
+  potentialAction: {
+    "@type": "ConsumeAction",
+    target: `${site.url}/api/v1/index.json`,
+  },
+};
+
 const dadosEstruturados = {
   "@context": "https://schema.org",
-  "@graph": [pessoa, servico, website],
+  "@graph": [pessoa, servico, website, api],
 };
 ---
 

@@ -224,15 +224,19 @@ ${paginas.map((p) => `- [${p.titulo}](${site.url}${p.rota}): ${p.resumo}`).join(
 
 Este site publica os próprios dados em JSON, somente leitura, sem chave nem cadastro.
 
-- [Índice da API](${site.url}/api/index.json): lista os recursos e a política de uso
+- [Índice da API](${site.url}/api/v1/index.json): lista os recursos, a versão e a política de uso
 - [Especificação OpenAPI 3.1](${site.url}/openapi.json): também em /api/openapi.json
 - [Documentação](${site.url}/desenvolvedores): exemplos com curl, formato de erro e limites
-- [Perfil](${site.url}/api/perfil.json), [projetos](${site.url}/api/projetos.json), [experiência](${site.url}/api/experiencia.json), [stack](${site.url}/api/stack.json), [contato](${site.url}/api/contato.json)
+- [Perfil](${site.url}/api/v1/perfil.json), [projetos](${site.url}/api/v1/projetos.json), [experiência](${site.url}/api/v1/experiencia.json), [stack](${site.url}/api/v1/stack.json), [contato](${site.url}/api/v1/contato.json)
 - CLI: \`npx lucascavalheri\` — pacote npm sem dependência, embrulha a API
 
-Toda operação é GET, idempotente e tem operationId próprio na especificação, o que permite
-registrá-las direto como ferramentas de function calling. Erro sob /api/ volta em JSON, com código
-estável, mensagem e dica.
+Toda operação é GET, idempotente, com operationId próprio e schema nomeado por $ref na
+especificação, o que permite registrá-las direto como ferramentas de function calling. A API é
+versionada em /api/v1; o caminho sem versão redireciona para a corrente. Erro segue a RFC 9457, em
+application/problem+json, com as extensões \`codigo\` e \`dica\`. Cada resposta traz RateLimit-Policy,
+RateLimit-Limit, RateLimit-Remaining e RateLimit-Reset; ao exceder, 429 com Retry-After.
+
+O CLI oficial está no npm: \`npm i -g lucascavalheri\` ou \`npx lucascavalheri\`.
 
 ## Machine-readable
 

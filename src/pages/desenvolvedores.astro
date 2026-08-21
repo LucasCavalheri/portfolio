@@ -1,14 +1,15 @@
 ---
 import PaginaTexto from "../components/PaginaTexto.astro";
 import { site } from "../data/site";
-import { indiceApi, VERSAO_API } from "../data/api";
+import { indiceApi, VERSAO_API, VERSAO_CAMINHO, LIMITE_JANELA, JANELA_SEGUNDOS } from "../data/api";
 
-const recursos = indiceApi().recursos;
+const indice = indiceApi();
+const recursos = indice.recursos;
 ---
 
 <PaginaTexto
   titulo="desenvolvedores"
-  tituloPagina="Desenvolvedores — API de Lucas Cavalheri"
+  tituloPagina="API de Lucas Cavalheri — documentação, OpenAPI e CLI para desenvolvedores"
   descricao={`API pública e gratuita de ${site.nome}: perfil, projetos, experiência, stack e contato em JSON, com especificação OpenAPI 3.1 e CLI.`}
   resumo="A API pública deste portfólio, a especificação OpenAPI e o CLI. Sem chave, sem cadastro."
 >
@@ -21,7 +22,7 @@ const recursos = indiceApi().recursos;
   </p>
 
   <h2>começar em um comando</h2>
-  <pre><code>curl -s {site.url}/api/index.json</code></pre>
+  <pre><code>curl -s {site.url}/api/{VERSAO_CAMINHO}/index.json</code></pre>
   <p>
     O índice lista todos os recursos, aponta a especificação e descreve a política de uso. É o único
     endereço que você precisa memorizar.
@@ -48,28 +49,75 @@ const recursos = indiceApi().recursos;
   <h2>especificação OpenAPI</h2>
   <p>
     A especificação em <a class="link link-text" href="/openapi.json">/openapi.json</a> segue o
-    OpenAPI 3.1.0. Cada operação tem <strong>operationId</strong> único, resumo, descrição e schema
-    de resposta tipado, o que basta para gerar cliente ou registrar as operações como ferramentas de
-    function calling. Todas são <code>GET</code>, idempotentes e sem efeito colateral.
+    OpenAPI 3.1.0. Cada operação tem <strong>operationId</strong> único, resumo, descrição e
+    resposta apontando por <code>$ref</code> para um schema nomeado em
+    <code>components.schemas</code> — é o que gerador de cliente e ferramenta de function calling
+    esperam encontrar. Todas são <code>GET</code>, idempotentes e sem efeito colateral.
   </p>
 
-  <h2>erros</h2>
+  <h2 id="versionamento">versionamento</h2>
   <p>
-    Erro sob <code>/api/</code> volta em JSON, nunca em HTML, com código estável para comparar em
-    código e uma dica do que fazer:
+    A versão está no caminho: <code>/api/{VERSAO_CAMINHO}/</code>. Dentro de uma versão só entram
+    mudanças compatíveis — campo novo, valor novo, recurso novo. Remover campo, renomear campo ou
+    trocar tipo exigiria <code>/api/v2/</code>. O caminho sem versão,
+    <code>/api/perfil.json</code>, responde <strong>301</strong> para a versão corrente: serve para
+    explorar, mas prefira a URL versionada em integração.
   </p>
-  <pre><code>{`$ curl -s ${site.url}/api/inexistente.json
+
+  <h2 id="descontinuacao">descontinuação</h2>
+  <p>
+    Uma versão a ser retirada passa a responder com <code>Deprecation</code> e <code>Sunset</code>
+    (RFC 8594) e um <code>Link</code> com <code>rel="successor-version"</code> apontando a
+    substituta. O prazo mínimo entre o primeiro <code>Deprecation</code> e a retirada é de
+    <strong>180 dias</strong>. Enquanto não houver aviso, a v{VERSAO_CAMINHO.slice(1)} continua
+    estável.
+  </p>
+
+  <h2 id="limites">limites de uso</h2>
+  <p>
+    Cada resposta traz a política e o consumo em cabeçalhos:
+    <code>RateLimit-Policy</code>, <code>RateLimit-Limit</code>,
+    <code>RateLimit-Remaining</code> e <code>RateLimit-Reset</code>. São
+    <strong>{LIMITE_JANELA} requisições por {JANELA_SEGUNDOS} segundos</strong>, por endereço de
+    origem. A contagem é feita na borda, por instância, então é aproximada de propósito: existe para
+    conter abuso, não para cobrar. Ao exceder, a resposta é <strong>429</strong> com
+    <code>Retry-After</code>.
+  </p>
+  <pre><code>{`$ curl -sI ${site.url}/api/${VERSAO_CAMINHO}/perfil.json | grep -i ratelimit
+ratelimit-policy: ${LIMITE_JANELA};w=${JANELA_SEGUNDOS}
+ratelimit-limit: ${LIMITE_JANELA}
+ratelimit-remaining: ${LIMITE_JANELA - 1}
+ratelimit-reset: ${JANELA_SEGUNDOS}`}</code></pre>
+
+  <h2 id="erros">erros</h2>
+  <p>
+    Erro sob <code>/api/</code> segue a <strong>RFC 9457</strong>, em
+    <code>application/problem+json</code>, nunca em HTML. Além dos campos da norma vêm duas
+    extensões: <code>codigo</code>, estável e seguro para comparar em código, e <code>dica</code>,
+    com o que fazer em seguida.
+  </p>
+  <pre><code>{`$ curl -s ${site.url}/api/${VERSAO_CAMINHO}/inexistente.json
 {
-  "erro": {
-    "status": 404,
-    "codigo": "recurso_nao_encontrado",
-    "mensagem": "O recurso /api/inexistente.json não existe nesta API.",
-    "dica": "Consulte /api/index.json para a lista de recursos, ou /openapi.json para a especificação completa.",
-    "caminho": "/api/inexistente.json",
-    "documentacao": "${site.url}/desenvolvedores",
-    "indice": "${site.url}/api/index.json"
-  }
+  "type": "${site.url}/desenvolvedores#recurso-nao-encontrado",
+  "title": "Recurso não encontrado",
+  "status": 404,
+  "detail": "O recurso /api/${VERSAO_CAMINHO}/inexistente.json não existe nesta API.",
+  "instance": "/api/${VERSAO_CAMINHO}/inexistente.json",
+  "codigo": "recurso_nao_encontrado",
+  "dica": "Consulte /api/${VERSAO_CAMINHO}/index.json para a lista de recursos, ou /openapi.json para a especificação.",
+  "documentacao": "${site.url}/desenvolvedores"
 }`}</code></pre>
+  <p>Os tipos de erro que esta API emite:</p>
+  <dl>
+    <dt id="recurso-nao-encontrado">recurso_nao_encontrado</dt>
+    <dd>404 — o caminho não corresponde a nenhum recurso desta versão.</dd>
+    <dt id="metodo-nao-permitido">metodo_nao_permitido</dt>
+    <dd>405 — só GET e HEAD são aceitos; a API é somente leitura.</dd>
+    <dt id="limite-excedido">limite-excedido</dt>
+    <dd>429 — política de uso excedida na janela; veja <code>Retry-After</code>.</dd>
+    <dt id="erro-interno">erro_interno</dt>
+    <dd>500 — falha inesperada ao montar a resposta.</dd>
+  </dl>
 
   <h2>markdown em vez de HTML</h2>
   <p>
@@ -88,6 +136,10 @@ curl -s ${site.url}/sobre.md`}</code></pre>
 npx lucascavalheri projetos   # projetos com stack
 npx lucascavalheri contato    # canais de contato
 npx lucascavalheri --json     # saída crua, para pipe`}</code></pre>
+  <p>
+    Publicado no npm como <code>lucascavalheri</code>. Ele fala com
+    <code>/api/{VERSAO_CAMINHO}</code> e respeita os cabeçalhos de limite.
+  </p>
   <p>
     O código está em <a class="link link-text" href={`${site.redes.github}/portfolio`}>GitHub</a>, na
     pasta <code>cli/</code>.

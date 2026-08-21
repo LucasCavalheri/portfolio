@@ -4,13 +4,16 @@
 
 const BASE = process.env.LUCASCAVALHERI_API ?? "https://lucascavalheri.com.br";
 
+// versão no caminho: integração não deve seguir o alias sem versão
+const VERSAO = "v1";
+
 const COMANDOS = {
-  perfil: "/api/perfil.json",
-  projetos: "/api/projetos.json",
-  experiencia: "/api/experiencia.json",
-  stack: "/api/stack.json",
-  contato: "/api/contato.json",
-  api: "/api/index.json",
+  perfil: `/api/${VERSAO}/perfil.json`,
+  projetos: `/api/${VERSAO}/projetos.json`,
+  experiencia: `/api/${VERSAO}/experiencia.json`,
+  stack: `/api/${VERSAO}/stack.json`,
+  contato: `/api/${VERSAO}/contato.json`,
+  api: `/api/${VERSAO}/index.json`,
 };
 
 const AJUDA = `lucascavalheri — perfil, projetos e contato pela linha de comando
@@ -33,6 +36,9 @@ Opções
 
 Ambiente
   LUCASCAVALHERI_API   Troca a origem da API (útil para testar local)
+
+A API é versionada em /api/v1 e responde no máximo 120 requisições por minuto
+por origem. Erros seguem a RFC 9457.
 
 Documentação: https://lucascavalheri.com.br/desenvolvedores`;
 
@@ -66,9 +72,17 @@ const buscar = async () => {
   const corpo = await resposta.json().catch(() => null);
 
   if (!resposta.ok) {
-    // a API responde erro em JSON com código e dica
-    const erro = corpo?.erro;
-    console.error(erro ? `${erro.codigo}: ${erro.mensagem}\n${erro.dica}` : `HTTP ${resposta.status}`);
+    // erro segue a RFC 9457: title, detail e as extensões codigo e dica
+    if (resposta.status === 429) {
+      const espera = resposta.headers.get("retry-after") ?? "alguns";
+      console.error(`Limite de uso excedido. Tente de novo em ${espera} segundos.`);
+      process.exit(1);
+    }
+    console.error(
+      corpo?.title
+        ? `${corpo.codigo ?? corpo.title}: ${corpo.detail ?? ""}\n${corpo.dica ?? ""}`.trim()
+        : `HTTP ${resposta.status}`
+    );
     process.exit(1);
   }
   return corpo;

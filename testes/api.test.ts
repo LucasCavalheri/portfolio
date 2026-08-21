@@ -6,20 +6,26 @@ import { site, paginas } from "../src/data/site";
 import { CHAVE_INDEXNOW } from "../src/data/indexnow";
 import { VERSAO_API } from "../src/data/api";
 import { openapi } from "../src/data/openapi";
-import middleware, { corpo404Markdown, decidir, preferecMarkdown, corpoErroJson } from "../middleware";
+import middleware, {
+  corpo404Markdown,
+  corpoProblema,
+  decidir,
+  preferecMarkdown,
+  registrarAcesso,
+} from "../middleware";
 
 const DIST = new URL("../dist/", import.meta.url);
 const lerJson = (caminho: string) => JSON.parse(readFileSync(new URL(caminho, DIST), "utf8"));
 const ler = (caminho: string) => readFileSync(new URL(caminho, DIST), "utf8");
 
 const RECURSOS = [
-  "api/index.json",
-  "api/perfil.json",
-  "api/projetos.json",
-  "api/experiencia.json",
-  "api/stack.json",
-  "api/contato.json",
-  "api/openapi.json",
+  "api/v1/index.json",
+  "api/v1/perfil.json",
+  "api/v1/projetos.json",
+  "api/v1/experiencia.json",
+  "api/v1/stack.json",
+  "api/v1/contato.json",
+  "api/v1/openapi.json",
   "openapi.json",
 ] as const;
 
@@ -32,11 +38,15 @@ describe("API pública", () => {
   }
 
   it("o índice aponta os recursos, a especificação e a documentação", () => {
-    const indice = lerJson("api/index.json");
+    const indice = lerJson("api/v1/index.json");
     expect(indice.versao).toBe(VERSAO_API);
     expect(indice.openapi).toBe(`${site.url}/openapi.json`);
     expect(indice.documentacao).toBe(`${site.url}/desenvolvedores`);
     expect(indice.autenticacao).toBe("nenhuma");
+    expect(indice.versionamento.atual).toBe("v1");
+    expect(indice.versionamento.descontinuacao).toContain("Sunset");
+    expect(indice.limiteDeUso.requisicoes).toBeGreaterThan(0);
+    expect(indice.limiteDeUso.cabecalhos).toContain("RateLimit-Remaining");
     expect(indice.recursos.length).toBeGreaterThanOrEqual(5);
     for (const recurso of indice.recursos) {
       expect(existsSync(new URL(recurso.rota.slice(1), DIST)), recurso.rota).toBe(true);
@@ -45,7 +55,7 @@ describe("API pública", () => {
   });
 
   it("o perfil traz identidade, localização e disponibilidade", () => {
-    const perfil = lerJson("api/perfil.json");
+    const perfil = lerJson("api/v1/perfil.json");
     expect(perfil.nome).toBe(site.nome);
     expect(perfil.cargo).toBe(site.cargo);
     expect(perfil.localizacao.cidade).toBe(site.cidade);
@@ -54,7 +64,7 @@ describe("API pública", () => {
   });
 
   it("projetos e experiência trazem stack tipada", () => {
-    for (const arquivo of ["api/projetos.json", "api/experiencia.json"]) {
+    for (const arquivo of ["api/v1/projetos.json", "api/v1/experiencia.json"]) {
       const lista = lerJson(arquivo);
       expect(Array.isArray(lista)).toBe(true);
       expect(lista.length).toBeGreaterThan(0);
@@ -69,7 +79,7 @@ describe("API pública", () => {
   });
 
   it("contato expõe canais com url utilizável", () => {
-    const contato = lerJson("api/contato.json");
+    const contato = lerJson("api/v1/contato.json");
     expect(contato.email).toBe(site.email);
     expect(contato.whatsapp).toContain("api.whatsapp.com");
     for (const canal of contato.canais) expect(canal.url).toBeTruthy();
@@ -79,17 +89,23 @@ describe("API pública", () => {
 describe("OpenAPI", () => {
   const spec = openapi();
 
-  it("declara a versão 3.1 e o servidor de produção", () => {
+  it("declara a versão 3.1 e o servidor versionado", () => {
     expect(spec.openapi).toBe("3.1.0");
-    expect(spec.servers[0].url).toBe(site.url);
+    expect(spec.servers[0].url).toBe(`${site.url}/api/v1`);
     expect(spec.info.description.length).toBeGreaterThan(100);
   });
 
-  it("publicado em /openapi.json e /api/openapi.json, iguais", () => {
-    expect(lerJson("openapi.json")).toEqual(lerJson("api/openapi.json"));
+  it("documenta versionamento, descontinuação e limites", () => {
+    for (const termo of ["## Versionamento", "## Descontinuação", "Sunset", "180 dias", "RateLimit-Policy", "RFC 9457"]) {
+      expect(spec.info.description, termo).toContain(termo);
+    }
   });
 
-  it("toda operação tem operationId único, descrição e schema de resposta", () => {
+  it("publicado em /openapi.json e /api/openapi.json, iguais", () => {
+    expect(lerJson("openapi.json")).toEqual(lerJson("api/v1/openapi.json"));
+  });
+
+  it("toda operação tem operationId único, descrição e schema nomeado por $ref", () => {
     const ids: string[] = [];
     for (const [rota, operacoes] of Object.entries(spec.paths)) {
       for (const [metodo, operacao] of Object.entries(operacoes as Record<string, any>)) {
@@ -98,24 +114,49 @@ describe("OpenAPI", () => {
         expect(operacao.summary, onde).toBeTruthy();
         expect(operacao.description.length, onde).toBeGreaterThan(30);
         expect(operacao.tags.length, onde).toBeGreaterThan(0);
+
+        // $ref, não schema inline: é o que gerador de cliente procura
         const ok = operacao.responses["200"].content["application/json"].schema;
-        expect(["object", "array"], onde).toContain(ok.type);
-        expect(operacao.responses["404"], onde).toBeTruthy();
+        expect(ok.$ref, `${onde} sem $ref na resposta`).toMatch(/^#\/components\/schemas\//);
+        expect(spec.components.schemas[ok.$ref.split("/").pop()!], onde).toBeTruthy();
+
+        // cabeçalhos de limite documentados na resposta de sucesso
+        expect(Object.keys(operacao.responses["200"].headers), onde).toContain("RateLimit-Remaining");
+
         ids.push(operacao.operationId);
       }
     }
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("cada caminho do spec existe no build", () => {
-    for (const rota of Object.keys(spec.paths)) {
-      expect(existsSync(new URL(rota.slice(1), DIST)), rota).toBe(true);
+  it("todo erro é problem+json apontando o mesmo schema", () => {
+    for (const [rota, operacoes] of Object.entries(spec.paths)) {
+      for (const [, operacao] of Object.entries(operacoes as Record<string, any>)) {
+        for (const status of ["404", "405", "429", "500"]) {
+          const resposta = operacao.responses[status];
+          expect(resposta, `${rota} sem ${status}`).toBeTruthy();
+          const conteudo = resposta.content["application/problem+json"];
+          expect(conteudo, `${rota} ${status} fora da RFC 9457`).toBeTruthy();
+          expect(conteudo.schema.$ref).toBe("#/components/schemas/Problema");
+        }
+        expect(operacao.responses["429"].headers["Retry-After"]).toBeTruthy();
+      }
     }
   });
 
-  it("descreve o formato de erro em components", () => {
-    const erro = spec.components.schemas.Erro.properties.erro;
-    expect(erro.required).toEqual(["status", "codigo", "mensagem", "dica"]);
+  it("o schema de erro segue os campos da RFC 9457", () => {
+    const problema = spec.components.schemas.Problema;
+    for (const campo of ["type", "title", "status", "detail", "instance", "codigo", "dica"]) {
+      expect(Object.keys(problema.properties), campo).toContain(campo);
+    }
+    expect(problema.required).toContain("type");
+    expect(problema.required).toContain("status");
+  });
+
+  it("cada caminho do spec existe no build, sob o servidor versionado", () => {
+    for (const rota of Object.keys(spec.paths)) {
+      expect(existsSync(new URL(`api/v1${rota}`, DIST)), rota).toBe(true);
+    }
   });
 });
 
@@ -152,35 +193,94 @@ describe("negociação de conteúdo no middleware", () => {
     for (const rota of ["/api", "/api/", "/api/index"]) {
       expect(decidir(new URL(`${site.url}${rota}`), null)).toMatchObject({
         tipo: "reescrever",
-        para: "/api/index.json",
+        para: "/api/v1/index.json",
       });
     }
   });
 
-  it("recurso de API inexistente responde erro JSON, não HTML", () => {
-    const decisao = decidir(new URL(`${site.url}/api/nao-existe.json`), null) as any;
-    expect(decisao.tipo).toBe("erroJson");
+  it("recurso de API inexistente responde problem+json, não HTML", () => {
+    const decisao = decidir(new URL(`${site.url}/api/v1/nao-existe.json`), null) as any;
+    expect(decisao.tipo).toBe("problema");
     expect(decisao.status).toBe(404);
-    expect(decisao.corpo.erro).toMatchObject({
+    expect(decisao.corpo).toMatchObject({
       status: 404,
       codigo: "recurso_nao_encontrado",
-      caminho: "/api/nao-existe.json",
+      instance: "/api/v1/nao-existe.json",
     });
-    expect(decisao.corpo.erro.dica).toContain("/api/index.json");
+    expect(decisao.corpo.type).toContain("#recurso-nao-encontrado");
   });
 
-  it("recurso de API existente passa direto", () => {
-    expect(decidir(new URL(`${site.url}/api/perfil.json`), null)).toMatchObject({ tipo: "seguir" });
+  it("recurso versionado existente passa direto", () => {
+    expect(decidir(new URL(`${site.url}/api/v1/perfil.json`), null)).toMatchObject({
+      tipo: "seguir",
+    });
   });
 
-  it("a resposta de erro sai como JSON com Vary e CORS", async () => {
-    const resposta = middleware(new Request(`${site.url}/api/nada.json`))!;
+  it("caminho sem versão redireciona 301 para a versão corrente", () => {
+    for (const recurso of ["perfil", "projetos", "experiencia", "stack", "contato", "openapi"]) {
+      expect(decidir(new URL(`${site.url}/api/${recurso}.json`), null), recurso).toMatchObject({
+        tipo: "redirecionar",
+        status: 301,
+        para: `/api/v1/${recurso}.json`,
+      });
+    }
+  });
+
+  it("a resposta de erro sai em application/problem+json", async () => {
+    const resposta = middleware(new Request(`${site.url}/api/v1/nada.json`))!;
     expect(resposta.status).toBe(404);
-    expect(resposta.headers.get("content-type")).toContain("application/json");
+    expect(resposta.headers.get("content-type")).toContain("application/problem+json");
     expect(resposta.headers.get("vary")).toContain("Accept");
     expect(resposta.headers.get("access-control-allow-origin")).toBe("*");
     const corpo = await resposta.json();
-    expect(corpo.erro.documentacao).toBe(`${site.url}/desenvolvedores`);
+    expect(corpo.type).toMatch(/^https:\/\//);
+    expect(corpo.title).toBeTruthy();
+    expect(corpo.documentacao).toBe(`${site.url}/desenvolvedores`);
+  });
+
+  it("toda resposta de API traz os cabeçalhos de limite", () => {
+    const resposta = middleware(new Request(`${site.url}/api/v1/perfil.json`))!;
+    for (const cabecalho of [
+      "RateLimit-Policy",
+      "RateLimit-Limit",
+      "RateLimit-Remaining",
+      "RateLimit-Reset",
+    ]) {
+      expect(resposta.headers.get(cabecalho), cabecalho).toBeTruthy();
+    }
+    expect(resposta.headers.get("RateLimit-Policy")).toMatch(/^\d+;w=\d+$/);
+  });
+
+  it("conta por origem e devolve 429 com Retry-After ao exceder", () => {
+    const agora = 1_000_000;
+    let ultimo;
+    for (let i = 0; i < 4; i += 1) ultimo = registrarAcesso("9.9.9.9", agora, 3, 60);
+    expect(ultimo!.excedeu).toBe(true);
+    expect(ultimo!.restantes).toBe(0);
+
+    // janela nova zera a contagem
+    const depois = registrarAcesso("9.9.9.9", agora + 61_000, 3, 60);
+    expect(depois.excedeu).toBe(false);
+    expect(depois.restantes).toBe(2);
+  });
+
+  it("método diferente de GET recebe 405", async () => {
+    const resposta = middleware(
+      new Request(`${site.url}/api/v1/perfil.json`, { method: "POST" })
+    )!;
+    expect(resposta.status).toBe(405);
+    expect(resposta.headers.get("allow")).toContain("GET");
+    const corpo = await resposta.json();
+    expect(corpo.codigo).toBe("metodo_nao_permitido");
+  });
+
+  it("o problema do middleware casa com o do site", async () => {
+    const { recursoNaoEncontrado } = await import("../src/data/problema");
+    const doSite = recursoNaoEncontrado("/api/v1/x.json");
+    const doMiddleware = (decidir(new URL(`${site.url}/api/v1/x.json`), null) as any).corpo;
+    expect(Object.keys(doMiddleware).sort()).toEqual(Object.keys(doSite).sort());
+    expect(doMiddleware.codigo).toBe(doSite.codigo);
+    expect(doMiddleware.status).toBe(doSite.status);
   });
 
   it("a reescrita para markdown sai com Vary e o destino certo", () => {
@@ -191,10 +291,16 @@ describe("negociação de conteúdo no middleware", () => {
     expect(resposta.headers.get("vary")).toContain("Accept");
   });
 
-  it("o corpo de erro tem sempre código, mensagem, dica e ponteiros", () => {
-    const { erro } = corpoErroJson(404, "teste", "mensagem", "dica", "/x");
-    expect(erro).toMatchObject({ status: 404, codigo: "teste", caminho: "/x" });
-    expect(erro.indice).toBe(`${site.url}/api/index.json`);
+  it("o corpo de problema traz os campos da RFC 9457", () => {
+    const corpo = corpoProblema(404, "tipo", "Título", "Detalhe", "/x", "codigo_teste", "dica");
+    expect(corpo).toMatchObject({
+      status: 404,
+      title: "Título",
+      detail: "Detalhe",
+      instance: "/x",
+      codigo: "codigo_teste",
+    });
+    expect(corpo.type).toBe(`${site.url}/desenvolvedores#tipo`);
   });
 });
 
@@ -239,27 +345,47 @@ describe("404 em markdown", () => {
 });
 
 describe("descoberta para desenvolvedores", () => {
-  it("a home aponta a página de desenvolvedores", () => {
-    expect(ler("index.html")).toContain('href="/desenvolvedores"');
+  it("a home aponta a documentação, a especificação e a API", () => {
+    const html = ler("index.html");
+    for (const destino of ["/desenvolvedores", "/openapi.json", "/api/v1/index.json"]) {
+      expect(html, destino).toContain(`href="${destino}"`);
+    }
   });
 
   it("a página documenta autenticação, erros, exemplos e CLI", () => {
     const html = ler("desenvolvedores/index.html");
-    for (const termo of ["openapi.json", "curl", "Accept: text/markdown", "npx lucascavalheri", "CC BY 4.0"]) {
+    for (const termo of [
+      "openapi.json",
+      "curl",
+      "Accept: text/markdown",
+      "npx lucascavalheri",
+      "CC BY 4.0",
+      "RFC 9457",
+      "RateLimit-Policy",
+      "Sunset",
+      "180 dias",
+      'id="versionamento"',
+      'id="limites"',
+      'id="recurso-nao-encontrado"',
+    ]) {
       expect(html, termo).toContain(termo);
     }
     expect(html).toMatch(/<h1[\s>]/);
   });
 
   it("o nome do site está no título da página", () => {
-    expect(ler("desenvolvedores/index.html")).toContain("<title>Desenvolvedores — API de Lucas Cavalheri</title>");
+    const html = ler("desenvolvedores/index.html");
+    expect(html).toContain("API de Lucas Cavalheri");
+    expect(html).toMatch(/<title>[^<]*API de Lucas Cavalheri[^<]*<\/title>/);
   });
 
   it("llms.txt lista API, OpenAPI, documentação e CLI", () => {
     const llms = ler("llms.txt");
     expect(llms).toContain("## API and developer resources");
     expect(llms).toContain(`${site.url}/openapi.json`);
-    expect(llms).toContain(`${site.url}/api/index.json`);
+    expect(llms).toContain(`${site.url}/api/v1/index.json`);
+    expect(llms).toContain("RFC 9457");
+    expect(llms).toContain("RateLimit-Policy");
     expect(llms).toContain("npx lucascavalheri");
     expect(llms).toContain("function calling");
   });

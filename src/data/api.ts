@@ -5,6 +5,11 @@ import { experiencias, projetos, stack } from "./conteudo";
 import { contatos } from "./contato";
 
 export const VERSAO_API = "1.0.0";
+/** Versão no caminho: só muda quando houver quebra de compatibilidade. */
+export const VERSAO_CAMINHO = "v1";
+/** Política de uso declarada nos cabeçalhos RateLimit e aplicada na borda. */
+export const LIMITE_JANELA = 120;
+export const JANELA_SEGUNDOS = 60;
 
 const TIPO_JSON = "application/json; charset=utf-8";
 
@@ -17,6 +22,9 @@ export const respostaJson = (dados: unknown, status = 200) =>
       "Access-Control-Allow-Origin": "*",
       "Cache-Control": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
       Vary: "Accept, Accept-Encoding",
+      // a contagem por origem é do middleware; aqui fica a política declarada
+      "RateLimit-Policy": `${LIMITE_JANELA};w=${JANELA_SEGUNDOS}`,
+      "RateLimit-Limit": String(LIMITE_JANELA),
     },
   });
 
@@ -78,6 +86,8 @@ export const listaContato = () => ({
     .map((c) => ({ tipo: c.id, rotulo: c.rotulo, valor: c.valor, url: c.url })),
 });
 
+const BASE_VERSIONADA = `/api/${VERSAO_CAMINHO}`;
+
 export const indiceApi = () => ({
   nome: `API pública de ${site.nome}`,
   versao: VERSAO_API,
@@ -87,32 +97,26 @@ export const indiceApi = () => ({
   documentacao: `${site.url}/desenvolvedores`,
   llms: `${site.url}/llms.txt`,
   autenticacao: "nenhuma",
-  limiteDeUso: "Sem limite declarado. Respostas são cacheadas por 1 hora na borda.",
+  versionamento: {
+    atual: VERSAO_CAMINHO,
+    caminho: `${site.url}${BASE_VERSIONADA}`,
+    politica: `${site.url}/desenvolvedores#versionamento`,
+    descontinuacao:
+      "Versão a ser retirada responde com Deprecation e Sunset (RFC 8594) e um Link rel=successor-version, com pelo menos 180 dias de aviso.",
+  },
+  limiteDeUso: {
+    requisicoes: LIMITE_JANELA,
+    janelaSegundos: JANELA_SEGUNDOS,
+    cabecalhos: ["RateLimit-Policy", "RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset"],
+    excedido: "429 com Retry-After e corpo em application/problem+json",
+  },
   recursos: [
-    { rota: "/api/perfil.json", descricao: "Identidade, localização e disponibilidade" },
-    { rota: "/api/projetos.json", descricao: "Projetos com stack e links" },
-    { rota: "/api/experiencia.json", descricao: "Cargos, períodos e stack de cada um" },
-    { rota: "/api/stack.json", descricao: "Tecnologias por categoria" },
-    { rota: "/api/contato.json", descricao: "Canais de contato e tempo de resposta" },
+    { rota: `${BASE_VERSIONADA}/perfil.json`, descricao: "Identidade, localização e disponibilidade" },
+    { rota: `${BASE_VERSIONADA}/projetos.json`, descricao: "Projetos com stack e links" },
+    { rota: `${BASE_VERSIONADA}/experiencia.json`, descricao: "Cargos, períodos e stack de cada um" },
+    { rota: `${BASE_VERSIONADA}/stack.json`, descricao: "Tecnologias por categoria" },
+    { rota: `${BASE_VERSIONADA}/contato.json`, descricao: "Canais de contato e tempo de resposta" },
   ],
   paginas: paginas.map((p) => ({ rota: p.rota, titulo: p.titulo, resumo: p.resumo })),
 });
 
-/** Corpo de erro usado pela API e pelo middleware. */
-export const erroJson = (
-  status: number,
-  codigo: string,
-  mensagem: string,
-  dica: string,
-  caminho?: string
-) => ({
-  erro: {
-    status,
-    codigo,
-    mensagem,
-    dica,
-    ...(caminho ? { caminho } : {}),
-    documentacao: `${site.url}/desenvolvedores`,
-    indice: `${site.url}/api/index.json`,
-  },
-});
