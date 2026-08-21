@@ -718,7 +718,10 @@ const dadosEstruturados = {
 
   ::view-transition-new(root) {
     z-index: 2;
-    animation: theme-reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    /* o raio vem medido do ponto do clique até o canto mais distante:
+       150% recortava muito além da tela em cada quadro */
+    animation: theme-reveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    will-change: clip-path;
   }
 
   @keyframes theme-reveal {
@@ -726,8 +729,13 @@ const dadosEstruturados = {
       clip-path: circle(0 at var(--theme-x, 50vw) var(--theme-y, 50vh));
     }
     to {
-      clip-path: circle(150% at var(--theme-x, 50vw) var(--theme-y, 50vh));
+      clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50vw) var(--theme-y, 50vh));
     }
+  }
+
+  /* Recompor o blur a cada quadro é o que travava a troca de tema */
+  :root[data-trocando] .top-fade {
+    backdrop-filter: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
