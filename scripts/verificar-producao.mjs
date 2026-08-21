@@ -5,7 +5,7 @@
 //   npm run verificar:producao
 //   npm run verificar:producao -- https://outro-dominio
 
-const BASE = (process.argv[2] ?? "https://www.lucascavalheri.com.br").replace(/\/$/, "");
+const BASE = (process.argv[2] ?? "https://lucascavalheri.com.br").replace(/\/$/, "");
 
 const VERDE = "\x1b[32m";
 const VERMELHO = "\x1b[31m";
@@ -76,6 +76,19 @@ const checagens = [
   { nome: "robots", rota: "/robots.txt", esperado: { status: 200 } },
 ];
 
+// o apex é o endereço oficial; se o www ainda for o primário na Vercel, o
+// redirecionamento aparece aqui como aviso em vez de passar batido
+const conferirCanonico = async () => {
+  const resposta = await fetch(`${BASE}/`, { redirect: "manual" }).catch(() => null);
+  const destino = resposta?.headers.get("location");
+  if (resposta && [301, 307, 308].includes(resposta.status) && destino) {
+    console.log(
+      `${VERMELHO}!${FIM} ${BASE} redireciona para ${destino} — o endereço oficial deveria responder direto
+`
+    );
+  }
+};
+
 const executar = async ({ nome, rota, accept, esperado }) => {
   const falhas = [];
   try {
@@ -112,6 +125,7 @@ const executar = async ({ nome, rota, accept, esperado }) => {
 };
 
 console.log(`\nVerificando ${BASE}\n`);
+await conferirCanonico();
 const resultados = [];
 for (const checagem of checagens) resultados.push(await executar(checagem));
 
