@@ -1,6 +1,5 @@
-// Formas de falar comigo. Envelope, documento e alfinete são desenhados aqui,
-// preenchidos e no mesmo peso das marcas — traço fino ao lado de logo sólido
-// deixava a coluna desalinhada.
+// Formas de falar comigo. As marcas vêm do simple-icons (silhueta preenchida);
+// e-mail, currículo e local usam traçados do Lucide.
 import { siGithub, siInstagram, siWhatsapp, siX } from "simple-icons";
 import { linkedinIcon } from "./icons";
 
@@ -10,22 +9,29 @@ export type Contato = {
   valor: string;
   url?: string;
   hex: string;
-  icon: { path: string };
+  /** logo de marca: silhueta preenchida */
+  icon?: { path: string };
+  /** ícone traçado (Lucide): markup interno do símbolo */
+  corpo?: string;
 };
 
 const NEUTRO = "#a1a1a1";
 
+// Traçados do Lucide, a mesma família usada pelo shadcn/ui: desenho fino e
+// consistente, no lugar dos que eu havia desenhado à mão.
 const envelope = {
-  path: "M3.75 5.25h16.5c.83 0 1.5.67 1.5 1.5v.63l-9.34 5.36a.75.75 0 0 1-.82 0L2.25 7.38V6.75c0-.83.67-1.5 1.5-1.5Zm-1.5 3.86v8.14c0 .83.67 1.5 1.5 1.5h16.5c.83 0 1.5-.67 1.5-1.5V9.11l-8.6 4.93a2.25 2.25 0 0 1-2.3 0L2.25 9.11Z",
+  corpo:
+    '<path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/>',
 };
 
 const documento = {
-  path: "M13.2 2.25H7.5A2.25 2.25 0 0 0 5.25 4.5v15A2.25 2.25 0 0 0 7.5 21.75h9a2.25 2.25 0 0 0 2.25-2.25V7.8h-4.05a1.5 1.5 0 0 1-1.5-1.5V2.25Zm1.5.44 3.62 3.61h-3.62V2.69ZM8.25 12h7.5v1.5h-7.5V12Zm0 3.75h5.25v1.5H8.25v-1.5Z",
+  corpo:
+    '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
 };
 
-// o furo aparece pela regra evenodd aplicada no sprite
 const alfinete = {
-  path: "M12 2.25A6.75 6.75 0 0 0 5.25 9c0 4.62 5.03 10.8 6.16 12.13a.77.77 0 0 0 1.18 0C13.72 19.8 18.75 13.62 18.75 9A6.75 6.75 0 0 0 12 2.25Zm0 9.5A2.75 2.75 0 1 1 12 6.25a2.75 2.75 0 0 1 0 5.5Z",
+  corpo:
+    '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
 };
 
 const mensagemWhatsapp = encodeURIComponent(
@@ -39,7 +45,7 @@ export const contatos = [
     valor: "lucas.dev.carvalho@gmail.com",
     url: "mailto:lucas.dev.carvalho@gmail.com",
     hex: NEUTRO,
-    icon: envelope,
+    corpo: envelope.corpo,
   },
   {
     id: "whatsapp",
@@ -87,13 +93,13 @@ export const contatos = [
     valor: "PDF",
     url: "/Curriculo-LucasCavalheri.pdf",
     hex: NEUTRO,
-    icon: documento,
+    corpo: documento.corpo,
   },
   {
     id: "local",
     rotulo: "Local",
     valor: "Mogi Mirim, SP · remoto",
     hex: NEUTRO,
-    icon: alfinete,
+    corpo: alfinete.corpo,
   },
 ] satisfies Contato[];

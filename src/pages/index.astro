@@ -323,7 +323,7 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
             const cores = `--marca-escura: ${legivel(contato.hex, FUNDO_ESCURO)}; --marca-clara: ${legivel(contato.hex, FUNDO_CLARO)}`;
             const conteudo = (
               <>
-                <svg class="contato-icone" aria-hidden="true">
+                <svg class:list={["contato-icone", contato.corpo && "contato-icone-traco"]} aria-hidden="true">
                   <use href={`#c-${contato.id}`} />
                 </svg>
                 <span>{contato.valor}</span>
@@ -762,6 +762,24 @@ const atualizadoEm = new Date().toLocaleDateString("pt-BR", {
     border-radius: 4px;
     object-fit: contain;
     vertical-align: -3px;
+  }
+
+  /* Silhueta cheia pesa mais que traço no mesmo tamanho: as marcas ficam um
+     ponto menores para as duas famílias parecerem do mesmo peso. */
+  .contato-icone {
+    width: 0.8125rem;
+    height: 0.8125rem;
+  }
+
+  /* Traçados do Lucide: fino e com pontas arredondadas */
+  .contato-icone-traco {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.75;
   }
 </style>
 

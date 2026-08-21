@@ -20,11 +20,15 @@ const itens = Object.values(tec);
     )
   }
   {
-    contatos.map((contato) => (
-      <symbol id={`c-${contato.id}`} viewBox="0 0 24 24">
-        <path d={contato.icon.path} fill-rule="evenodd" />
-      </symbol>
-    ))
+    contatos.map((contato) =>
+      contato.corpo ? (
+        <symbol id={`c-${contato.id}`} viewBox="0 0 24 24" set:html={contato.corpo} />
+      ) : (
+        <symbol id={`c-${contato.id}`} viewBox="0 0 24 24">
+          <path d={contato.icon!.path} />
+        </symbol>
+      )
+    )
   }
 </svg>
 
