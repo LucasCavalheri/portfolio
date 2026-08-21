@@ -43,17 +43,33 @@ const checagens = [
     accept: "text/markdown",
     esperado: { status: 404, tipo: "text/markdown", contem: "# 404" },
   },
+  { nome: "índice da API", rota: "/api/v1/index.json", esperado: { status: 200, tipo: "application/json", json: (c) => Array.isArray(c.recursos) && c.versionamento?.atual === "v1" } },
+  { nome: "perfil", rota: "/api/v1/perfil.json", esperado: { status: 200, tipo: "application/json", json: (c) => !!c.cargo, cabecalhos: ["ratelimit-policy", "ratelimit-remaining"] } },
+  { nome: "projetos", rota: "/api/v1/projetos.json", esperado: { status: 200, tipo: "application/json", json: (c) => Array.isArray(c) && c.length > 0 } },
+  { nome: "experiência", rota: "/api/v1/experiencia.json", esperado: { status: 200, tipo: "application/json" } },
+  { nome: "stack", rota: "/api/v1/stack.json", esperado: { status: 200, tipo: "application/json" } },
+  { nome: "contato", rota: "/api/v1/contato.json", esperado: { status: 200, tipo: "application/json" } },
   {
-    nome: "recurso de API inexistente devolve erro JSON",
-    rota: "/api/nao-existe.json",
-    esperado: { status: 404, tipo: "application/json", json: (c) => c.erro?.codigo === "recurso_nao_encontrado" && !!c.erro?.dica },
+    nome: "caminho sem versão redireciona para v1",
+    rota: "/api/perfil.json",
+    semSeguir: true,
+    esperado: { status: 301, localizacao: "/api/v1/perfil.json" },
   },
-  { nome: "índice da API", rota: "/api/index.json", esperado: { status: 200, tipo: "application/json", json: (c) => Array.isArray(c.recursos) } },
-  { nome: "perfil", rota: "/api/perfil.json", esperado: { status: 200, tipo: "application/json", json: (c) => !!c.cargo } },
-  { nome: "projetos", rota: "/api/projetos.json", esperado: { status: 200, tipo: "application/json", json: (c) => Array.isArray(c) && c.length > 0 } },
-  { nome: "experiência", rota: "/api/experiencia.json", esperado: { status: 200, tipo: "application/json" } },
-  { nome: "stack", rota: "/api/stack.json", esperado: { status: 200, tipo: "application/json" } },
-  { nome: "contato", rota: "/api/contato.json", esperado: { status: 200, tipo: "application/json" } },
+  {
+    nome: "erro segue a RFC 9457",
+    rota: "/api/v1/nao-existe.json",
+    esperado: {
+      status: 404,
+      tipo: "application/problem+json",
+      json: (c) => !!c.type && !!c.title && c.status === 404 && !!c.instance && c.codigo === "recurso_nao_encontrado",
+    },
+  },
+  {
+    nome: "método diferente de GET recebe 405",
+    rota: "/api/v1/perfil.json",
+    metodo: "POST",
+    esperado: { status: 405, tipo: "application/problem+json", json: (c) => c.codigo === "metodo_nao_permitido" },
+  },
   {
     nome: "OpenAPI 3.1 com operationId em toda operação",
     rota: "/openapi.json",
@@ -65,7 +81,22 @@ const checagens = [
         Object.values(c.paths).every((ops) => Object.values(ops).every((o) => o.operationId && o.description)),
     },
   },
-  { nome: "OpenAPI no caminho alternativo", rota: "/api/openapi.json", esperado: { status: 200, tipo: "application/json" } },
+  { nome: "OpenAPI no caminho versionado", rota: "/api/v1/openapi.json", esperado: { status: 200, tipo: "application/json" } },
+  {
+    nome: "spec com schemas nomeados e erros problem+json",
+    rota: "/openapi.json",
+    esperado: {
+      status: 200,
+      json: (c) =>
+        Object.values(c.paths).every((ops) =>
+          Object.values(ops).every(
+            (o) =>
+              o.responses["200"].content["application/json"].schema.$ref?.startsWith("#/components/schemas/") &&
+              ["404", "405", "429", "500"].every((s) => o.responses[s]?.content["application/problem+json"])
+          )
+        ),
+    },
+  },
   { nome: "llms.txt com quando usar", rota: "/llms.txt", esperado: { status: 200, contem: "## When to use this" } },
   { nome: "documentação para desenvolvedores", rota: "/desenvolvedores", esperado: { status: 200, tipo: "text/html" } },
   { nome: "alias /developers", rota: "/developers", esperado: { status: 200, tipo: "text/html" } },
@@ -89,12 +120,13 @@ const conferirCanonico = async () => {
   }
 };
 
-const executar = async ({ nome, rota, accept, esperado }) => {
+const executar = async ({ nome, rota, accept, esperado, metodo, semSeguir }) => {
   const falhas = [];
   try {
     const resposta = await fetch(`${BASE}${rota}`, {
+      method: metodo ?? "GET",
       headers: accept ? { Accept: accept } : {},
-      redirect: "follow",
+      redirect: semSeguir ? "manual" : "follow",
     });
     const tipo = resposta.headers.get("content-type") ?? "";
     const texto = await resposta.text();
@@ -110,6 +142,12 @@ const executar = async ({ nome, rota, accept, esperado }) => {
     }
     if (esperado.contem && !texto.includes(esperado.contem)) {
       falhas.push(`corpo sem "${esperado.contem}"`);
+    }
+    if (esperado.localizacao && !(resposta.headers.get("location") ?? "").includes(esperado.localizacao)) {
+      falhas.push(`location "${resposta.headers.get("location")}", esperava "${esperado.localizacao}"`);
+    }
+    for (const cabecalho of esperado.cabecalhos ?? []) {
+      if (!resposta.headers.get(cabecalho)) falhas.push(`sem cabeçalho ${cabecalho}`);
     }
     if (esperado.json) {
       try {
