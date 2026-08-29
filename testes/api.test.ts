@@ -434,8 +434,10 @@ describe("MCP e OAuth na borda", () => {
     expect(corpo.scopes).toContain("portfolio:read");
   });
 
-  it("a home HTML leva o cabeçalho Link de descoberta", () => {
-    const resposta = middleware(new Request(`${site.url}/`, { headers: { Accept: "text/html" } }))!;
+  it("a home em markdown leva o cabeçalho Link de descoberta", () => {
+    const resposta = middleware(
+      new Request(`${site.url}/`, { headers: { Accept: "text/markdown" } })
+    )!;
     expect(resposta.headers.get("link")).toContain('rel="api-catalog"');
     expect(resposta.headers.get("link")).toContain("/.well-known/api-catalog");
   });

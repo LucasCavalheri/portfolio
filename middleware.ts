@@ -350,9 +350,10 @@ export default function middleware(request: Request): Response | Promise<Respons
   }
 
   if (caminho === "/") {
+    // Link da home já sai no vercel.json; repetir aqui duplica o cabeçalho.
     return new Response(null, {
       status: 200,
-      headers: { "x-middleware-next": "1", Link: LINK_DESCOBERTA },
+      headers: { "x-middleware-next": "1" },
     });
   }
 

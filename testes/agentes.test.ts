@@ -1,6 +1,6 @@
 // Verifica o que os agentes consomem: status, tipos, markdown, JSON-LD e
 // eficiência de conteúdo. Roda sobre o dist, ou seja, sobre o que é publicado.
-import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { paginas, site } from "../src/data/site";
 
@@ -379,13 +379,11 @@ describe("descoberta para agentes", () => {
     expect(fonte).toContain("inputSchema");
     expect(fonte).toContain("get_perfil");
 
-    const pasta = new URL("../dist/_astro/", import.meta.url);
-    const js = readdirSync(pasta)
-      .filter((arquivo: string) => arquivo.endsWith(".js"))
-      .map((arquivo: string) => readFileSync(new URL(arquivo, pasta), "utf8"))
-      .join("\n");
-    expect(js).toContain("get_perfil");
-    expect(js).toContain("registerTool");
+    const html = ler("index.html");
+    expect(html).toContain("provideContext");
+    expect(html).toContain("registerTool");
+    expect(html).toContain("get_perfil");
+    expect(html).toContain("navigator.modelContext");
   });
 });
 

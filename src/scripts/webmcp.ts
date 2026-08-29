@@ -116,27 +116,26 @@ const contextoDe = (alvo: unknown): Contexto | undefined => {
   return undefined;
 };
 
-const registrar = async () => {
+const registrar = () => {
+  const win = window as Window & { __lucasWebmcp?: boolean; modelContext?: unknown };
+  if (win.__lucasWebmcp) return;
   const ctx =
     contextoDe((navigator as Navigator & { modelContext?: unknown }).modelContext) ??
     contextoDe((document as Document & { modelContext?: unknown }).modelContext) ??
-    contextoDe((window as Window & { modelContext?: unknown }).modelContext);
-
+    contextoDe(win.modelContext);
   if (!ctx) return;
+  win.__lucasWebmcp = true;
 
-  const ac = new AbortController();
-  addEventListener("pagehide", () => ac.abort(), { once: true });
-
+  // As duas formas: Chrome EPP (provideContext) e a spec atual (registerTool).
+  if (typeof ctx.provideContext === "function") {
+    void ctx.provideContext({ tools: ferramentas }).catch(() => undefined);
+  }
   if (typeof ctx.registerTool === "function") {
     for (const ferramenta of ferramentas) {
-      await ctx.registerTool(ferramenta, { signal: ac.signal }).catch(() => undefined);
+      void ctx.registerTool(ferramenta).catch(() => undefined);
     }
-    return;
-  }
-
-  if (typeof ctx.provideContext === "function") {
-    await ctx.provideContext({ tools: ferramentas }).catch(() => undefined);
   }
 };
 
-void registrar();
+registrar();
+document.addEventListener("DOMContentLoaded", registrar);

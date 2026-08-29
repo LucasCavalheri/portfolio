@@ -171,6 +171,63 @@ const dadosEstruturados = {
         }
       } catch {}
     </script>
+    <script is:inline>
+      (() => {
+        if (window.__lucasWebmcp) return;
+        const jsonApi = (rota) =>
+          fetch(rota).then((r) => {
+            if (!r.ok) throw new Error(String(r.status));
+            return r.json();
+          });
+        const tools = [
+          {
+            name: "get_perfil",
+            description: "Identidade, cargo, localização e disponibilidade de Lucas Cavalheri.",
+            inputSchema: { type: "object", properties: {} },
+            execute: () => jsonApi("/api/v1/perfil.json"),
+          },
+          {
+            name: "get_projetos",
+            description: "Projetos com tipo, ano, stack e links.",
+            inputSchema: { type: "object", properties: {} },
+            execute: () => jsonApi("/api/v1/projetos.json"),
+          },
+          {
+            name: "get_experiencia",
+            description: "Cargos, empresas, períodos e stack.",
+            inputSchema: { type: "object", properties: {} },
+            execute: () => jsonApi("/api/v1/experiencia.json"),
+          },
+          {
+            name: "get_stack",
+            description: "Tecnologias agrupadas por categoria.",
+            inputSchema: { type: "object", properties: {} },
+            execute: () => jsonApi("/api/v1/stack.json"),
+          },
+          {
+            name: "get_contato",
+            description: "E-mail, WhatsApp e demais canais de Lucas Cavalheri.",
+            inputSchema: { type: "object", properties: {} },
+            execute: () => jsonApi("/api/v1/contato.json"),
+          },
+        ];
+        const ctx = navigator.modelContext || document.modelContext || window.modelContext;
+        if (!ctx) return;
+        window.__lucasWebmcp = true;
+        if (typeof ctx.provideContext === "function") {
+          try {
+            ctx.provideContext({ tools });
+          } catch (e) {}
+        }
+        if (typeof ctx.registerTool === "function") {
+          for (const tool of tools) {
+            try {
+              ctx.registerTool(tool);
+            } catch (e) {}
+          }
+        }
+      })();
+    </script>
   </head>
   <body>
     <SpriteTec tecnologias={tecnologias} contatos={comContatos ? contatos : []} />
@@ -193,6 +250,8 @@ const dadosEstruturados = {
       import "../scripts/scroll-top";
       import "../scripts/magnetismo";
       import "../scripts/tec-tooltip";
+    </script>
+    <script>
       import "../scripts/webmcp";
     </script>
   </body>
