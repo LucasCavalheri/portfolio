@@ -299,7 +299,7 @@ describe("descoberta para agentes", () => {
 
   it("OAuth PRM e AS descrevem o issuer e o método anônimo", () => {
     const prm = JSON.parse(ler(".well-known/oauth-protected-resource"));
-    expect(prm.resource).toBe(`${site.url}/api/v1`);
+    expect(prm.resource).toBe(site.url);
     expect(prm.authorization_servers).toEqual([site.url]);
     expect(prm.scopes_supported).toContain("portfolio:read");
     expect(prm.bearer_methods_supported).toContain("header");

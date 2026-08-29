@@ -90,8 +90,9 @@ export const catalogoApi = () => ({
   ],
 });
 
-export const recursoProtegido = () => ({
-  resource: `${site.url}/api/v1`,
+/** RFC 9728 §3.3: `resource` tem de ser o identificador de onde o well-known foi derivado. */
+export const recursoProtegido = (recurso = site.url) => ({
+  resource: recurso,
   resource_name: `API pública de ${site.nome}`,
   authorization_servers: [site.url],
   scopes_supported: ["portfolio:read"],
