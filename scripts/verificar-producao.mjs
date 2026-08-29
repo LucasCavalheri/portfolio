@@ -104,7 +104,48 @@ const checagens = [
   { nome: "alias /about", rota: "/about", esperado: { status: 200, tipo: "text/html" } },
   { nome: "markdown por sufixo", rota: "/sobre.md", esperado: { status: 200, tipo: "text/markdown" } },
   { nome: "sitemap", rota: "/sitemap-index.xml", esperado: { status: 200 } },
-  { nome: "robots", rota: "/robots.txt", esperado: { status: 200 } },
+  { nome: "robots", rota: "/robots.txt", esperado: { status: 200, contem: "Content-Signal:" } },
+  {
+    nome: "catálogo RFC 9727",
+    rota: "/.well-known/api-catalog",
+    esperado: { status: 200, tipo: "application/linkset+json", json: (c) => Array.isArray(c.linkset) },
+  },
+  {
+    nome: "OAuth protected resource",
+    rota: "/.well-known/oauth-protected-resource",
+    esperado: { status: 200, tipo: "application/json", json: (c) => Array.isArray(c.authorization_servers) },
+  },
+  {
+    nome: "OAuth authorization server",
+    rota: "/.well-known/oauth-authorization-server",
+    esperado: {
+      status: 200,
+      tipo: "application/json",
+      json: (c) => c.issuer && c.token_endpoint && c.agent_auth?.register_uri,
+    },
+  },
+  {
+    nome: "cartão MCP",
+    rota: "/.well-known/mcp/server-card.json",
+    esperado: { status: 200, tipo: "application/json", json: (c) => c.serverInfo?.name && (c.endpoint || c.transport) },
+  },
+  {
+    nome: "índice de skills",
+    rota: "/.well-known/agent-skills/index.json",
+    esperado: { status: 200, tipo: "application/json", json: (c) => Array.isArray(c.skills) && c.$schema },
+  },
+  {
+    nome: "ARD",
+    rota: "/.well-known/ai-catalog.json",
+    esperado: { status: 200, tipo: "application/json", json: (c) => c.specVersion && Array.isArray(c.entries) },
+  },
+  { nome: "auth.md", rota: "/auth.md", esperado: { status: 200, tipo: "text/markdown", contem: "# auth.md" } },
+  {
+    nome: "home com Link de descoberta",
+    rota: "/",
+    accept: "text/html",
+    esperado: { status: 200, cabecalhos: ["link"] },
+  },
 ];
 
 // o apex é o endereço oficial; se o www ainda for o primário na Vercel, o

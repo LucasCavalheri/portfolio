@@ -12,6 +12,18 @@
 
 // Precisa alcançar rota inexistente também, senão o 404 em markdown nunca
 // passa por aqui. Só os assets do Astro ficam de fora.
+import { tratarAgenteHttp } from "./src/data/agente-http";
+
+// Duplicado de src/data/agentes.ts: o middleware vai sozinho para a borda.
+export const LINK_DESCOBERTA = [
+  '</.well-known/api-catalog>; rel="api-catalog"',
+  '</openapi.json>; rel="service-desc"; type="application/json"',
+  '</desenvolvedores>; rel="service-doc"',
+  '</llms.txt>; rel="describedby"',
+  '</.well-known/ai-catalog.json>; rel="ai-catalog"',
+  '</.well-known/mcp/server-card.json>; rel="alternate"; type="application/json"',
+].join(", ");
+
 export const config = {
   matcher: ["/((?!_astro/).*)"],
 };
@@ -104,6 +116,8 @@ export const corpo404Markdown = (caminho: string) =>
     `- ${SITE}/llms.txt — o que este site é e quando me chamar`,
     `- ${SITE}/sitemap-index.xml — todas as URLs`,
     `- ${SITE}/api/index.json — índice da API pública`,
+    `- ${SITE}/.well-known/api-catalog — catálogo RFC 9727`,
+    `- ${SITE}/.well-known/mcp/server-card.json — MCP`,
     `- ${SITE}/404.md — esta mesma resposta, completa`,
     "",
   ].join("\n");
@@ -173,6 +187,15 @@ export const decidir = (url: URL, accept: string | null) => {
     return { tipo: "seguir" as const };
   }
 
+  if (
+    caminho.startsWith("/.well-known/") ||
+    caminho === "/mcp" ||
+    caminho.startsWith("/oauth") ||
+    caminho.startsWith("/agent/")
+  ) {
+    return { tipo: "seguir" as const };
+  }
+
   if (caminho === "/api" || caminho === "/api/index") {
     return { tipo: "reescrever" as const, para: `/api/${VERSAO}/index.json` };
   }
@@ -215,9 +238,13 @@ export const decidir = (url: URL, accept: string | null) => {
   return { tipo: "seguir" as const };
 };
 
-export default function middleware(request: Request): Response | undefined {
+export default function middleware(request: Request): Response | Promise<Response> | undefined {
   const url = new URL(request.url);
   const caminho = url.pathname.replace(/\/+$/, "") || "/";
+
+  if (caminho === "/mcp" || caminho.startsWith("/oauth") || caminho.startsWith("/agent/")) {
+    return tratarAgenteHttp(request);
+  }
 
   // só a API é contada: página estática não tem por que ter limite
   if (caminho.startsWith("/api/") || caminho === "/api") {
@@ -296,6 +323,7 @@ export default function middleware(request: Request): Response | undefined {
   }
 
   const decisao = decidir(url, request.headers.get("accept"));
+  const descoberta = caminho === "/" ? { Link: LINK_DESCOBERTA } : {};
 
   if (decisao.tipo === "markdown404") {
     return new Response(decisao.corpo, {
@@ -304,6 +332,7 @@ export default function middleware(request: Request): Response | undefined {
         "Content-Type": "text/markdown; charset=utf-8",
         Vary: "Accept, Accept-Encoding",
         "Cache-Control": "public, max-age=0, s-maxage=60",
+        ...descoberta,
       },
     });
   }
@@ -315,7 +344,15 @@ export default function middleware(request: Request): Response | undefined {
       headers: {
         "x-middleware-rewrite": destino.toString(),
         Vary: "Accept, Accept-Encoding",
+        ...descoberta,
       },
+    });
+  }
+
+  if (caminho === "/") {
+    return new Response(null, {
+      status: 200,
+      headers: { "x-middleware-next": "1", Link: LINK_DESCOBERTA },
     });
   }
 

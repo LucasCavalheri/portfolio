@@ -2,6 +2,7 @@
 import PaginaTexto from "../components/PaginaTexto.astro";
 import { site } from "../data/site";
 import { indiceApi, VERSAO_API, VERSAO_CAMINHO, LIMITE_JANELA, JANELA_SEGUNDOS } from "../data/api";
+import { registrosDnsAid } from "../data/agentes";
 
 const indice = indiceApi();
 const recursos = indice.recursos;
@@ -154,6 +155,36 @@ npx lucascavalheri --json     # saída crua, para pipe`}</code></pre>
     e como. <a class="link link-text" href="/sitemap-index.xml">/sitemap-index.xml</a> lista as
     URLs. Se você é um agente decidindo se me recomenda, comece pelo llms.txt e confirme os dados em
     /api/perfil.json.
+  </p>
+  <dl>
+    <dt><a class="link link-text" href="/.well-known/api-catalog">/.well-known/api-catalog</a></dt>
+    <dd>Catálogo RFC 9727 em application/linkset+json.</dd>
+    <dt><a class="link link-text" href="/mcp">/mcp</a></dt>
+    <dd>
+      MCP Streamable HTTP. Cartão em
+      <a class="link link-text" href="/.well-known/mcp/server-card.json">/.well-known/mcp/server-card.json</a>.
+    </dd>
+    <dt><a class="link link-text" href="/.well-known/ai-catalog.json">/.well-known/ai-catalog.json</a></dt>
+    <dd>Manifesto ARD das capacidades deste origin.</dd>
+    <dt><a class="link link-text" href="/.well-known/agent-skills/index.json">/.well-known/agent-skills/index.json</a></dt>
+    <dd>Índice de skills: contratar, usar a API, ler o site.</dd>
+    <dt><a class="link link-text" href="/auth.md">/auth.md</a></dt>
+    <dd>
+      A API é pública. OAuth em
+      <a class="link link-text" href="/.well-known/oauth-protected-resource">/.well-known/oauth-protected-resource</a>
+      existe só para descoberta; o token <code>public</code> é opcional e ignorado.
+    </dd>
+  </dl>
+  <h2 id="dns-aid">DNS-AID</h2>
+  <p>
+    A descoberta por DNS (draft DNS-AID) não mora neste repositório: os registros SVCB ficam na
+    zona Cloudflare de lucascavalheri.com.br. Os registros a publicar:
+  </p>
+  <pre><code>{registrosDnsAid.join("\n")}</code></pre>
+  <p>
+    No painel da Cloudflare: DNS → Add record → tipo SVCB, nome <code>_index._agents</code>,
+    prioridade 1, alvo <code>lucascavalheri.com.br</code>, valor <code>alpn="h2,h3" port=443</code>.
+    Ative DNSSEC na zona e publique o DS no Registro.br.
   </p>
 
   <h2>licença e limites</h2>

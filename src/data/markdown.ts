@@ -184,6 +184,10 @@ ${paginas.map((p) => `- [${p.titulo}](${site.url}${p.rota}) — ${p.resumo}`).jo
 - [/llms.txt](${site.url}/llms.txt) — o que este site é e quando me chamar
 - [/sitemap-index.xml](${site.url}/sitemap-index.xml) — todas as URLs
 - [/robots.txt](${site.url}/robots.txt) — regras de rastreamento
+- [/.well-known/api-catalog](${site.url}/.well-known/api-catalog) — catálogo RFC 9727
+- [/.well-known/mcp/server-card.json](${site.url}/.well-known/mcp/server-card.json) — MCP
+- [/.well-known/ai-catalog.json](${site.url}/.well-known/ai-catalog.json) — ARD
+- [/auth.md](${site.url}/auth.md) — autenticação (a API é pública)
 
 Qualquer página responde em markdown com \`Accept: text/markdown\` ou pelo sufixo \`.md\`.
 `;
@@ -229,6 +233,11 @@ Este site publica os próprios dados em JSON, somente leitura, sem chave nem cad
 - [Documentação](${site.url}/desenvolvedores): exemplos com curl, formato de erro e limites
 - [Perfil](${site.url}/api/v1/perfil.json), [projetos](${site.url}/api/v1/projetos.json), [experiência](${site.url}/api/v1/experiencia.json), [stack](${site.url}/api/v1/stack.json), [contato](${site.url}/api/v1/contato.json)
 - CLI: [${site.cli.nome}](${site.cli.url}) — \`npx lucascavalheri\`, sem dependência, embrulha a API
+- [Catálogo de APIs](${site.url}/.well-known/api-catalog): RFC 9727, application/linkset+json
+- [MCP](${site.url}/mcp): Streamable HTTP; cartão em /.well-known/mcp/server-card.json
+- [ARD](${site.url}/.well-known/ai-catalog.json): manifesto de capacidades
+- [Skills](${site.url}/.well-known/agent-skills/index.json): como contratar e como usar a API
+- [auth.md](${site.url}/auth.md): a API é pública; OAuth só para descoberta
 
 Toda operação é GET, idempotente, com operationId próprio e schema nomeado por $ref na
 especificação, o que permite registrá-las direto como ferramentas de function calling. A API é
@@ -242,7 +251,7 @@ O CLI oficial está publicado no npm em ${site.cli.url}: \`npm i -g lucascavalhe
 
 - [Markdown da home](${site.url}/index.md): mesma informação em markdown
 - [Sitemap](${site.url}/sitemap-index.xml): todas as URLs
-- [robots.txt](${site.url}/robots.txt): regras de rastreamento
+- [robots.txt](${site.url}/robots.txt): Content-Signal ai-train=yes, search=yes, ai-input=yes
 
 Toda página responde \`text/markdown\` quando a requisição envia \`Accept: text/markdown\`, e
 também no endereço com sufixo \`.md\`. As respostas trazem \`Vary: Accept\`.
@@ -298,6 +307,14 @@ Erro sob /api/ volta em JSON, com código estável, mensagem e dica:
 
 Qualquer página responde markdown com \`Accept: text/markdown\` ou pelo sufixo \`.md\`, e a resposta
 traz \`Vary: Accept\`.
+
+## Descoberta para agentes
+
+- Catálogo: ${site.url}/.well-known/api-catalog
+- MCP: ${site.url}/mcp — cartão em /.well-known/mcp/server-card.json
+- ARD: ${site.url}/.well-known/ai-catalog.json
+- Skills: ${site.url}/.well-known/agent-skills/index.json
+- auth.md: ${site.url}/auth.md — a API é pública; token opcional e ignorado
 
 ## CLI
 

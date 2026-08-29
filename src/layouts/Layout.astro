@@ -142,6 +142,11 @@ const dadosEstruturados = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="api-catalog" href="/.well-known/api-catalog" />
+    <link rel="service-desc" type="application/json" href="/openapi.json" />
+    <link rel="service-doc" href="/desenvolvedores" />
+    <link rel="describedby" href="/llms.txt" />
+    <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -188,6 +193,7 @@ const dadosEstruturados = {
       import "../scripts/scroll-top";
       import "../scripts/magnetismo";
       import "../scripts/tec-tooltip";
+      import "../scripts/webmcp";
     </script>
   </body>
 </html>

@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
 # Orientação para agentes: quando me chamar, como falar comigo, o que existe aqui
 # https://llmstxt.org
 Sitemap: https://lucascavalheri.com.br/sitemap-index.xml
+Agentmap: https://lucascavalheri.com.br/.well-known/ai-catalog.json

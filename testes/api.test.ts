@@ -342,6 +342,103 @@ describe("404 em markdown", () => {
       });
     }
   });
+
+  it("well-known, MCP e OAuth não caem na negociação markdown", () => {
+    for (const rota of [
+      "/.well-known/api-catalog",
+      "/.well-known/oauth-protected-resource",
+      "/mcp",
+      "/oauth/token",
+      "/agent/identity",
+    ]) {
+      expect(decidir(new URL(`${site.url}${rota}`), "text/markdown"), rota).toMatchObject({
+        tipo: "seguir",
+      });
+    }
+  });
+});
+
+describe("MCP e OAuth na borda", () => {
+  it("initialize e tools/list respondem JSON-RPC", async () => {
+    const init = await middleware(
+      new Request(`${site.url}/mcp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "initialize",
+          params: { protocolVersion: "2025-11-25", capabilities: {}, clientInfo: { name: "t", version: "1" } },
+        }),
+      })
+    )!;
+    expect(init.status).toBe(200);
+    const iniciado = await init.json();
+    expect(iniciado.result.serverInfo.name).toBe("lucascavalheri-portfolio");
+    expect(iniciado.result.capabilities.tools).toBeTruthy();
+
+    const lista = await middleware(
+      new Request(`${site.url}/mcp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 2, method: "tools/list" }),
+      })
+    )!;
+    const ferramentas = (await lista.json()).result.tools.map((t: { name: string }) => t.name);
+    for (const nome of ["get_perfil", "get_projetos", "get_contato"]) {
+      expect(ferramentas).toContain(nome);
+    }
+  });
+
+  it("tools/call devolve o perfil", async () => {
+    const resposta = await middleware(
+      new Request(`${site.url}/mcp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 3,
+          method: "tools/call",
+          params: { name: "get_perfil", arguments: {} },
+        }),
+      })
+    )!;
+    const corpo = await resposta.json();
+    expect(corpo.result.structuredContent.nome).toBe(site.nome);
+  });
+
+  it("token público sai sem cadastro", async () => {
+    const resposta = await middleware(
+      new Request(`${site.url}/oauth/token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "grant_type=client_credentials",
+      })
+    )!;
+    const corpo = await resposta.json();
+    expect(corpo.token_type).toBe("Bearer");
+    expect(corpo.access_token).toBe("public");
+    expect(corpo.scope).toContain("portfolio:read");
+  });
+
+  it("registro anônimo não exige credencial", async () => {
+    const resposta = await middleware(
+      new Request(`${site.url}/agent/identity`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "anonymous" }),
+      })
+    )!;
+    const corpo = await resposta.json();
+    expect(corpo.registration_type).toBe("anonymous");
+    expect(corpo.scopes).toContain("portfolio:read");
+  });
+
+  it("a home HTML leva o cabeçalho Link de descoberta", () => {
+    const resposta = middleware(new Request(`${site.url}/`, { headers: { Accept: "text/html" } }))!;
+    expect(resposta.headers.get("link")).toContain('rel="api-catalog"');
+    expect(resposta.headers.get("link")).toContain("/.well-known/api-catalog");
+  });
 });
 
 describe("descoberta para desenvolvedores", () => {

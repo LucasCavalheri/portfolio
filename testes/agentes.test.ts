@@ -1,6 +1,6 @@
 // Verifica o que os agentes consomem: status, tipos, markdown, JSON-LD e
 // eficiência de conteúdo. Roda sobre o dist, ou seja, sobre o que é publicado.
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { paginas, site } from "../src/data/site";
 
@@ -256,6 +256,136 @@ describe("robots.txt", () => {
     const robots = ler("robots.txt");
     expect(robots).toContain("Allow: /");
     expect(robots).toContain(`${site.url}/sitemap-index.xml`);
+  });
+
+  it("declara Content Signals e o manifesto ARD", () => {
+    const robots = ler("robots.txt");
+    expect(robots).toContain("Content-Signal: ai-train=yes, search=yes, ai-input=yes");
+    expect(robots).toContain(`Agentmap: ${site.url}/.well-known/ai-catalog.json`);
+  });
+});
+
+describe("descoberta para agentes", () => {
+  it("a home anuncia catálogo, OpenAPI, docs e ARD no HTML", () => {
+    const html = ler("index.html");
+    expect(html).toContain('rel="api-catalog"');
+    expect(html).toContain('href="/.well-known/api-catalog"');
+    expect(html).toContain('rel="service-desc"');
+    expect(html).toContain('href="/openapi.json"');
+    expect(html).toContain('rel="ai-catalog"');
+    expect(html).toContain('href="/.well-known/ai-catalog.json"');
+  });
+
+  it("o Link da hospedagem casa com o do middleware", async () => {
+    const { LINK_DESCOBERTA: doSite } = await import("../src/data/agentes");
+    const { LINK_DESCOBERTA: daBorda } = await import("../middleware");
+    expect(daBorda).toBe(doSite);
+
+    const config = JSON.parse(readFileSync(new URL("../vercel.json", import.meta.url), "utf8"));
+    const home = config.headers.find((h: { source: string }) => h.source === "/");
+    expect(home.headers).toEqual(expect.arrayContaining([{ key: "Link", value: doSite }]));
+  });
+
+  it("o catálogo RFC 9727 lista a API e o MCP", () => {
+    const catalogo = JSON.parse(ler(".well-known/api-catalog"));
+    expect(Array.isArray(catalogo.linkset)).toBe(true);
+    const ancoras = catalogo.linkset.map((item: { anchor: string }) => item.anchor);
+    expect(ancoras).toEqual(expect.arrayContaining([`${site.url}/api/v1`, `${site.url}/mcp`]));
+    const api = catalogo.linkset.find((item: { anchor: string }) => item.anchor.endsWith("/api/v1"));
+    expect(api["service-desc"][0].href).toBe(`${site.url}/openapi.json`);
+    expect(api["service-doc"][0].href).toBe(`${site.url}/desenvolvedores`);
+    expect(api.status[0].href).toBe(`${site.url}/api/v1/index.json`);
+  });
+
+  it("OAuth PRM e AS descrevem o issuer e o método anônimo", () => {
+    const prm = JSON.parse(ler(".well-known/oauth-protected-resource"));
+    expect(prm.resource).toBe(`${site.url}/api/v1`);
+    expect(prm.authorization_servers).toEqual([site.url]);
+    expect(prm.scopes_supported).toContain("portfolio:read");
+    expect(prm.bearer_methods_supported).toContain("header");
+
+    const as = JSON.parse(ler(".well-known/oauth-authorization-server"));
+    expect(as.issuer).toBe(site.url);
+    expect(as.authorization_endpoint).toContain("/oauth/authorize");
+    expect(as.token_endpoint).toContain("/oauth/token");
+    expect(as.jwks_uri).toContain("/.well-known/jwks.json");
+    expect(as.grant_types_supported).toContain("client_credentials");
+    expect(as.response_types_supported).toContain("token");
+    expect(as.agent_auth.skill).toBe(`${site.url}/auth.md`);
+    expect(as.agent_auth.register_uri).toContain("/agent/identity");
+    expect(as.agent_auth.identity_types_supported).toContain("anonymous");
+    expect(as.agent_auth.anonymous.claim_uri).toContain("/agent/identity/claim");
+
+    expect(JSON.parse(ler(".well-known/openid-configuration"))).toEqual(as);
+    expect(JSON.parse(ler(".well-known/jwks.json")).keys).toEqual([]);
+  });
+
+  it("auth.md começa pelo título exigido e diz que a API é pública", () => {
+    const md = ler("auth.md");
+    expect(md.startsWith("# auth.md")).toBe(true);
+    expect(md).toContain("pública");
+    expect(md).toContain("/.well-known/oauth-protected-resource");
+    expect(md).toContain("/agent/identity");
+  });
+
+  it("o cartão MCP declara servidor, transporte e ferramentas", () => {
+    const cartao = JSON.parse(ler(".well-known/mcp/server-card.json"));
+    expect(cartao.serverInfo.name).toBe("lucascavalheri-portfolio");
+    expect(cartao.serverInfo.version).toBeTruthy();
+    expect(cartao.endpoint).toBe(`${site.url}/mcp`);
+    expect(cartao.transport.type).toBe("streamable-http");
+    expect(cartao.transport.endpoint).toBe(`${site.url}/mcp`);
+    expect(cartao.capabilities.tools).toBeTruthy();
+  });
+
+  it("o índice de skills segue o schema 0.2.0 e o digest bate com o arquivo", async () => {
+    const { createHash } = await import("node:crypto");
+    const indice = JSON.parse(ler(".well-known/agent-skills/index.json"));
+    expect(indice.$schema).toBe("https://schemas.agentskills.io/discovery/0.2.0/schema.json");
+    expect(indice.skills.length).toBeGreaterThanOrEqual(3);
+    for (const skill of indice.skills) {
+      expect(skill.name).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      expect(skill.type).toBe("skill-md");
+      expect(skill.description.length).toBeGreaterThan(20);
+      expect(skill.url).toBe(`/.well-known/agent-skills/${skill.name}/SKILL.md`);
+      expect(skill.digest).toMatch(/^sha256:[a-f0-9]{64}$/);
+      const corpo = ler(`.well-known/agent-skills/${skill.name}/SKILL.md`);
+      expect(corpo.startsWith(`---\nname: ${skill.name}`)).toBe(true);
+      const digest = `sha256:${createHash("sha256").update(corpo).digest("hex")}`;
+      expect(skill.digest).toBe(digest);
+    }
+  });
+
+  it("o manifesto ARD tem host, entradas urn:air e queries", () => {
+    const catalogo = JSON.parse(ler(".well-known/ai-catalog.json"));
+    expect(catalogo.specVersion).toBeTruthy();
+    expect(catalogo.host.displayName).toBe(site.nome);
+    expect(catalogo.host.identifier).toBe("did:web:lucascavalheri.com.br");
+    expect(catalogo.entries.length).toBeGreaterThanOrEqual(2);
+    for (const entrada of catalogo.entries) {
+      expect(entrada.identifier).toMatch(/^urn:air:lucascavalheri\.com\.br:/);
+      expect(entrada.displayName).toBeTruthy();
+      expect(entrada.type).toMatch(/\//);
+      expect(Boolean(entrada.url) !== Boolean(entrada.data)).toBe(true);
+      expect(entrada.representativeQueries.length).toBeGreaterThanOrEqual(2);
+      expect(entrada.representativeQueries.length).toBeLessThanOrEqual(5);
+    }
+  });
+
+  it("WebMCP registra ferramentas no carregamento da página", () => {
+    const fonte = readFileSync(new URL("../src/scripts/webmcp.ts", import.meta.url), "utf8");
+    expect(fonte).toContain("registerTool");
+    expect(fonte).toContain("provideContext");
+    expect(fonte).toContain("inputSchema");
+    expect(fonte).toContain("get_perfil");
+
+    const pasta = new URL("../dist/_astro/", import.meta.url);
+    const js = readdirSync(pasta)
+      .filter((arquivo: string) => arquivo.endsWith(".js"))
+      .map((arquivo: string) => readFileSync(new URL(arquivo, pasta), "utf8"))
+      .join("\n");
+    expect(js).toContain("get_perfil");
+    expect(js).toContain("registerTool");
   });
 });
 
