@@ -43,9 +43,14 @@ ${projetos
   .map(
     (p) => `### ${p.nome}
 
-- Tipo: ${p.tipo} · ${p.ano}
-- Stack: ${nomes(p.tec)}
-- ${p.repo ? `Repositório: ${p.repo}` : "Código privado"}
+${[
+  `- Tipo: ${p.tipo} · ${p.ano}`,
+  `- Stack: ${nomes(p.tec)}`,
+  p.site && `- Site: ${p.site}`,
+  p.repo ? `- Repositório: ${p.repo}` : "- Código privado",
+]
+  .filter(Boolean)
+  .join("\n")}
 
 ${p.descricao}`
   )

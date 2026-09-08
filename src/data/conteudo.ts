@@ -25,14 +25,14 @@ export const projetos = [
     codigoPrivado: true,
   },
   {
-    nome: "My VPNs",
-    tipo: "Ferramenta pessoal",
+    nome: "TunnelYard",
+    tipo: "Open source",
     ano: "2026",
     descricao:
-      "App Linux para gerenciar múltiplas conexões OpenFortiVPN, com bandeja e reconexão automática.",
-    tec: [tec.typescript, tec.react, tec.electron],
-    site: "",
-    repo: "https://github.com/LucasCavalheri/my-vpns",
+      "App desktop nativo para gerenciar várias conexões FortiGate SSL VPN no Linux, macOS e Windows, sem passar pelo terminal. Reescrito de Electron para Rust.",
+    tec: [tec.rust, tec.astro, tec.githubActions],
+    site: "https://tunnelyard.lucascavalheri.com.br",
+    repo: "https://github.com/LucasCavalheri/tunnel-yard",
     codigoPrivado: false,
   },
 ];
