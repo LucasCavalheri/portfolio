@@ -44,7 +44,7 @@ ${projetos
     (p) => `### ${p.nome}
 
 ${[
-  `- Tipo: ${p.tipo} · ${p.ano}`,
+  `- Tipo: ${p.tipo}`,
   `- Stack: ${nomes(p.tec)}`,
   p.site && `- Site: ${p.site}`,
   p.repo ? `- Repositório: ${p.repo}` : "- Código privado",

@@ -12,7 +12,7 @@ const { projeto, ...resto } = Astro.props;
 
 <div class="row" {...resto}>
   <p class="row-meta">
-    {projeto.tipo} · {projeto.ano}{projeto.licenca && ` · licença ${projeto.licenca}`}
+    {projeto.tipo}{projeto.licenca && ` · licença ${projeto.licenca}`}
   </p>
   <div class="row-top">
     <h3>{projeto.nome}</h3>

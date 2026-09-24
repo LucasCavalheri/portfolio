@@ -111,7 +111,7 @@ const imprimir = (dados) => {
 
   if (comando === "projetos") {
     for (const p of dados) {
-      console.log(`${p.nome} — ${p.tipo} · ${p.ano}`);
+      console.log(`${p.nome} — ${p.tipo}`);
       console.log(`  ${p.descricao}`);
       console.log(`  stack: ${nomes(p.tecnologias)}`);
       console.log(`  ${p.repositorio ?? "código privado"}\n`);

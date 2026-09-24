@@ -6,7 +6,6 @@ export const projetos = [
   {
     nome: "HuskMap",
     tipo: "Open source",
-    ano: "2026",
     descricao:
       "Mapa do que agentes de código como Claude Code, Codex e Cursor deixam no disco: worktrees, node_modules, sessões e caches. Protege o trabalho não salvo e manda o resto para a lixeira. App desktop, TUI e CLI para Linux, em Rust.",
     tec: [tec.rust, tec.astro, tec.githubActions],
@@ -18,7 +17,6 @@ export const projetos = [
   {
     nome: "TunnelYard",
     tipo: "Open source",
-    ano: "2026",
     descricao:
       "App desktop nativo para gerenciar várias conexões FortiGate SSL VPN no Linux, sem terminal como root: openfortivpn com PolicyKit por baixo. Reescrito de Electron para Rust.",
     tec: [tec.rust, tec.astro, tec.githubActions],
@@ -30,7 +28,6 @@ export const projetos = [
   {
     nome: "Meigana",
     tipo: "Cliente",
-    ano: "2024",
     descricao: "Loja online completa, do catálogo ao checkout.",
     tec: [tec.ruby, tec.rails, tec.postgres],
     licenca: "",
@@ -47,7 +44,6 @@ export const projetosAbertos = [
   {
     nome: "Este portfólio",
     tipo: "Código aberto",
-    ano: "2026",
     descricao:
       "O site que você está lendo, com API pública em JSON, especificação OpenAPI, servidor MCP e a CLI lucascavalheri no npm.",
     tec: [tec.astro, tec.typescript, tec.vercel],

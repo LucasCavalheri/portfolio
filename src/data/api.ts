@@ -56,7 +56,6 @@ export const listaProjetos = () =>
   projetos.map((p) => ({
     nome: p.nome,
     tipo: p.tipo,
-    ano: p.ano,
     descricao: p.descricao,
     repositorio: p.repo || null,
     site: p.site || null,

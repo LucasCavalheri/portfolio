@@ -160,7 +160,7 @@ export const openapi = () => ({
       "Projetos com tipo, ano, descrição, stack e link do repositório quando o código é público.",
       ["trabalho"],
       "ListaProjetos",
-      "Lista de projetos, do mais recente ao mais antigo"
+      "Lista de projetos"
     ),
     "/experiencia.json": operacao(
       "listarExperiencia",
@@ -260,11 +260,10 @@ export const openapi = () => ({
       },
       Projeto: {
         type: "object",
-        required: ["nome", "tipo", "ano", "descricao", "tecnologias"],
+        required: ["nome", "tipo", "descricao", "tecnologias"],
         properties: {
           nome: { type: "string", example: "TunnelYard" },
           tipo: { type: "string", example: "Produto próprio" },
-          ano: { type: "string", example: "2026" },
           descricao: { type: "string" },
           repositorio: { type: ["string", "null"], format: "uri" },
           site: { type: ["string", "null"], format: "uri" },
