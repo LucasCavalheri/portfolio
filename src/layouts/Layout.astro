@@ -867,17 +867,46 @@ const dadosEstruturados = {
     text-underline-offset: 2px;
   }
 
+  /* Navegação entre páginas: o título e os repositórios da seção open source
+     viram o título e os cards de /open-source; o resto só cruza rápido. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  .topbar {
+    view-transition-name: topo;
+  }
+
+  /* na troca de tema a página inteira entra no círculo: nenhum elemento com
+     nome próprio pode ficar de fora trocando de cor sozinho (o !important
+     vence os nomes que estão no style dos elementos) */
+  :root[data-trocando] * {
+    view-transition-name: none !important;
+  }
+
   ::view-transition-old(root),
   ::view-transition-new(root) {
+    animation-duration: 0.22s;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Troca de tema: o círculo cresce a partir do clique. Só vale durante a
+     troca, para não pegar a navegação entre páginas. */
+  :root[data-trocando]::view-transition-old(root),
+  :root[data-trocando]::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
   }
 
-  ::view-transition-old(root) {
+  :root[data-trocando]::view-transition-old(root) {
     z-index: 1;
   }
 
-  ::view-transition-new(root) {
+  :root[data-trocando]::view-transition-new(root) {
     z-index: 2;
     /* o raio vem medido do ponto do clique até o canto mais distante:
        150% recortava muito além da tela em cada quadro */
@@ -900,6 +929,10 @@ const dadosEstruturados = {
   }
 
   @media (prefers-reduced-motion: reduce) {
+    @view-transition {
+      navigation: none;
+    }
+
     html {
       scroll-behavior: auto;
     }

@@ -1,6 +1,7 @@
 ---
 import Tec from "./Tec.astro";
 import type { contribuicoes } from "../data/conteudo";
+import { nomeTransicao } from "../data/transicao";
 
 interface Props {
   grupo: (typeof contribuicoes)[number];
@@ -22,7 +23,7 @@ const mesAno = (data: string) =>
   <div class="row-top">
     <div class="os-repo">
       <Tec item={grupo.tec} />
-      <h3>
+      <h3 style={`view-transition-name: ${nomeTransicao(grupo.repo)}`}>
         <a class="link os-repo-nome" href={`https://github.com/${grupo.repo}`} target="_blank" rel="noopener">
           <span class="os-dono">{dono}/</span><span>{nome}</span>
         </a>

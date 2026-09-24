@@ -15,7 +15,7 @@ const totalPrs = contribuicoes.reduce((soma, c) => soma + c.prs.length, 0);
   <main class="container pagina-open-source">
     <section class="section">
       <div class="section-head" data-anim>
-        <h1 class="section-title">open source<span class="dot">.</span></h1>
+        <h1 class="section-title" style="view-transition-name: titulo-open-source">open source<span class="dot">.</span></h1>
       </div>
       <p class="pagina-resumo" data-anim>
         Projetos que mantenho com código aberto e pull requests mergeados em repositórios de
@@ -31,7 +31,7 @@ const totalPrs = contribuicoes.reduce((soma, c) => soma + c.prs.length, 0);
       <div class="rows">
         {
           projetosAbertos.map((projeto, i) => (
-            <Projeto projeto={projeto} data-anim style={`--stagger: ${i * 0.07}s`} />
+            <Projeto projeto={projeto} transicao data-anim style={`--stagger: ${i * 0.07}s`} />
           ))
         }
       </div>

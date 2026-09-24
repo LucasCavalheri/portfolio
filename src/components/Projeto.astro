@@ -1,13 +1,17 @@
 ---
 import Tec from "./Tec.astro";
 import type { projetosAbertos } from "../data/conteudo";
+import { nomeTransicao } from "../data/transicao";
 
 interface Props {
   projeto: (typeof projetosAbertos)[number];
+  // em /open-source o nome recebe a linha da home na navegação
+  transicao?: boolean;
   [atributo: string]: unknown;
 }
 
-const { projeto, ...resto } = Astro.props;
+const { projeto, transicao = false, ...resto } = Astro.props;
+const nome = transicao && projeto.repo ? nomeTransicao(new URL(projeto.repo).pathname.slice(1)) : undefined;
 ---
 
 <div class="row" {...resto}>
@@ -15,7 +19,7 @@ const { projeto, ...resto } = Astro.props;
     {projeto.tipo}{projeto.licenca && ` · licença ${projeto.licenca}`}
   </p>
   <div class="row-top">
-    <h3>{projeto.nome}</h3>
+    <h3 style={nome && `view-transition-name: ${nome}`}>{projeto.nome}</h3>
     <div class="row-links">
       {projeto.site && (
         <a class="link link-xs" href={projeto.site} target="_blank" rel="noopener">

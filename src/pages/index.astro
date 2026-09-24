@@ -8,6 +8,7 @@ import { contatos } from "../data/contato";
 import { legivel, FUNDO_CLARO, FUNDO_ESCURO } from "../data/cor";
 import { contribuicoes, experiencias, projetos, projetosAbertos, stack } from "../data/conteudo";
 import { compactar } from "../data/atividade";
+import { nomeTransicao } from "../data/transicao";
 import { buscarAtividade } from "../data/atividade-github";
 
 // o botão de copiar usa o mesmo endereço da lista de contatos
@@ -233,7 +234,7 @@ const dadosGrafico = {
 
     <section class="section" id="open-source">
       <div class="section-head" data-anim>
-        <h2 class="section-title">open source<span class="dot">.</span></h2>
+        <h2 class="section-title" style="view-transition-name: titulo-open-source">open source<span class="dot">.</span></h2>
         <a class="anchor" href="#open-source" aria-label="Link para open source">#</a>
       </div>
       <div class="os-bloco" data-anim>
@@ -244,7 +245,7 @@ const dadosGrafico = {
               <li>
                 <a class="os-linha" href={projeto.repo} target="_blank" rel="noopener" data-repo={caminhoRepo(projeto.repo)}>
                   <svg class="tec-icon" aria-hidden="true"><use href={`#i-${projeto.tec[0].id}`} /></svg>
-                  <span class="os-nome">{caminhoRepo(projeto.repo)}</span>
+                  <span class="os-nome" style={`view-transition-name: ${nomeTransicao(caminhoRepo(projeto.repo))}`}>{caminhoRepo(projeto.repo)}</span>
                   <span class="os-meta">{projeto.tec[0].nome}</span>
                 </a>
               </li>
@@ -266,7 +267,7 @@ const dadosGrafico = {
                   rel="noopener"
                 >
                   <svg class="tec-icon" aria-hidden="true"><use href={`#i-${grupo.tec.id}`} /></svg>
-                  <span class="os-nome">{grupo.repo}</span>
+                  <span class="os-nome" style={`view-transition-name: ${nomeTransicao(grupo.repo)}`}>{grupo.repo}</span>
                   <span class="os-meta">
                     {grupo.prs.length} {grupo.prs.length === 1 ? "PR mergeado" : "PRs mergeados"}
                   </span>
