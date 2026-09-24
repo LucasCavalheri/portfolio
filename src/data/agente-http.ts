@@ -9,8 +9,8 @@ import {
   listaStack,
   perfil,
   VERSAO_API,
-} from "./api";
-import { site } from "./site";
+} from "./api.js";
+import { site } from "./site.js";
 
 export const MCP_SERVER_INFO = {
   name: "lucascavalheri-portfolio",

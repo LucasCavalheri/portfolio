@@ -12,7 +12,7 @@
 
 // Precisa alcançar rota inexistente também, senão o 404 em markdown nunca
 // passa por aqui. Só os assets do Astro ficam de fora.
-import { tratarAgenteHttp } from "./src/data/agente-http";
+import { tratarAgenteHttp } from "./src/data/agente-http.js";
 
 // Duplicado de src/data/agentes.ts: o middleware vai sozinho para a borda.
 export const LINK_DESCOBERTA = [

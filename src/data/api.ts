@@ -1,8 +1,8 @@
 // Superfície pública de dados do portfólio: os mesmos dados que a página
 // mostra, em JSON, para agentes e scripts. Sem chave e somente leitura.
-import { site, paginas } from "./site";
-import { experiencias, projetos, stack } from "./conteudo";
-import { contatos } from "./contato";
+import { site, paginas } from "./site.js";
+import { experiencias, projetos, stack } from "./conteudo.js";
+import { contatos } from "./contato.js";
 
 export const VERSAO_API = "1.0.0";
 /** Versão no caminho: só muda quando houver quebra de compatibilidade. */

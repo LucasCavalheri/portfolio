@@ -53,13 +53,13 @@ const marca = item.hex.startsWith("#") ? item.hex : `#${item.hex}`;
   }
 
   /* No hover o ícone assume a cor da marca, já ajustada ao fundo do tema */
-  :global(:root[data-theme="dark"]) .tec:hover .tec-icon,
-  :global(:root[data-theme="dark"]) .tec:focus-visible .tec-icon {
+  :root[data-theme="dark"] .tec:hover .tec-icon,
+  :root[data-theme="dark"] .tec:focus-visible .tec-icon {
     color: var(--marca-escura);
   }
 
-  :global(:root[data-theme="light"]) .tec:hover .tec-icon,
-  :global(:root[data-theme="light"]) .tec:focus-visible .tec-icon {
+  :root[data-theme="light"] .tec:hover .tec-icon,
+  :root[data-theme="light"] .tec:focus-visible .tec-icon {
     color: var(--marca-clara);
   }
 </style>

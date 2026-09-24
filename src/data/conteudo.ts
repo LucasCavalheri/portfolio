@@ -1,6 +1,6 @@
 // Projetos, experiências e a stack em destaque: a home e as versões em
 // markdown leem daqui, para não existir o mesmo texto em dois lugares.
-import { tec } from "./tec";
+import { tec } from "./tec.js";
 
 export const projetos = [
   {

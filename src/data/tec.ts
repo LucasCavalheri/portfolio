@@ -41,7 +41,7 @@ import {
   siVercel,
   siVuedotjs,
 } from "simple-icons";
-import { awsIcon, claudeCodeIcon, codexIcon, openaiIcon, slackIcon, vscodeIcon } from "./icons";
+import { awsIcon, claudeCodeIcon, codexIcon, openaiIcon, slackIcon, vscodeIcon } from "./icons.js";
 
 export type Tecnologia = {
   id: string;
