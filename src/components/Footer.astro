@@ -40,8 +40,14 @@ const rotaAtual = Astro.url.pathname.replace(/\/$/, "") || "/";
   .rodape-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem 1rem;
-    padding-bottom: 0.875rem;
+    gap: 0 1rem;
+    padding-bottom: 0.625rem;
+  }
+
+  /* 24px de altura: o alvo mínimo de toque, sem encostar na linha de baixo */
+  .rodape-links .link {
+    min-height: 1.5rem;
+    background-position: 0 calc(100% - 0.25rem);
   }
 
   .site-footer > div {
