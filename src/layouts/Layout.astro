@@ -245,6 +245,14 @@ const dadosEstruturados = {
     <Header />
     <slot />
     <Footer />
+    <script is:inline>
+      // O que já está na primeira tela aparece antes da primeira pintura: esconder
+      // e revelar por JS atrasava o LCP. O reveal por scroll fica para o resto.
+      // mede tudo antes de marcar: alternar leitura e escrita forçava um layout por item
+      const blocos = [...document.querySelectorAll("[data-anim]")];
+      const visiveis = blocos.filter((el) => el.getBoundingClientRect().top < innerHeight);
+      for (const el of visiveis) el.dataset.in = "true";
+    </script>
     <ScrollTop />
     <div class="tec-tip" id="tec-tip" role="tooltip" aria-hidden="true" data-visible="false">
       <strong data-titulo></strong>
