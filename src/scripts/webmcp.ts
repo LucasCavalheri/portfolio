@@ -26,6 +26,7 @@ const paginas = [
   "/desenvolvedores",
   "/privacidade",
   "/#projetos",
+  "/#open-source",
   "/#experiencia",
   "/#contato",
 ] as const;

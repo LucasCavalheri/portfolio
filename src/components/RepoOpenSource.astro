@@ -1,0 +1,50 @@
+---
+import Tec from "./Tec.astro";
+import type { openSource } from "../data/conteudo";
+
+interface Props {
+  grupo: (typeof openSource)[number];
+  [atributo: string]: unknown;
+}
+
+const { grupo, ...resto } = Astro.props;
+const [dono, nome] = grupo.repo.split("/");
+
+// "mai 2026": meio-dia evita que o fuso volte a data um dia
+const mesAno = (data: string) =>
+  new Date(`${data}T12:00:00`)
+    .toLocaleDateString("pt-BR", { month: "short", year: "numeric" })
+    .replace(".", "")
+    .replace(" de ", " ");
+---
+
+<div class="row os-grupo" {...resto}>
+  <div class="row-top">
+    <div class="os-repo">
+      <Tec item={grupo.tec} />
+      <h3>
+        <a class="link os-repo-nome" href={`https://github.com/${grupo.repo}`} target="_blank" rel="noopener">
+          <span class="os-dono">{dono}/</span><span>{nome}</span>
+        </a>
+      </h3>
+    </div>
+    <p class="row-nota">{grupo.prs.length} {grupo.prs.length === 1 ? "PR" : "PRs"}</p>
+  </div>
+  <p class="row-text">{grupo.nota}</p>
+  <ul class="os-prs">
+    {
+      grupo.prs.map((pr) => (
+        <li>
+          <a class="os-pr" href={`https://github.com/${grupo.repo}/pull/${pr.numero}`} target="_blank" rel="noopener">
+            <span class="os-num">#{pr.numero}</span>
+            <span class="os-titulo">
+              {"versao" in pr && <span class="os-versao">{pr.versao}</span>}
+              {pr.titulo}
+            </span>
+            <time class="os-data" datetime={pr.data}>{mesAno(pr.data)}</time>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>

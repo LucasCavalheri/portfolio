@@ -1,7 +1,7 @@
 // Versões em markdown das páginas, geradas dos mesmos dados que o HTML.
 // Servem a negociação por Accept: text/markdown e os endereços com sufixo .md.
 import { paginas, site } from "./site";
-import { experiencias, projetos, stack } from "./conteudo";
+import { experiencias, openSource, projetos, stack } from "./conteudo";
 import { contatos } from "./contato";
 
 const TIPO = "text/markdown; charset=utf-8";
@@ -34,8 +34,9 @@ ${site.cargo} · ${site.cidade}, ${site.estado} · ${site.atendimento}
 
 ${site.descricao}
 
-Trabalho só no ecossistema JavaScript e TypeScript: React e Next.js na frente, Node.js com Fastify
-e NestJS atrás. Uma stack só, do banco à tela, pensando em quem vai manter o código amanhã.
+No dia a dia é TypeScript de ponta a ponta: React e Next.js na frente, Node.js com Fastify e NestJS
+atrás. Mas a linguagem segue o problema: já entreguei loja em Ruby on Rails, escrevo apps desktop em
+Rust e tenho código mergeado no core do Laravel.
 
 ## Projetos
 
@@ -53,6 +54,25 @@ ${[
   .join("\n")}
 
 ${p.descricao}`
+  )
+  .join("\n\n")}
+
+## Open source
+
+Pull requests mergeados em repositórios de terceiros:
+
+${openSource
+  .map(
+    (o) => `### ${o.repo}
+
+${o.nota}
+
+${o.prs
+  .map(
+    (pr) =>
+      `- [#${pr.numero}](https://github.com/${o.repo}/pull/${pr.numero}) ${"versao" in pr ? `[${pr.versao}] ` : ""}${pr.titulo} (${pr.data})`
+  )
+  .join("\n")}`
   )
   .join("\n\n")}
 

@@ -262,7 +262,7 @@ export const openapi = () => ({
         type: "object",
         required: ["nome", "tipo", "ano", "descricao", "tecnologias"],
         properties: {
-          nome: { type: "string", example: "EduConnect" },
+          nome: { type: "string", example: "TunnelYard" },
           tipo: { type: "string", example: "Produto próprio" },
           ano: { type: "string", example: "2026" },
           descricao: { type: "string" },

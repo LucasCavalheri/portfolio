@@ -7,7 +7,7 @@ export const site = {
   nomeCompleto: "Lucas Carvalho Cavalheri",
   cargo: "Desenvolvedor Web Full Stack Pleno",
   descricao:
-    "Desenvolvedor web full stack pleno com mais de quatro anos de experiência. Trabalha no ecossistema JavaScript e TypeScript de ponta a ponta: React e Next.js na interface, Node.js com Fastify e NestJS no servidor, PostgreSQL e MongoDB nos dados.",
+    "Desenvolvedor web full stack pleno com mais de quatro anos de experiência. Trabalha no dia a dia com TypeScript de ponta a ponta: React e Next.js na interface, Node.js com Fastify e NestJS no servidor, PostgreSQL e MongoDB nos dados. Também entrega em Ruby on Rails, escreve apps desktop em Rust e tem contribuições mergeadas no Laravel.",
   resumoCurto:
     "Portfólio de Lucas Cavalheri, desenvolvedor web full stack pleno em TypeScript, React, Next.js e Node.js.",
   email: "lucas.dev.carvalho@gmail.com",
@@ -40,7 +40,7 @@ export const site = {
   ],
   naoAtende: [
     "Aplicações nativas para iOS ou Android",
-    "Back-end fora do ecossistema JavaScript, como PHP, Ruby, Java ou .NET",
+    "Back-end em Java ou .NET",
     "Design gráfico e identidade visual do zero, sem par de design",
     "Ciência de dados, modelos de machine learning e infraestrutura de dados",
   ],
