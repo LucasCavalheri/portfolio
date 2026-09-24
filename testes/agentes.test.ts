@@ -21,6 +21,7 @@ const rotasHtml = [
   ["/", "index.html"],
   ["/sobre", "sobre/index.html"],
   ["/contato", "contato/index.html"],
+  ["/open-source", "open-source/index.html"],
   ["/usos", "usos/index.html"],
   ["/privacidade", "privacidade/index.html"],
 ] as const;
@@ -73,6 +74,7 @@ describe("markdown por Accept e por sufixo .md", () => {
     ["index.md", "# Lucas Cavalheri"],
     ["sobre.md", "# Sobre"],
     ["contato.md", "# Contato"],
+    ["open-source.md", "# Open source"],
     ["usos.md", "# Usos"],
     ["privacidade.md", "# Privacidade"],
   ] as const;
@@ -213,6 +215,7 @@ describe("estilo não vaza entre páginas", () => {
   const comEstiloGlobal = [
     "src/pages/index.astro",
     "src/pages/usos.astro",
+    "src/pages/open-source.astro",
     "src/components/PaginaTexto.astro",
     "src/components/Header.astro",
     "src/components/Footer.astro",

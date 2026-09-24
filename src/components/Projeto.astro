@@ -1,0 +1,39 @@
+---
+import Tec from "./Tec.astro";
+import type { projetosAbertos } from "../data/conteudo";
+
+interface Props {
+  projeto: (typeof projetosAbertos)[number];
+  [atributo: string]: unknown;
+}
+
+const { projeto, ...resto } = Astro.props;
+---
+
+<div class="row" {...resto}>
+  <p class="row-meta">
+    {projeto.tipo} · {projeto.ano}{projeto.licenca && ` · licença ${projeto.licenca}`}
+  </p>
+  <div class="row-top">
+    <h3>{projeto.nome}</h3>
+    <div class="row-links">
+      {projeto.site && (
+        <a class="link link-xs" href={projeto.site} target="_blank" rel="noopener">
+          <span>Site</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+        </a>
+      )}
+      {projeto.repo && (
+        <a class="link link-xs" href={projeto.repo} target="_blank" rel="noopener">
+          <span>GitHub</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+        </a>
+      )}
+      {projeto.codigoPrivado && <span class="row-nota">código privado</span>}
+    </div>
+  </div>
+  <p class="row-text">{projeto.descricao}</p>
+  <div class="tec-row">
+    {projeto.tec.map((item) => <Tec item={item} />)}
+  </div>
+</div>

@@ -281,6 +281,16 @@
       "statusCode": 301
     },
     {
+      "source": "/opensource",
+      "destination": "/open-source",
+      "statusCode": 301
+    },
+    {
+      "source": "/contribuicoes",
+      "destination": "/open-source#contribuicoes",
+      "statusCode": 301
+    },
+    {
       "source": "/experience",
       "destination": "/#experiencia",
       "statusCode": 301

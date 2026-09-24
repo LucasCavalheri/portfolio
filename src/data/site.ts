@@ -50,6 +50,11 @@ export const paginas = [
   { rota: "/", titulo: "Início", resumo: "Perfil, projetos, experiência e stack" },
   { rota: "/sobre", titulo: "Sobre", resumo: "Trajetória, como trabalho e o que procuro" },
   { rota: "/contato", titulo: "Contato", resumo: "E-mail, WhatsApp, redes e tempo de resposta" },
+  {
+    rota: "/open-source",
+    titulo: "Open source",
+    resumo: "Projetos com código aberto e contribuições em repositórios de terceiros",
+  },
   { rota: "/usos", titulo: "Usos", resumo: "Lista completa de linguagens, frameworks e ferramentas" },
   {
     rota: "/desenvolvedores",

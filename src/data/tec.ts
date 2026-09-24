@@ -2,6 +2,7 @@
 // `hex` é a cor de marca, ajustada por tema na hora de exibir.
 import {
   siAstro,
+  siBun,
   siClaude,
   siCloudflare,
   siDocker,
@@ -149,6 +150,14 @@ export const tec = {
     sobre: "JavaScript no servidor.",
     hex: siNodedotjs.hex,
     icon: siNodedotjs,
+  },
+  bun: {
+    id: "bun",
+    nome: "Bun",
+    url: "https://bun.sh",
+    sobre: "Runtime JavaScript rápido, com gerenciador de pacotes e testes embutidos.",
+    hex: siBun.hex,
+    icon: siBun,
   },
   express: {
     id: "express",

@@ -1,7 +1,7 @@
 // Versões em markdown das páginas, geradas dos mesmos dados que o HTML.
 // Servem a negociação por Accept: text/markdown e os endereços com sufixo .md.
 import { paginas, site } from "./site";
-import { experiencias, openSource, projetos, stack } from "./conteudo";
+import { contribuicoes, experiencias, projetos, projetosAbertos, stack } from "./conteudo";
 import { contatos } from "./contato";
 
 const TIPO = "text/markdown; charset=utf-8";
@@ -58,22 +58,12 @@ ${p.descricao}`
 
 ## Open source
 
-Pull requests mergeados em repositórios de terceiros:
+${projetosAbertos.map((p) => `- [${p.nome}](${p.repo})`).join("\n")}
 
-${openSource
-  .map(
-    (o) => `### ${o.repo}
-
-${o.nota}
-
-${o.prs
-  .map(
-    (pr) =>
-      `- [#${pr.numero}](https://github.com/${o.repo}/pull/${pr.numero}) ${"versao" in pr ? `[${pr.versao}] ` : ""}${pr.titulo} (${pr.data})`
-  )
-  .join("\n")}`
-  )
-  .join("\n\n")}
+E ${contribuicoes.reduce((n, c) => n + c.prs.length, 0)} pull requests mergeados em repositórios de terceiros, como ${contribuicoes
+  .slice(0, 3)
+  .map((c) => c.repo)
+  .join(", ")}. A lista completa está em ${site.url}/open-source.
 
 ## Experiência
 
@@ -111,6 +101,50 @@ ${stack.map((g) => `- **${g.nome}:** ${nomes(g.itens)}`).join("\n")}
 
 Cada item aponta para o site oficial da ferramenta na versão HTML desta página:
 ${site.url}/usos
+${rodape()}`;
+
+export const markdownOpenSource = () => `# Open source
+
+Projetos que ${site.nome} mantém com código aberto e pull requests dele mergeados em repositórios de
+terceiros.
+
+## Projetos
+
+${projetosAbertos
+  .map(
+    (p) => `### ${p.nome}
+
+${[
+  `- Stack: ${nomes(p.tec)}`,
+  p.licenca && `- Licença: ${p.licenca}`,
+  p.site && `- Site: ${p.site}`,
+  `- Repositório: ${p.repo}`,
+]
+  .filter(Boolean)
+  .join("\n")}
+
+${p.descricao}`
+  )
+  .join("\n\n")}
+
+## Contribuições
+
+${contribuicoes.reduce((n, c) => n + c.prs.length, 0)} pull requests mergeados em repositórios de terceiros.
+
+${contribuicoes
+  .map(
+    (o) => `### ${o.repo}
+
+${o.nota}
+
+${o.prs
+  .map(
+    (pr) =>
+      `- [#${pr.numero}](https://github.com/${o.repo}/pull/${pr.numero}) ${"versao" in pr ? `[${pr.versao}] ` : ""}${pr.titulo} (${pr.data})`
+  )
+  .join("\n")}`
+  )
+  .join("\n\n")}
 ${rodape()}`;
 
 export const markdownSobre = () => `# Sobre

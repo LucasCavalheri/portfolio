@@ -303,7 +303,7 @@ Comece por ${site.url}/llms.txt. Depois confirme os dados na API.
 
 Qualquer página responde text/markdown com \`Accept: text/markdown\` ou pelo sufixo .md. As respostas trazem Vary: Accept.
 
-Páginas: /, /sobre, /contato, /usos, /desenvolvedores, /privacidade.
+Páginas: /, /sobre, /contato, /open-source, /usos, /desenvolvedores, /privacidade.
 
 ## Descoberta
 

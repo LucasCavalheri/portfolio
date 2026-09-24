@@ -322,7 +322,7 @@ describe("404 em markdown", () => {
       const alvo = pagina.rota === "/" ? "- / —" : `- ${pagina.rota} —`;
       expect(corpo, pagina.rota).toContain(alvo);
     }
-    const listadas = [...corpo.matchAll(/^- (\/[a-z]*) —/gm)].map((m) => m[1]);
+    const listadas = [...corpo.matchAll(/^- (\/[a-z-]*) —/gm)].map((m) => m[1]);
     expect(listadas.sort()).toEqual(paginas.map((p) => p.rota).sort());
   });
 

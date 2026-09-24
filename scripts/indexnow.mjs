@@ -19,6 +19,7 @@ const ROTAS_ATUAIS = [
   "/",
   "/sobre",
   "/contato",
+  "/open-source",
   "/usos",
   "/desenvolvedores",
   "/privacidade",
@@ -28,6 +29,7 @@ const ROTAS_ATUAIS = [
   "/index.md",
   "/sobre.md",
   "/contato.md",
+  "/open-source.md",
   "/usos.md",
   "/desenvolvedores.md",
 ];

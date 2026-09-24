@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Projeto from "../components/Projeto.astro";
+import RepoOpenSource from "../components/RepoOpenSource.astro";
+import { contribuicoes, projetosAbertos } from "../data/conteudo";
+
+const totalPrs = contribuicoes.reduce((soma, c) => soma + c.prs.length, 0);
+---
+
+<Layout
+  title="Open source — Lucas Cavalheri"
+  description="Projetos open source que Lucas Cavalheri mantém e os pull requests dele mergeados em repositórios como Laravel, nojs e chakra-ui."
+  tecnologias={[...projetosAbertos.flatMap((p) => p.tec), ...contribuicoes.map((c) => c.tec)]}
+>
+  <main class="container pagina-open-source">
+    <section class="section">
+      <div class="section-head" data-anim>
+        <h1 class="section-title">open source<span class="dot">.</span></h1>
+      </div>
+      <p class="pagina-resumo" data-anim>
+        Projetos que mantenho com código aberto e pull requests mergeados em repositórios de
+        terceiros.
+      </p>
+    </section>
+
+    <section class="section" id="mantenho">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">projetos<span class="dot">.</span></h2>
+        <a class="anchor" href="#mantenho" aria-label="Link para projetos">#</a>
+      </div>
+      <div class="rows">
+        {
+          projetosAbertos.map((projeto, i) => (
+            <Projeto projeto={projeto} data-anim style={`--stagger: ${i * 0.07}s`} />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" id="contribuicoes">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">contribuições<span class="dot">.</span></h2>
+        <a class="anchor" href="#contribuicoes" aria-label="Link para contribuições">#</a>
+      </div>
+      <p class="pagina-resumo" data-anim>
+        {totalPrs} pull requests mergeados em {contribuicoes.length} repositórios.
+      </p>
+      <div class="rows">
+        {
+          contribuicoes.map((grupo, i) => (
+            <RepoOpenSource grupo={grupo} data-anim style={`--stagger: ${i * 0.05}s`} />
+          ))
+        }
+      </div>
+      <a class="link link-sm" href="/#open-source" data-anim>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 7 7 17M7 17h8M7 17V9" /></svg>
+        <span>voltar para a home</span>
+      </a>
+    </section>
+  </main>
+</Layout>
+
+<style is:global>
+  .pagina-open-source {
+    padding-block: 3.5rem;
+  }
+
+  .pagina-open-source .pagina-resumo {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+  }
+</style>

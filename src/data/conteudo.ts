@@ -10,6 +10,7 @@ export const projetos = [
     descricao:
       "Mapa do que agentes de código como Claude Code, Codex e Cursor deixam no disco: worktrees, node_modules, sessões e caches. Protege o trabalho não salvo e manda o resto para a lixeira. App desktop, TUI e CLI para Linux, em Rust.",
     tec: [tec.rust, tec.astro, tec.githubActions],
+    licenca: "MIT",
     site: "https://huskmap.lucascavalheri.com.br",
     repo: "https://github.com/LucasCavalheri/huskmap",
     codigoPrivado: false,
@@ -21,6 +22,7 @@ export const projetos = [
     descricao:
       "App desktop nativo para gerenciar várias conexões FortiGate SSL VPN no Linux, sem terminal como root: openfortivpn com PolicyKit por baixo. Reescrito de Electron para Rust.",
     tec: [tec.rust, tec.astro, tec.githubActions],
+    licenca: "MIT",
     site: "https://tunnelyard.lucascavalheri.com.br",
     repo: "https://github.com/LucasCavalheri/tunnel-yard",
     codigoPrivado: false,
@@ -31,15 +33,34 @@ export const projetos = [
     ano: "2024",
     descricao: "Loja online completa, do catálogo ao checkout.",
     tec: [tec.ruby, tec.rails, tec.postgres],
+    licenca: "",
     site: "",
     repo: "",
     codigoPrivado: true,
   },
 ];
 
+// O que eu mantenho com código aberto: os projetos públicos da lista acima e
+// este site, que fica fora de "projetos" para não ocupar a home.
+export const projetosAbertos = [
+  ...projetos.filter((p) => !p.codigoPrivado),
+  {
+    nome: "Este portfólio",
+    tipo: "Código aberto",
+    ano: "2026",
+    descricao:
+      "O site que você está lendo, com API pública em JSON, especificação OpenAPI, servidor MCP e a CLI lucascavalheri no npm.",
+    tec: [tec.astro, tec.typescript, tec.vercel],
+    licenca: "",
+    site: "https://lucascavalheri.com.br",
+    repo: "https://github.com/LucasCavalheri/portfolio",
+    codigoPrivado: false,
+  },
+];
+
 // PRs meus que foram mergeados em projetos de terceiros, agrupados por
 // repositório. `versao` vem do prefixo [13.x] que o Laravel usa no título.
-export const openSource = [
+export const contribuicoes = [
   {
     repo: "laravel/framework",
     nota: "O core do Laravel.",
@@ -136,6 +157,6 @@ export const experiencias = [
 export const stack = [
   { nome: "Linguagens", itens: [tec.javascript, tec.typescript] },
   { nome: "Front-end", itens: [tec.react, tec.next, tec.vue, tec.tailwind] },
-  { nome: "Back-end", itens: [tec.node, tec.rails, tec.laravel] },
+  { nome: "Back-end", itens: [tec.node, tec.bun, tec.rails, tec.laravel] },
   { nome: "IA", itens: [tec.claude, tec.claudeCode, tec.chatgpt, tec.codex] },
 ];

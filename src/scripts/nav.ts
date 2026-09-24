@@ -5,7 +5,9 @@ const links = [...(nav?.querySelectorAll<HTMLAnchorElement>(".nav-link") ?? [])]
 const secoes = [...document.querySelectorAll<HTMLElement>("main > section")];
 
 if (nav && linha && links.length) {
-  let ativo = links[0];
+  // Fora da home, a página com link próprio no menu (/open-source) fica marcada
+  const dapagina = links.find((link) => link.hash === `#${location.pathname.slice(1)}`);
+  let ativo = dapagina ?? links[0];
 
   const mover = (alvo?: HTMLElement) => {
     if (!alvo) return;
