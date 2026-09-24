@@ -37,22 +37,8 @@ export const projetos = [
   },
 ];
 
-// O que eu mantenho com código aberto: os projetos públicos da lista acima e
-// este site, que fica fora de "projetos" para não ocupar a home.
-export const projetosAbertos = [
-  ...projetos.filter((p) => !p.codigoPrivado),
-  {
-    nome: "Este portfólio",
-    tipo: "Código aberto",
-    descricao:
-      "O site que você está lendo, com API pública em JSON, especificação OpenAPI, servidor MCP e a CLI lucascavalheri no npm.",
-    tec: [tec.astro, tec.typescript, tec.vercel],
-    licenca: "",
-    site: "https://lucascavalheri.com.br",
-    repo: "https://github.com/LucasCavalheri/portfolio",
-    codigoPrivado: false,
-  },
-];
+// O que eu mantenho com código aberto: os projetos públicos da lista acima.
+export const projetosAbertos = projetos.filter((p) => !p.codigoPrivado);
 
 // PRs meus que foram mergeados em projetos de terceiros, agrupados por
 // repositório. `versao` vem do prefixo [13.x] que o Laravel usa no título.
