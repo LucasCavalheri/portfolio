@@ -7,6 +7,8 @@ import { tec } from "../data/tec";
 import { contatos } from "../data/contato";
 import { legivel, FUNDO_CLARO, FUNDO_ESCURO } from "../data/cor";
 import { contribuicoes, experiencias, projetos, projetosAbertos, stack } from "../data/conteudo";
+import { compactar } from "../data/atividade";
+import { buscarAtividade } from "../data/atividade-github";
 
 // o botão de copiar usa o mesmo endereço da lista de contatos
 const emailContato = contatos.find((c) => c.id === "email")!.valor;
@@ -25,6 +27,17 @@ const tecnologiasUsadas = [
 ];
 
 const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
+
+// Dados do gráfico vêm do build, compactados: o navegador desenha sem ir à rede
+// e só pede de novo se o build ficar velho
+const atividade = await buscarAtividade();
+const totalContribuicoes = atividade.dias.reduce((soma, d) => soma + (Number(d.count) || 0), 0);
+const dadosGrafico = {
+  ...compactar(atividade.dias),
+  // tuplas em vez de objetos: as chaves repetidas pesavam mais que os valores
+  marcos: atividade.marcos.map((m) => [m.data, m.repo, m.texto]),
+  geradoEm: atividade.geradoEm,
+};
 ---
 
 <Layout
@@ -149,49 +162,6 @@ const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
       </div>
     </section>
 
-    <section class="section" id="atividade">
-      <div class="section-head" data-anim>
-        <h2 class="section-title">atividade<span class="dot">.</span></h2>
-        <a class="anchor" href="#atividade" aria-label="Link para atividade">#</a>
-      </div>
-      <div class="activity" data-anim>
-        <div class="activity-top">
-          <p><strong id="contrib-total">—</strong> contribuições no último ano</p>
-          <a
-            class="link link-xs"
-            href={`https://github.com/${usuarioGithub}`}
-            target="_blank"
-            rel="noopener"
-          >
-            <span id="contrib-status">GitHub</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
-          </a>
-        </div>
-        <div class="activity-scroll">
-          <div class="activity-track">
-          <div class="activity-months" id="contrib-months" aria-hidden="true"></div>
-          <div
-            class="activity-grid"
-            id="contrib-grid"
-            role="img"
-            aria-label="Contribuições no GitHub no último ano"
-          >
-          </div>
-          </div>
-        </div>
-        <div class="activity-legend">
-          <span>menos</span>
-          <i class="cell" data-level="0"></i>
-          <i class="cell" data-level="1"></i>
-          <i class="cell" data-level="2"></i>
-          <i class="cell" data-level="3"></i>
-          <i class="cell" data-level="4"></i>
-          <span>mais</span>
-        </div>
-      </div>
-      <div class="activity-tip" id="contrib-tip" role="tooltip" aria-hidden="true"></div>
-    </section>
-
     <section class="section" id="stack">
       <div class="section-head" data-anim>
         <h2 class="section-title">stack<span class="dot">.</span></h2>
@@ -215,6 +185,52 @@ const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
       </a>
     </section>
 
+    <section class="section" id="atividade">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">atividade<span class="dot">.</span></h2>
+        <a class="anchor" href="#atividade" aria-label="Link para atividade">#</a>
+      </div>
+      <div class="activity" data-anim>
+        <div class="activity-top">
+          <p><strong id="contrib-total">{atividade.dias.length ? totalContribuicoes.toLocaleString("pt-BR") : "—"}</strong> contribuições no último ano</p>
+          <a
+            class="link link-xs"
+            href={`https://github.com/${usuarioGithub}`}
+            target="_blank"
+            rel="noopener"
+          >
+            <span id="contrib-status">GitHub</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
+          </a>
+        </div>
+        <div class="activity-scroll">
+          <div class="activity-track">
+            <div class="activity-months" id="contrib-months" aria-hidden="true"></div>
+            <div
+              class="activity-grid"
+              id="contrib-grid"
+              role="img"
+              aria-label="Contribuições no GitHub no último ano"
+            >
+            </div>
+            <div class="activity-marcos" id="contrib-marcos" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="activity-legend">
+          <span class="legenda-marco"><i class="marco"></i>PR mergeado ou release</span>
+          <span>menos</span>
+          <i class="cell" data-level="0"></i>
+          <i class="cell" data-level="1"></i>
+          <i class="cell" data-level="2"></i>
+          <i class="cell" data-level="3"></i>
+          <i class="cell" data-level="4"></i>
+          <span>mais</span>
+        </div>
+      </div>
+      <div class="activity-tip" id="contrib-tip" role="tooltip" aria-hidden="true"></div>
+      <script type="application/json" id="contrib-dados" set:html={JSON.stringify(dadosGrafico)} />
+    </section>
+
     <section class="section" id="open-source">
       <div class="section-head" data-anim>
         <h2 class="section-title">open source<span class="dot">.</span></h2>
@@ -226,7 +242,7 @@ const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
           {
             projetosAbertos.map((projeto) => (
               <li>
-                <a class="os-linha" href={projeto.repo} target="_blank" rel="noopener">
+                <a class="os-linha" href={projeto.repo} target="_blank" rel="noopener" data-repo={caminhoRepo(projeto.repo)}>
                   <svg class="tec-icon" aria-hidden="true"><use href={`#i-${projeto.tec[0].id}`} /></svg>
                   <span class="os-nome">{caminhoRepo(projeto.repo)}</span>
                   <span class="os-meta">{projeto.tec[0].nome}</span>
@@ -244,6 +260,7 @@ const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
               <li>
                 <a
                   class="os-linha"
+                  data-repo={grupo.repo}
                   href={`https://github.com/${grupo.repo}/pulls?q=is%3Apr+is%3Amerged+author%3ALucasCavalheri`}
                   target="_blank"
                   rel="noopener"
@@ -506,6 +523,10 @@ const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
     transition: transform 0.15s ease, background-color 0.3s ease;
   }
 
+  .cell.vazia {
+    visibility: hidden;
+  }
+
   .cell[data-level="1"] {
     background: var(--cell-1);
   }
@@ -571,8 +592,69 @@ const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
     height: 9px;
   }
 
-  .activity-legend span:first-child {
+  .legenda-marco + span {
     margin-right: 0.25rem;
+  }
+
+  .legenda-marco {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-right: auto;
+  }
+
+  .legenda-marco .marco {
+    width: 9px;
+  }
+
+  /* Faixa de marcos: um traço sob cada semana em que algo foi entregue */
+  .activity-marcos {
+    display: grid;
+    width: max-content;
+    height: 0.5rem;
+    margin-top: 0.3125rem;
+    align-items: start;
+    grid-auto-columns: 9px;
+    grid-auto-flow: column;
+    gap: 2px;
+  }
+
+  .marco {
+    display: block;
+    height: 3px;
+    border-radius: 1px;
+    background: var(--muted-foreground);
+    transition: background-color 0.15s, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .activity-marcos .marco {
+    cursor: default;
+  }
+
+  .activity-marcos .marco:hover,
+  .marco[data-destaque="true"] {
+    background: var(--foreground);
+    transform: scaleY(1.7);
+  }
+
+  /* Com algo em foco, o resto da grade recua e os dias ligados acendem */
+  .activity-grid[data-focando="true"] .cell {
+    opacity: 0.25;
+  }
+
+  .activity-grid[data-focando="true"] .cell[data-destaque="true"] {
+    opacity: 1;
+    outline: 1px solid var(--foreground);
+    outline-offset: 1px;
+  }
+
+  .activity-grid .cell {
+    transition: transform 0.15s ease, background-color 0.3s ease, opacity 0.2s ease;
+  }
+
+  .os-linha[data-destaque="true"] {
+    background: var(--muted);
+    color: var(--primary);
   }
 
   .activity-legend span:last-child {
@@ -588,7 +670,9 @@ const caminhoRepo = (url: string) => new URL(url).pathname.slice(1);
     background: var(--card);
     color: var(--foreground);
     font-size: 0.75rem;
-    white-space: nowrap;
+    line-height: 1.5;
+    /* a data e cada entrega do dia vêm em linhas próprias */
+    white-space: pre;
     opacity: 0;
     pointer-events: none;
     translate: -50% calc(-100% - 8px);
