@@ -2,6 +2,7 @@
 // Cada ícone de tecnologia entra uma única vez no documento; os usos viram
 // <use href="#i-…">. Antes o mesmo path aparecia repetido a cada ocorrência.
 import type { Tecnologia } from "../data/tec";
+import { enxugarPath } from "../data/svg";
 import type { Contato } from "../data/contato";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const { tecnologias = [], contatos = [] } = Astro.props;
+
 const itens = [...new Map(tecnologias.map((t) => [t.id, t])).values()];
 ---
 
@@ -19,7 +21,7 @@ const itens = [...new Map(tecnologias.map((t) => [t.id, t])).values()];
     itens.map((item) =>
       "icon" in item && item.icon ? (
         <symbol id={`i-${item.id}`} viewBox="0 0 24 24">
-          <path d={item.icon.path} />
+          <path d={enxugarPath(item.icon.path)} />
         </symbol>
       ) : (
         <symbol id={`i-${item.id}`} viewBox={item.logo.viewBox} set:html={item.logo.body} />
