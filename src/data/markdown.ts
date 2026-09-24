@@ -34,9 +34,8 @@ ${site.cargo} · ${site.cidade}, ${site.estado} · ${site.atendimento}
 
 ${site.descricao}
 
-No dia a dia é TypeScript de ponta a ponta: React e Next.js na frente, Node.js com Fastify e NestJS
-atrás. Mas a linguagem segue o problema: já entreguei loja em Ruby on Rails, escrevo apps desktop em
-Rust e tenho código mergeado no core do Laravel.
+Uso TypeScript, React, Next.js e Node.js no dia a dia. Também trabalho com Ruby on Rails e Laravel,
+e escrevo apps desktop em Rust.
 
 ## Projetos
 

@@ -57,25 +57,13 @@ const prsLaravel = openSource
 
       <div class="prose">
         <p>
-          Construo aplicações web robustas e fáceis de manter, de APIs e integrações a painéis
-          administrativos e deploy em produção.
+          Sou desenvolvedor full stack na <a class="link link-text link-brand" href="https://tropicalhub.co" target="_blank" rel="noopener"><img class="brand-icon" src="/tropical-hub.png" alt="" width="16" height="16" />Tropical Hub</a>, onde trabalho com integrações, APIs e painéis administrativos e cuido dos code reviews da squad.
         </p>
         <p>
-          Sou Desenvolvedor Web Full Stack Pleno na <a class="link link-text link-brand" href="https://tropicalhub.co" target="_blank" rel="noopener"><img class="brand-icon" src="/tropical-hub.png" alt="" width="16" height="16" />Tropical Hub</a>, onde cuido de integrações, APIs e painéis administrativos, além dos code reviews e do fluxo de Git da squad.
+          Uso <strong>TypeScript</strong>, <strong>React</strong>, <strong>Next.js</strong> e <strong>Node.js</strong> no dia a dia. Também trabalho com <strong>Ruby on Rails</strong> e <strong>Laravel</strong>, e escrevo apps desktop em <strong>Rust</strong>.
         </p>
         <p>
-          No dia a dia é <strong>TypeScript</strong> de ponta a ponta: <strong>React</strong> e <strong>Next.js</strong> na frente, <strong>Node.js</strong> com Fastify e NestJS atrás.
-          Mas a linguagem segue o problema: já entreguei loja em <strong>Ruby on Rails</strong>, escrevo apps desktop em <strong>Rust</strong> e tenho código mergeado no <a class="link link-text" href="#open-source">core do Laravel</a>.
-          O que não muda é pensar em quem vai manter o código amanhã.
-        </p>
-        <p>
-          Agente ou script? Os mesmos dados estão na{" "}
-          <a class="link link-text" href="/desenvolvedores">API pública</a>, com{" "}
-          <a class="link link-text" href="/openapi.json">especificação OpenAPI</a> e{" "}
-          <a class="link link-text" href="/desenvolvedores">documentação para desenvolvedores</a>.
-        </p>
-        <p>
-          Quer trabalhar junto? Veja meu{" "}<a class="link link-text" href="/Curriculo-LucasCavalheri.pdf" download>currículo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"></path></svg></a>.
+          Os dados deste site também estão numa <a class="link link-text" href="/desenvolvedores">API pública</a>. Histórico completo no <a class="link link-text" href="/Curriculo-LucasCavalheri.pdf" download>currículo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"></path></svg></a>.
         </p>
       </div>
 
@@ -146,33 +134,6 @@ const prsLaravel = openSource
           ))
         }
       </div>
-    </section>
-
-    <section class="section" id="open-source">
-      <div class="section-head" data-anim>
-        <h2 class="section-title">open source<span class="dot">.</span></h2>
-        <a class="anchor" href="#open-source" aria-label="Link para open source">#</a>
-      </div>
-      <p class="os-resumo" data-anim>
-        <strong>{totalPrs}</strong> pull requests mergeados em <strong>{openSource.length}</strong>{" "}
-        repositórios de terceiros, {prsLaravel} deles no ecossistema Laravel.
-      </p>
-      <div class="rows">
-        {destaques.map((grupo, i) => (
-          <RepoOpenSource grupo={grupo} data-anim style={`--stagger: ${i * 0.05}s`} />
-        ))}
-      </div>
-      <details class="os-mais" data-anim>
-        <summary class="link link-xs">
-          <span>mais {demais.length} repositórios</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-        </summary>
-        <div class="rows">
-          {demais.map((grupo) => (
-            <RepoOpenSource grupo={grupo} />
-          ))}
-        </div>
-      </details>
     </section>
 
     <section class="section" id="experiencia">
@@ -281,6 +242,33 @@ const prsLaravel = openSource
         <span>o resto da stack em /usos</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H9M17 7v8" /></svg>
       </a>
+    </section>
+
+    <section class="section" id="open-source">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">open source<span class="dot">.</span></h2>
+        <a class="anchor" href="#open-source" aria-label="Link para open source">#</a>
+      </div>
+      <p class="os-resumo" data-anim>
+        <strong>{totalPrs}</strong> pull requests mergeados em <strong>{openSource.length}</strong>{" "}
+        repositórios de terceiros, {prsLaravel} deles no ecossistema Laravel.
+      </p>
+      <div class="rows">
+        {destaques.map((grupo, i) => (
+          <RepoOpenSource grupo={grupo} data-anim style={`--stagger: ${i * 0.05}s`} />
+        ))}
+      </div>
+      <details class="os-mais" data-anim>
+        <summary class="link link-xs">
+          <span>mais {demais.length} repositórios</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </summary>
+        <div class="rows">
+          {demais.map((grupo) => (
+            <RepoOpenSource grupo={grupo} />
+          ))}
+        </div>
+      </details>
     </section>
 
     <section class="section" id="contato">

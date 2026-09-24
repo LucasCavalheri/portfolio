@@ -52,7 +52,7 @@ export const openSource = [
   },
   {
     repo: "laravel/laravel",
-    nota: "O esqueleto que todo laravel new baixa.",
+    nota: "A estrutura inicial de todo projeto Laravel.",
     tec: tec.laravel,
     prs: [
       { numero: 6824, versao: "13.x", titulo: "Render JSON exceptions for API routes by default", data: "2026-05-25" },
@@ -136,6 +136,6 @@ export const experiencias = [
 export const stack = [
   { nome: "Linguagens", itens: [tec.javascript, tec.typescript] },
   { nome: "Front-end", itens: [tec.react, tec.next, tec.vue, tec.tailwind] },
-  { nome: "Back-end", itens: [tec.node, tec.express, tec.fastify, tec.nest] },
+  { nome: "Back-end", itens: [tec.node, tec.rails, tec.laravel] },
   { nome: "IA", itens: [tec.claude, tec.claudeCode, tec.chatgpt, tec.codex] },
 ];
