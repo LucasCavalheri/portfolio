@@ -5,6 +5,8 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://lucascavalheri.com.br',
+  // CSS no próprio HTML: o arquivo externo bloqueava a primeira pintura
+  build: { inlineStylesheets: 'always' },
   integrations: [
     sitemap({
       // lastmod é o sinal que faz o buscador revisitar em vez de confiar no cache
