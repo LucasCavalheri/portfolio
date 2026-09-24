@@ -121,7 +121,7 @@ export const contribuicoes = [
 export const experiencias = [
   {
     cargo: "Desenvolvedor Web Full Stack Pleno, Tropical Hub",
-    logo: "/tropical-hub.png",
+    logo: "/tropical-hub.webp",
     site: "tropicalhub.co",
     url: "https://tropicalhub.co",
     periodo: "2024 — hoje",
@@ -131,7 +131,7 @@ export const experiencias = [
   },
   {
     cargo: "Desenvolvedor Web Full Stack Júnior, Grupo Polgo",
-    logo: "/grupo-polgo.png",
+    logo: "/grupo-polgo.webp",
     site: "polgo.com.br",
     url: "https://www.polgo.com.br",
     periodo: "2023 — 2024",
