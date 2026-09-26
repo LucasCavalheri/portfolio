@@ -15,7 +15,8 @@ document.querySelectorAll<HTMLElement>(".tec-row").forEach((fila) => {
   };
 
   fila.addEventListener("pointermove", (event) => {
-    if (semMovimento() || pendente) return;
+    // No toque o dedo está rolando a página: medir os ícones ali só atrasava a rolagem
+    if (event.pointerType === "touch" || semMovimento() || pendente) return;
     pendente = true;
     requestAnimationFrame(() => {
       pendente = false;

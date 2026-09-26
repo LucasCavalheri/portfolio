@@ -71,5 +71,11 @@ if (dica && titulo && texto && acao) {
   });
 
   document.addEventListener("focusout", esconder);
-  window.addEventListener("scroll", esconder, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (dica.dataset.visible === "true") esconder();
+    },
+    { passive: true }
+  );
 }

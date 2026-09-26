@@ -5,7 +5,8 @@ const avatar = document.querySelector<HTMLElement>("#avatar");
 
 if (avatar) {
   avatar.addEventListener("pointermove", (event) => {
-    if (semMovimento()) return;
+    // No toque a inclinação ficava presa depois que o dedo saía
+    if (event.pointerType === "touch" || semMovimento()) return;
     const box = avatar.getBoundingClientRect();
     const x = (event.clientX - box.left) / box.width - 0.5;
     const y = (event.clientY - box.top) / box.height - 0.5;

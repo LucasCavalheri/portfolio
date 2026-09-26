@@ -394,7 +394,8 @@ const dadosEstruturados = {
     padding-inline: 1rem;
   }
 
-  /* Faixa de blur no topo com máscara em gradiente */
+  /* Faixa no topo: em tela de toque, um degradê da cor de fundo. O blur com
+     máscara é recomposto a cada quadro de rolagem e travava celular simples. */
   .top-fade {
     position: fixed;
     z-index: 50;
@@ -403,17 +404,14 @@ const dadosEstruturados = {
     width: 100%;
     height: 3rem;
     pointer-events: none;
-    backdrop-filter: blur(24px);
-    -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
-    mask-image: linear-gradient(to bottom, #000, transparent);
+    background: linear-gradient(to bottom, var(--background), transparent);
   }
 
-  /* Entrada das seções: sobe 5%, desfoca 12px, aparece */
+  /* Entrada das seções: sobe 5% e aparece */
   @keyframes enter {
     from {
       opacity: 0;
       transform: translate3d(0, 5%, 0);
-      filter: blur(12px);
     }
   }
 
@@ -421,7 +419,32 @@ const dadosEstruturados = {
     from {
       opacity: 0;
       transform: translate3d(0, -10%, 0);
-      filter: blur(12px);
+    }
+  }
+
+  /* Com mouse, a GPU costuma dar conta: volta o blur da faixa e da entrada */
+  @media (hover: hover) and (pointer: fine) {
+    .top-fade {
+      background: none;
+      backdrop-filter: blur(24px);
+      -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
+      mask-image: linear-gradient(to bottom, #000, transparent);
+    }
+
+    @keyframes enter {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 5%, 0);
+        filter: blur(12px);
+      }
+    }
+
+    @keyframes enter-from-top {
+      from {
+        opacity: 0;
+        transform: translate3d(0, -10%, 0);
+        filter: blur(12px);
+      }
     }
   }
 
@@ -629,21 +652,34 @@ const dadosEstruturados = {
     background: var(--foreground);
   }
 
-  /* Reveal por scroll: sobe 10px, desfoca 6px, com stagger por item */
+  /* Reveal por scroll: sobe 10px, com stagger por item. O desfoque de 6px
+     fica só com mouse: vários blocos animando filter juntos travavam a rolagem
+     no celular. */
   [data-js] [data-anim] {
     opacity: 0;
     transform: translateY(10px);
-    filter: blur(6px);
   }
 
   [data-js] [data-anim][data-in="true"] {
     opacity: 1;
     transform: none;
-    filter: none;
     transition:
       opacity 0.5s ease var(--stagger, 0s),
-      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 0s),
-      filter 0.5s ease var(--stagger, 0s);
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 0s);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-js] [data-anim] {
+      filter: blur(6px);
+    }
+
+    [data-js] [data-anim][data-in="true"] {
+      filter: none;
+      transition:
+        opacity 0.5s ease var(--stagger, 0s),
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 0s),
+        filter 0.5s ease var(--stagger, 0s);
+    }
   }
 
   .row-top {

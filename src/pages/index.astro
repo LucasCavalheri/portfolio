@@ -483,9 +483,16 @@ const dadosGrafico = {
     pointer-events: none;
   }
 
-  /* Começa só depois que a grade entrou na tela e a onda diagonal passou */
+  /* Começa só depois que a grade entrou na tela e a onda diagonal passou.
+     Em tela de toque passa uma vez: em loop, mantinha a GPU ocupada a página toda. */
   .activity-track:has(.activity-grid[data-in="true"])::after {
-    animation: passar-luz 9s cubic-bezier(0.45, 0, 0.3, 1) 1.2s infinite;
+    animation: passar-luz 9s cubic-bezier(0.45, 0, 0.3, 1) 1.2s 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .activity-track:has(.activity-grid[data-in="true"])::after {
+      animation-iteration-count: infinite;
+    }
   }
 
   @keyframes passar-luz {
