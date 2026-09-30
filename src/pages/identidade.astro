@@ -1,0 +1,415 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { cores, escala, fontes, medidas, principios, tipos, variaveis } from "../data/identidade";
+
+const texto = cores.find((c) => c.token === "muted-foreground")!;
+
+const temas = [
+  { chave: "escuro", rotulo: "escuro" },
+  { chave: "claro", rotulo: "claro" },
+] as const;
+---
+
+<Layout
+  title="Identidade — Lucas Cavalheri"
+  description="Cores, fontes e medidas do site de Lucas Cavalheri, nos temas escuro e claro, com CSS pronto para gerar proposta, PDF ou slide com a mesma identidade."
+>
+  <main class="container pagina-identidade">
+    <section class="section">
+      <div class="section-head" data-anim>
+        <h1 class="section-title">identidade<span class="dot">.</span></h1>
+      </div>
+      <p class="pagina-resumo" data-anim>
+        As cores, fontes e medidas deste site, nos dois temas. São os mesmos valores que o CSS usa, então
+        servem para montar proposta, PDF ou slide com a minha cara. Para IA, a mesma coisa está em
+        <a class="link link-text" href="/identidade.md">/identidade.md</a>.
+      </p>
+    </section>
+
+    <section class="section" id="principios">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">princípios<span class="dot">.</span></h2>
+        <a class="anchor" href="#principios" aria-label="Link para princípios">#</a>
+      </div>
+      <ul class="principios" data-anim>
+        {principios.map((p) => <li>{p}</li>)}
+      </ul>
+    </section>
+
+    <section class="section" id="cores">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">cores<span class="dot">.</span></h2>
+        <a class="anchor" href="#cores" aria-label="Link para cores">#</a>
+      </div>
+      <div class="rows">
+        {
+          cores.map((cor, i) => (
+            <div class="row cor" data-anim style={`--stagger: ${i * 0.04}s`}>
+              <div class="amostras" aria-hidden="true">
+                {temas.map((t) => (
+                  <span class="amostra" data-tema={t.chave} style={`--amostra: ${cor[t.chave]}; --base: ${cores[0][t.chave]}`} />
+                ))}
+              </div>
+              <div class="cor-info">
+                <h3>{cor.nome}</h3>
+                <p>
+                  <code>--{cor.token}</code> · {cor.uso}
+                </p>
+              </div>
+              <dl class="cor-valores">
+                {temas.map((t) => (
+                  <div>
+                    <dt>{t.rotulo}</dt>
+                    <dd>
+                      <code>{cor[t.chave]}</code>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" id="escala">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">escala<span class="dot">.</span></h2>
+        <a class="anchor" href="#escala" aria-label="Link para escala">#</a>
+      </div>
+      <p class="pagina-resumo" data-anim>
+        Do dia sem contribuição ao mais cheio, no gráfico de atividade. Serve de escala de cinzas para
+        gráfico e tabela.
+      </p>
+      <div class="escalas" data-anim>
+        {
+          temas.map((t) => (
+            <figure class="escala" style={`--fundo-tema: ${cores[0][t.chave]}; --texto-tema: ${texto[t.chave]}`}>
+              <div class="escala-celulas" aria-hidden="true">
+                {escala.map((nivel) => (
+                  <span style={`--amostra: ${nivel[t.chave]}`} />
+                ))}
+              </div>
+              <figcaption>
+                <span>{t.rotulo}</span>
+                <code>{escala.map((nivel) => nivel[t.chave]).join(" · ")}</code>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" id="tipografia">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">tipografia<span class="dot">.</span></h2>
+        <a class="anchor" href="#tipografia" aria-label="Link para tipografia">#</a>
+      </div>
+      <div class="rows">
+        {
+          fontes.map((fonte, i) => (
+            <div class="row fonte" data-anim style={`--stagger: ${i * 0.05}s`}>
+              <p class={`fonte-amostra fonte-${fonte.token}`} aria-hidden="true">
+                {fonte.token === "heading" ? "projetos." : fonte.token === "mono" ? "npx lucascavalheri" : "Lucas Cavalheri"}
+              </p>
+              <div class="fonte-info">
+                <h3>
+                  <a class="link link-text" href={fonte.fonte} target="_blank" rel="noopener">
+                    {fonte.nome}
+                  </a>
+                </h3>
+                <p>
+                  <code>--{fonte.token}</code> · {fonte.papel}. {fonte.estilo}.
+                </p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <dl class="tabela" data-anim>
+        {
+          tipos.map((tipo) => (
+            <div>
+              <dt>{tipo.nome}</dt>
+              <dd>{tipo.valor}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="section" id="medidas">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">medidas<span class="dot">.</span></h2>
+        <a class="anchor" href="#medidas" aria-label="Link para medidas">#</a>
+      </div>
+      <dl class="tabela" data-anim>
+        {
+          medidas.map((m) => (
+            <div>
+              <dt>
+                <code>--{m.token}</code>
+              </dt>
+              <dd>
+                <code>{m.valor}</code> · {m.uso}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="section" id="css">
+      <div class="section-head" data-anim>
+        <h2 class="section-title">css<span class="dot">.</span></h2>
+        <a class="anchor" href="#css" aria-label="Link para css">#</a>
+      </div>
+      <p class="pagina-resumo" data-anim>
+        As variáveis prontas para colar. A versão com fontes e medidas, em tabela, está em
+        <a class="link link-text" href="/identidade.md">/identidade.md</a> e no
+        <a class="link link-text" href="/llms.txt">/llms.txt</a>.
+      </p>
+      {
+        temas.map((t) => (
+          <pre class="codigo" data-anim><code>{`/* tema ${t.rotulo} */\n:root {\n${variaveis(t.chave).replace(/^/gm, "  ")}\n}`}</code></pre>
+        ))
+      }
+      <a class="link link-sm" href="/" data-anim>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 7 7 17M7 17h8M7 17V9" /></svg>
+        <span>voltar para a home</span>
+      </a>
+    </section>
+  </main>
+</Layout>
+
+<style is:global>
+  .pagina-identidade {
+    padding-block: 3.5rem;
+  }
+
+  .pagina-identidade .pagina-resumo {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+  }
+
+  .pagina-identidade h3 {
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .pagina-identidade code {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+
+  .principios {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1.125rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+  }
+
+  /* Cada cor: as duas amostras, o papel e os valores dos dois temas */
+  .cor {
+    display: grid;
+    align-items: center;
+    gap: 0.25rem 1rem;
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .amostras {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .amostra {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
+    /* A borda some no fundo do próprio tema, então cada amostra leva o contorno do seu */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+
+  .amostra[data-tema="claro"] {
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Cor com transparência aparece sobre o fundo do tema, como no site */
+  .amostra {
+    background: linear-gradient(var(--amostra), var(--amostra)), var(--base);
+  }
+
+  .cor-info p,
+  .fonte-info p {
+    margin-top: 0.125rem;
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .cor-info code,
+  .fonte-info code {
+    color: var(--primary);
+  }
+
+  .cor-valores {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    text-align: right;
+  }
+
+  .cor-valores div,
+  .tabela div {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .cor-valores div {
+    justify-content: flex-end;
+  }
+
+  .cor-valores dt {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .cor-valores dd {
+    color: var(--foreground);
+    white-space: nowrap;
+  }
+
+  .escalas {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Cada escala sobre o fundo do seu tema, para a leitura ser a do site */
+  .escala {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--fundo-tema);
+  }
+
+  .escala-celulas {
+    display: flex;
+    gap: 3px;
+  }
+
+  .escala-celulas span {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 3px;
+    background: var(--amostra);
+  }
+
+  .escala figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    color: var(--texto-tema);
+    font-size: 0.75rem;
+  }
+
+  .escala code {
+    font-size: 0.6875rem;
+    line-height: 1.5;
+  }
+
+  .fonte {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .fonte-amostra {
+    color: var(--foreground);
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+
+  .fonte-sans {
+    font-family: var(--sans);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .fonte-heading {
+    color: var(--primary);
+    font-family: var(--heading);
+    font-style: italic;
+  }
+
+  .fonte-mono {
+    font-family: var(--mono);
+    font-size: 1.25rem;
+  }
+
+  .tabela {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+  }
+
+  .tabela dt {
+    width: 9rem;
+    flex-shrink: 0;
+    color: var(--primary);
+  }
+
+  .tabela dd {
+    color: var(--muted-foreground);
+  }
+
+  .codigo {
+    overflow-x: auto;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+
+  .codigo code {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    white-space: pre;
+  }
+
+  @media (max-width: 30rem) {
+    .cor {
+      grid-template-columns: auto 1fr;
+    }
+
+    .cor-valores {
+      flex-flow: row wrap;
+      gap: 0.125rem 1rem;
+      grid-column: 2;
+      text-align: left;
+    }
+
+    .escalas {
+      grid-template-columns: 1fr;
+    }
+
+    .tabela div {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
+  .link-sm {
+    align-self: flex-start;
+  }
+</style>

@@ -57,6 +57,11 @@ export const paginas = [
   },
   { rota: "/usos", titulo: "Usos", resumo: "Lista completa de linguagens, frameworks e ferramentas" },
   {
+    rota: "/identidade",
+    titulo: "Identidade",
+    resumo: "Cores, fontes e tokens do site, nos temas claro e escuro",
+  },
+  {
     rota: "/desenvolvedores",
     titulo: "Desenvolvedores",
     resumo: "API pública em JSON, especificação OpenAPI e CLI",

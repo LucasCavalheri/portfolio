@@ -35,6 +35,7 @@ const PARES_MARKDOWN: Record<string, string> = {
   "/contato": "/contato.md",
   "/open-source": "/open-source.md",
   "/usos": "/usos.md",
+  "/identidade": "/identidade.md",
   "/privacidade": "/privacidade.md",
   "/desenvolvedores": "/desenvolvedores.md",
 };
@@ -98,6 +99,7 @@ const PAGINAS_404 = [
   "/contato — e-mail, WhatsApp, redes e tempo de resposta",
   "/open-source — projetos com código aberto e contribuições em repositórios de terceiros",
   "/usos — lista completa de linguagens, frameworks e ferramentas",
+  "/identidade — cores, fontes e tokens do site, nos temas claro e escuro",
   "/desenvolvedores — API pública em JSON, especificação OpenAPI e CLI",
   "/privacidade — que dados o site coleta, e quais não coleta",
 ];

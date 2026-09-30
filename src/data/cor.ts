@@ -6,6 +6,8 @@
 // O piso de contraste é menor no tema claro de propósito — o ícone acompanha o
 // nome escrito, então vale mais manter a cor reconhecível do que forçar 3:1.
 
+import { fundo } from "./identidade";
+
 const canais = (hex: string) => {
   const limpo = hex.replace("#", "");
   return [0, 2, 4].map((i) => parseInt(limpo.slice(i, i + 2), 16) / 255);
@@ -59,8 +61,8 @@ const paraRgb = (matiz: number, sat: number, luz: number) => {
   return [canal(matiz + 1 / 3), canal(matiz), canal(matiz - 1 / 3)];
 };
 
-export const FUNDO_ESCURO = "#050505";
-export const FUNDO_CLARO = "#ffffff";
+export const FUNDO_ESCURO = fundo("escuro");
+export const FUNDO_CLARO = fundo("claro");
 
 /** Aproxima a cor de marca do contraste mínimo sem perder o matiz. */
 export const legivel = (hex: string, fundo: string) => {

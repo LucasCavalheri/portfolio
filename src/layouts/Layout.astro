@@ -13,6 +13,8 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ScrollTop from "../components/ScrollTop.astro";
 import SpriteTec from "../components/SpriteTec.astro";
+import { cssTemas, fundo } from "../data/identidade";
+import { paginas } from "../data/site";
 // Fontes servidas pelo próprio domínio: uma origem a menos no caminho crítico
 // Só o subconjunto latin, que já cobre o português: os outros alfabetos
 // somavam 15 @font-face e 23 KB de CSS em cada página. A Geist variável não
@@ -26,6 +28,11 @@ import "@fontsource/instrument-serif/latin-400-italic.css";
 const { title, description, tecnologias = [], comContatos = false } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Par em markdown da página, para o agente que lê o <head> achar a versão limpa
+const rota = Astro.url.pathname.replace(/\/$/, "") || "/";
+const temMarkdown = rota === "/404" || paginas.some((p) => p.rota === rota);
+const markdown = rota === "/" ? "/index.md" : `${rota}.md`;
 const imagemSocial = new URL("/og.png", Astro.site);
 
 // Identidade legível por máquina: Person (quem sou), ProfessionalService
@@ -138,7 +145,8 @@ const dadosEstruturados = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#050505" />
+    <meta name="theme-color" content={fundo("escuro")} />
+    <style is:inline set:html={cssTemas()} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -156,6 +164,7 @@ const dadosEstruturados = {
     <link rel="service-desc" type="application/json" href="/openapi.json" />
     <link rel="service-doc" href="/desenvolvedores" />
     <link rel="describedby" href="/llms.txt" />
+    {temMarkdown && <link rel="alternate" type="text/markdown" href={markdown} />}
     <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -276,49 +285,7 @@ const dadosEstruturados = {
 </html>
 
 <style is:global>
-  :root[data-theme="dark"] {
-    --background: #050505;
-    --foreground: #fafafa;
-    --primary: #e6e6e6;
-    --muted: #212121;
-    --muted-foreground: #a1a1a1;
-    --card: #131313;
-    --border: rgba(255, 255, 255, 0.1);
-    --ring: #6f6f6f;
-    --cell-0: #1c1c1c;
-    --cell-1: #40403f;
-    --cell-2: #6b6b6a;
-    --cell-3: #9c9c9a;
-    --cell-4: #e6e6e6;
-    --brilho: rgba(255, 255, 255, 0.14);
-    color-scheme: dark;
-  }
-
-  :root[data-theme="light"] {
-    --background: #ffffff;
-    --foreground: #0a0a0a;
-    --primary: #171717;
-    --muted: #f4f4f5;
-    --muted-foreground: #71717a;
-    --card: #fafafa;
-    --border: rgba(0, 0, 0, 0.1);
-    --ring: #a1a1aa;
-    --cell-0: #ebebee;
-    --cell-1: #c6c6cb;
-    --cell-2: #96969d;
-    --cell-3: #5d5d65;
-    --cell-4: #1f1f22;
-    --brilho: rgba(0, 0, 0, 0.07);
-    color-scheme: light;
-  }
-
-  :root {
-    --sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
-    --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --heading: "Instrument Serif", Georgia, serif;
-    --radius: 0.625rem;
-    --container: 40rem;
-  }
+  /* As variáveis de tema, fontes e medidas saem de src/data/identidade.ts */
 
   * {
     box-sizing: border-box;

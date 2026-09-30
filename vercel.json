@@ -281,6 +281,26 @@
       "statusCode": 301
     },
     {
+      "source": "/marca",
+      "destination": "/identidade",
+      "statusCode": 301
+    },
+    {
+      "source": "/brand",
+      "destination": "/identidade",
+      "statusCode": 301
+    },
+    {
+      "source": "/tokens",
+      "destination": "/identidade",
+      "statusCode": 301
+    },
+    {
+      "source": "/design-tokens",
+      "destination": "/identidade",
+      "statusCode": 301
+    },
+    {
       "source": "/opensource",
       "destination": "/open-source",
       "statusCode": 301

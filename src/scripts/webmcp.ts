@@ -23,6 +23,7 @@ const paginas = [
   "/sobre",
   "/contato",
   "/usos",
+  "/identidade",
   "/desenvolvedores",
   "/privacidade",
   "/#projetos",

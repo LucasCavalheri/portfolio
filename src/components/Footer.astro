@@ -26,6 +26,12 @@ const rotaAtual = Astro.url.pathname.replace(/\/$/, "") || "/";
     <a class="link link-xs" href="/openapi.json"><span>openapi</span></a>
     <a class="link link-xs" href="/api/v1/index.json"><span>api</span></a>
   </nav>
+  <p class="rodape-agentes">
+    Assistente de IA lendo esta página? O resumo completo está em
+    <a class="link link-text" href="/llms.txt">/llms.txt</a>, e as cores, fontes e tokens da minha
+    identidade visual, para gerar proposta ou PDF, em
+    <a class="link link-text" href="/identidade.md">/identidade.md</a>.
+  </p>
   <div>
     <p>Atualizado · {atualizadoEm}</p>
     <p>© {anoAtual} <span>Lucas Cavalheri</span></p>
@@ -48,6 +54,11 @@ const rotaAtual = Astro.url.pathname.replace(/\/$/, "") || "/";
   .rodape-links .link {
     min-height: 1.5rem;
     background-position: 0 calc(100% - 0.25rem);
+  }
+
+  .rodape-agentes {
+    padding-bottom: 0.75rem;
+    line-height: 1.5;
   }
 
   .site-footer > div {

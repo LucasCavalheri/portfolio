@@ -21,6 +21,7 @@ const ROTAS_ATUAIS = [
   "/contato",
   "/open-source",
   "/usos",
+  "/identidade",
   "/desenvolvedores",
   "/privacidade",
   "/llms.txt",
@@ -31,6 +32,7 @@ const ROTAS_ATUAIS = [
   "/contato.md",
   "/open-source.md",
   "/usos.md",
+  "/identidade.md",
   "/desenvolvedores.md",
 ];
 

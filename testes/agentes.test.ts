@@ -3,6 +3,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { paginas, site } from "../src/data/site";
+import { cores, escala, fontes } from "../src/data/identidade";
 
 const DIST = new URL("../dist/", import.meta.url);
 
@@ -23,6 +24,7 @@ const rotasHtml = [
   ["/contato", "contato/index.html"],
   ["/open-source", "open-source/index.html"],
   ["/usos", "usos/index.html"],
+  ["/identidade", "identidade/index.html"],
   ["/privacidade", "privacidade/index.html"],
 ] as const;
 
@@ -76,6 +78,7 @@ describe("markdown por Accept e por sufixo .md", () => {
     ["contato.md", "# Contato"],
     ["open-source.md", "# Open source"],
     ["usos.md", "# Usos"],
+    ["identidade.md", "# Identidade visual"],
     ["privacidade.md", "# Privacidade"],
   ] as const;
 
@@ -405,6 +408,49 @@ describe("eficiência de conteúdo", () => {
       for (const id of usados) expect(declarados.has(id), `${arquivo} sem #${id}`).toBe(true);
       // nenhum símbolo sobrando
       for (const id of declarados) expect(usados.has(id), `${arquivo} declara #${id} sem uso`).toBe(true);
+    }
+  });
+});
+
+describe("identidade visual", () => {
+  const todas = [...cores, ...escala];
+
+  it("o CSS publicado usa os valores de identidade.ts nos dois temas", () => {
+    // o tema do site sai do mesmo arquivo; se alguém voltar a escrever cor à mão, falha aqui
+    const html = ler("index.html");
+    const tema = (nome: string) => html.match(new RegExp(`:root\\[data-theme="${nome}"\\]\\{([^}]*)\\}`))?.[1] ?? "";
+    for (const cor of todas) {
+      expect(tema("dark"), cor.token).toContain(`--${cor.token}: ${cor.escuro};`);
+      expect(tema("light"), cor.token).toContain(`--${cor.token}: ${cor.claro};`);
+    }
+  });
+
+  it("o .md e o llms.txt trazem cada cor nos dois temas e as fontes", () => {
+    for (const arquivo of ["identidade.md", "llms.txt"]) {
+      const texto = ler(arquivo);
+      for (const cor of cores) {
+        const linha = texto.split("\n").find((l) => l.startsWith(`| \`--${cor.token}\``));
+        expect(linha, `${arquivo} ${cor.token}`).toContain(cor.escuro);
+        expect(linha, `${arquivo} ${cor.token}`).toContain(cor.claro);
+      }
+      for (const fonte of fontes) expect(texto, arquivo).toContain(fonte.nome);
+    }
+    expect(ler("llms.txt")).toContain(`${site.url}/identidade.md`);
+  });
+
+  it("toda página aponta a identidade e o llms.txt no texto visível", () => {
+    // o agente que lê a página convertida em texto não vê o <head>
+    for (const [rota, arquivo] of rotasHtml) {
+      const texto = textoVisivel(ler(arquivo));
+      expect(texto, rota).toContain("/llms.txt");
+      expect(texto, rota).toContain("/identidade.md");
+    }
+  });
+
+  it("cada página com par em markdown o anuncia no <head>", () => {
+    for (const [rota, arquivo] of rotasHtml) {
+      const md = rota === "/" ? "/index.md" : `${rota}.md`;
+      expect(ler(arquivo), rota).toContain(`<link rel="alternate" type="text/markdown" href="${md}">`);
     }
   });
 });

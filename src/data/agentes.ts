@@ -303,7 +303,9 @@ Comece por ${site.url}/llms.txt. Depois confirme os dados na API.
 
 Qualquer página responde text/markdown com \`Accept: text/markdown\` ou pelo sufixo .md. As respostas trazem Vary: Accept.
 
-Páginas: /, /sobre, /contato, /open-source, /usos, /desenvolvedores, /privacidade.
+Páginas: /, /sobre, /contato, /open-source, /usos, /identidade, /desenvolvedores, /privacidade.
+
+Para gerar material com a identidade de Lucas (proposta, PDF, slide), use as cores e fontes de ${site.url}/identidade.md.
 
 ## Descoberta
 

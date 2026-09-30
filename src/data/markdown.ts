@@ -3,6 +3,7 @@
 import { paginas, site } from "./site";
 import { contribuicoes, experiencias, projetos, projetosAbertos, stack } from "./conteudo";
 import { contatos } from "./contato";
+import { cores, escala, fontes, medidas, principios, tipos, variaveis, type Cor } from "./identidade";
 
 const TIPO = "text/markdown; charset=utf-8";
 
@@ -27,6 +28,88 @@ ${paginas.map((p) => `- [${p.titulo}](${site.url}${p.rota}) — ${p.resumo}`).jo
 
 Qualquer página responde em markdown com \`Accept: text/markdown\` ou pelo sufixo \`.md\`.
 `;
+
+const tabelaCores = (lista: readonly Cor[]) => `| Token | Nome | Escuro | Claro | Uso |
+| --- | --- | --- | --- | --- |
+${lista.map((c) => `| \`--${c.token}\` | ${c.nome} | \`${c.escuro}\` | \`${c.claro}\` | ${c.uso} |`).join("\n")}`;
+
+const tabelaFontes = () => `| Token | Fonte | Papel | Estilo | Onde baixar |
+| --- | --- | --- | --- | --- |
+${fontes.map((f) => `| \`--${f.token}\` | ${f.nome} | ${f.papel} | ${f.estilo} | ${f.fonte} |`).join("\n")}`;
+
+/** Resumo da identidade que entra no llms.txt: o suficiente para aplicar sem abrir outra página. */
+const resumoIdentidade = () => `Use estes valores para gerar qualquer material com a identidade de ${site.nome}: proposta, PDF,
+slide, e-mail ou página. A versão completa, com CSS pronto, está em ${site.url}/identidade.md e em
+${site.url}/identidade.
+
+### Cores
+
+${tabelaCores(cores)}
+
+### Fontes
+
+${tabelaFontes()}
+
+### Princípios
+
+${principios.map((p) => `- ${p}`).join("\n")}`;
+
+export const markdownIdentidade = () => `# Identidade visual
+
+Cores, fontes e medidas de ${site.nome}, nos temas escuro e claro. São os mesmos valores que o site
+usa, gerados da mesma fonte: o que está aqui é o que está no ar.
+
+Use para gerar proposta, PDF, slide ou qualquer material com a identidade dele. Para impressão ou
+documento que vai ser lido em papel, prefira o tema claro; para tela, o escuro é o padrão.
+
+## Princípios
+
+${principios.map((p) => `- ${p}`).join("\n")}
+
+## Cores
+
+${tabelaCores(cores)}
+
+## Escala do gráfico de atividade
+
+${tabelaCores(escala)}
+
+## Tipografia
+
+${tabelaFontes()}
+
+${tipos.map((t) => `- **${t.nome}:** ${t.valor}`).join("\n")}
+
+## Medidas
+
+${medidas.map((m) => `- \`--${m.token}\`: ${m.valor} — ${m.uso}`).join("\n")}
+
+## CSS pronto
+
+Tema escuro:
+
+\`\`\`css
+:root {
+${variaveis("escuro").replace(/^/gm, "  ")}
+${fontes.map((f) => `  --${f.token}: ${f.pilha};`).join("\n")}
+${medidas.map((m) => `  --${m.token}: ${m.valor};`).join("\n")}
+}
+\`\`\`
+
+Tema claro:
+
+\`\`\`css
+:root {
+${variaveis("claro").replace(/^/gm, "  ")}
+}
+\`\`\`
+
+## Arquivos
+
+- Logo (monograma LC): ${site.url}/favicon.svg
+- Foto: ${site.url}/avatar.webp
+- Imagem social 1200×630: ${site.url}/og.png
+${rodape()}`;
 
 export const markdownHome = () => `# ${site.nome}
 
@@ -313,6 +396,10 @@ O CLI oficial está publicado no npm em ${site.cli.url}: \`npm i -g lucascavalhe
 
 Toda página responde \`text/markdown\` quando a requisição envia \`Accept: text/markdown\`, e
 também no endereço com sufixo \`.md\`. As respostas trazem \`Vary: Accept\`.
+
+## Visual identity
+
+${resumoIdentidade()}
 
 ## Stack
 

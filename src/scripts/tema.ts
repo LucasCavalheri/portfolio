@@ -1,10 +1,12 @@
+import { fundo } from "../data/identidade";
+
 const root = document.documentElement;
 const botao = document.querySelector<HTMLButtonElement>("#theme-toggle");
 const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
 
 const aplicar = (tema: "dark" | "light") => {
   root.dataset.theme = tema;
-  if (meta) meta.content = tema === "dark" ? "#050505" : "#ffffff";
+  if (meta) meta.content = fundo(tema === "dark" ? "escuro" : "claro");
   botao?.setAttribute("aria-pressed", String(tema === "dark"));
   try {
     localStorage.setItem("lucas-theme", tema);
